@@ -37,6 +37,8 @@ module "kms" {
 }
 ```
 
+<br>
+
 ## Variables
 
 The following variables are utilized by this module and cause the module to behave dynamically based upon the variables that are populated and passed into the module.
