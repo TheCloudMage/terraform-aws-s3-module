@@ -2,7 +2,7 @@
 
 ## Description
 
-This AWS S3 bucket module is designed to produce a secure/in-secure AWS S3 bucket depending on the options passed to the module. This module was created with dynamic options that allow the consumer of the module to determine project by project what S3 bucket options should be enforced on the requested bucket at the time of the bucket provisioning provisioning. It has options that allow the provisioned bucket to be fully insecure, or conversly fully encrypted with an enforcing bucket policy ensuring objects within the bucket are both PUT and stored using either the S3 default encryption key, or an AWS KMS (Key Management Service) CMK (Customer Managed Key)
+This AWS S3 bucket module is designed to produce a secure/in-secure AWS S3 bucket depending on the options passed to the module. This module was created with dynamic options that allow the consumer of the module to determine project by project what S3 bucket options should be enforced on the requested bucket at the time of the bucket provisioning provisioning. It has options that allow the provisioned bucket to be fully insecure, or conversely fully encrypted with an enforcing bucket policy ensuring objects within the bucket are both PUT and stored using either the S3 default encryption key, or an AWS KMS (Key Management Service) CMK (Customer Managed Key)
 
 <br>
 
@@ -12,7 +12,7 @@ This AWS S3 bucket module is designed to produce a secure/in-secure AWS S3 bucke
 
 ## Pre-Requisite Templates
 
-None Defined for un-encrypted bucket. If the requested bucket requires encrytpion using a CMK, then the CMK will have to have already been provisioned via the direct TF root project or by using a KMS CMK module.
+None Defined for un-encrypted bucket. If the requested bucket requires encryption using a CMK, then the CMK will have to have already been provisioned via the direct TF root project or by using a KMS CMK module.
 
 <br>
 
@@ -65,7 +65,7 @@ variable "s3_bucket_name" {
 
 > BucketName: The bucket name must be all lowercase, with only numbers, lowercase characters or a hyphan. The Bucket name must also be globally unique which is where the prefix or suffix variable helpers come in to help uniquely the desired bucket name.
 
-> BucketName Case: In the event that an upper case name is provided for the bucket name varialbe, the module will run a lower() function on the final bucket name before assigning the bucket name to the bucket api call to ensure that all passed bucket names are lowercase.
+> BucketName Case: In the event that an upper case name is provided for the bucket name variable, the module will run a lower() function on the final bucket name before assigning the bucket name to the bucket api call to ensure that all passed bucket names are lowercase.
 
 <br>
 
@@ -94,7 +94,7 @@ __Note: Special s3_bucket_prefix_list Keywords:__
 ```terraform
 variable "s3_bucket_prefix_list" {
   type        = list
-  description = "A prefix list that will be added to the start of the bucket name. For example if s3_bucket_prefix_list=['test'], then the bucket will be named 'test-$${s3_bucket_name}'. This module will also look for the keywords 'region_prefix' and 'account_prefix' and will substitue the current region, or account_id within the module as in the example: s3_bucket_prefix_list=['test', 'region_prefix', 'account_prefix'], resulting in the bucket 'test-us-east-1-1234567890101-$${s3_bucket_name}'. If left blank no prefix will be added."
+  description = "A prefix list that will be added to the start of the bucket name. For example if s3_bucket_prefix_list=['test'], then the bucket will be named 'test-$${s3_bucket_name}'. This module will also look for the keywords 'region_prefix' and 'account_prefix' and will substitute the current region, or account_id within the module as in the example: s3_bucket_prefix_list=['test', 'region_prefix', 'account_prefix'], resulting in the bucket 'test-us-east-1-1234567890101-$${s3_bucket_name}'. If left blank no prefix will be added."
   default     = []
 }
 ```
@@ -194,7 +194,7 @@ __Note: Special s3_bucket_suffix_list Keywords:__
 ```terraform
 variable "s3_bucket_suffix_list" {
   type        = list
-  description = "A suffix list that will be added to the end of the bucket name. For example if s3_bucket_suffix_list=['test'], then the bucket will be named '$${s3_bucket_name}-test'. This module will also look for the keywords 'region_suffix' and 'account_suffix' and will substitue the current region, or account_id within the module as in the example: s3_bucket_suffix_list=['region_suffix', 'account_suffix', 'test'], resulting in the bucket name '$${s3_bucket_name}-us-east-1-1234567890101-test'. If left blank no suffix will be added."
+  description = "A suffix list that will be added to the end of the bucket name. For example if s3_bucket_suffix_list=['test'], then the bucket will be named '$${s3_bucket_name}-test'. This module will also look for the keywords 'region_suffix' and 'account_suffix' and will substitute the current region, or account_id within the module as in the example: s3_bucket_suffix_list=['region_suffix', 'account_suffix', 'test'], resulting in the bucket name '$${s3_bucket_name}-us-east-1-1234567890101-test'. If left blank no suffix will be added."
   default     = []
 }
 ```
