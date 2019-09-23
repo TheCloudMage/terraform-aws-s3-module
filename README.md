@@ -1,20 +1,41 @@
 # Terrafrom S3 Bucket Module
 
-## Description
+![Hero](images/tf_s3.png)
+
+<br>
+
+## Getting Started
 
 This AWS S3 bucket module is designed to produce a secure/in-secure AWS S3 bucket depending on the options passed to the module. This module was created with dynamic options that allow the consumer of the module to determine project by project what S3 bucket options should be enforced on the requested bucket at the time of the bucket provisioning provisioning. It has options that allow the provisioned bucket to be fully insecure, or conversely fully encrypted with an enforcing bucket policy ensuring objects within the bucket are both PUT and stored using either the S3 default encryption key, or an AWS KMS (Key Management Service) CMK (Customer Managed Key)
 
 <br>
 
-![Hero](images/tf_s3.png)
-
-<br>
-
-## Pre-Requisite Templates
+## Module Pre-Requisites
 
 None Defined for un-encrypted bucket. If the requested bucket requires encryption using a CMK, then the CMK will have to have already been provisioned via the direct TF root project or by using a KMS CMK module.
 
 <br>
+
+## Module Usage
+
+```terraform
+module "kms" {
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.0"
+
+  // Required
+  s3_bucket_name            = "backup-bucket"
+  
+  // Optional
+  s3_bucket_region            = "us-west-2"
+  s3_bucket_prefix_list       = ["production", "region_prefix"]
+  s3_bucket_suffix_list       = ["account_suffix"]
+  s3_versioning_enabled       = true
+  s3_mfa_delete               = true
+  s3_bucket_acl               = "public-read"
+  s3_encryption_enabled       = true
+  s3_kms_key_arn              = "arn:aws:kms:us-east-1:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"
+}
+```
 
 ## Variables
 
@@ -22,9 +43,11 @@ The following variables are utilized by this module and cause the module to beha
 
 <br>
 
-### s3_bucket_region
+### ![Optional](images/optional.png) s3_bucket_region
 
-`OPTIONAL`: This variable can contain a specific AWS region where the requested S3 bucket should be provisioned. If no region is specified, the bucket will be created in the region, from which the module is running against via the terraform root module. The string value of the region is set to **empty**, this allows the module to replace the empty string with the currently executed AWS region data source constructed in the module.
+-----
+
+This variable can contain a specific AWS region where the requested S3 bucket should be provisioned. If no region is specified, the bucket will be created in the region, from which the module is running against via the terraform root module. The string value of the region is set to **empty**, this allows the module to replace the empty string with the currently executed AWS region data source constructed in the module.
 
 <br>
 
@@ -38,7 +61,7 @@ variable "s3_bucket_region" {
 
 <br>
 
-`EXAMPLE`: Include the following in your tfvars file
+__EXAMPLE__: Include the following in your environments tfvars file
 
 ```terraform
 s3_bucket_region = "us-west-2"
@@ -46,9 +69,11 @@ s3_bucket_region = "us-west-2"
 
 <br><br>
 
-### s3_bucket_name
+### ![Required](images/required.png) s3_bucket_name
 
-`REQUIRED`: This variable should be passed containing the base name of the bucket that is being requested.
+-----
+
+This variable should be passed containing the base name of the bucket that is being requested.
 
 <br>
 
@@ -61,15 +86,15 @@ variable "s3_bucket_name" {
 
 <br>
 
-> Note: If values are supplied for either the `s3_bucket_prefix_list`, `s3_bucket_suffix_list` or both, then the specified values will be added to the s3_bucket_name. See the variable section pertaining to those lists for additional information on how they can be used to change the requested S3 bucket name.
+> __Note:__ If values are supplied for either the `s3_bucket_prefix_list`, `s3_bucket_suffix_list` or both, then the specified values will be added to the s3_bucket_name. See the variable section pertaining to those lists for additional information on how they can be used to change the requested S3 bucket name.
 
-> BucketName: The bucket name must be all lowercase, with only numbers, lowercase characters or a hyphan. The Bucket name must also be globally unique which is where the prefix or suffix variable helpers come in to help uniquely the desired bucket name.
+> __BucketName:__ The bucket name must be all lowercase, with only numbers, lowercase characters or a hyphan. The Bucket name must also be globally unique which is where the prefix or suffix variable helpers come in to help uniquely the desired bucket name.
 
-> BucketName Case: In the event that an upper case name is provided for the bucket name variable, the module will run a lower() function on the final bucket name before assigning the bucket name to the bucket api call to ensure that all passed bucket names are lowercase.
+> __BucketName Case:__ In the event that an upper case name is provided for the bucket name variable, the module will run a lower() function on the final bucket name before assigning the bucket name to the bucket api call to ensure that all passed bucket names are lowercase.
 
 <br>
 
-`EXAMPLE`: Include the following in your tfvars file
+__EXAMPLE__: Include the following in your environments tfvars file
 
 ```terraform
 s3_bucket_name = "myawesomebucket"
@@ -77,9 +102,11 @@ s3_bucket_name = "myawesomebucket"
 
 <br><br>
 
-### s3_bucket_prefix_list
+### ![Optional](images/optional.png) s3_bucket_prefix_list
 
-`OPTIONAL`: This list variable should contain the values of any prefix that you want to prepend to beginning of the requested S3 bucket. Specifying any sequence of values to the list will change the calculated bucket name by adding each of the specified values with a hyphan to the begging of the supplied s3_bucket_name.
+-----
+
+This list variable should contain the values of any prefix that you want to prepend to beginning of the requested S3 bucket. Specifying any sequence of values to the list will change the calculated bucket name by adding each of the specified values with a hyphan to the begging of the supplied s3_bucket_name.
 
 <br>
 
@@ -101,13 +128,13 @@ variable "s3_bucket_prefix_list" {
 
 <br>
 
-`EXAMPLE`: Include the following in your tfvars file
+__EXAMPLE__: Include the following in your environments tfvars file
 
 ```terraform
 s3_bucket_prefix_list = ["rds", "region_prefix"]
 ```
 
-<br>
+<br><br>
 
 `terraform plan -var='s3_bucket_name="myBucket"'`
 
@@ -139,7 +166,9 @@ Terraform will perform the following actions:
 Plan: 1 to add, 0 to change, 0 to destroy.
 ```
 
-> Note: how the command passed in an upper case character in *myBucket*, and it was auto converted to a lower case character.
+<br>
+
+> __Note:__ how the command passed in an upper case character in *myBucket*, and it was auto converted to a lower case character.
 
 <br>
 
@@ -177,9 +206,11 @@ Plan: 1 to add, 0 to change, 0 to destroy.
 
 <br><br>
 
-### s3_bucket_suffix_list
+### ![Optional](images/optional.png) s3_bucket_suffix_list
 
-`OPTIONAL`: This list variable should contain the values of any suffix that you want to append to end of the requested S3 bucket. Specifying any sequence of values to the list will change the calculated bucket name by adding each of the specified values with a hyphan to the end of the supplied s3_bucket_name.
+-----
+
+This list variable should contain the values of any suffix that you want to append to end of the requested S3 bucket. Specifying any sequence of values to the list will change the calculated bucket name by adding each of the specified values with a hyphan to the end of the supplied s3_bucket_name.
 
 <br>
 
@@ -201,13 +232,13 @@ variable "s3_bucket_suffix_list" {
 
 <br>
 
-`EXAMPLE`: Include the following in your tfvars file
+__EXAMPLE__: Include the following in your environments tfvars file
 
 ```terraform
 s3_bucket_suffix_list = ["account_suffix", "w00t"]
 ```
 
-<br>
+<br><br>
 
 `terraform plan -var='s3_bucket_name="mybucket"'`
 
@@ -273,7 +304,9 @@ Terraform will perform the following actions:
 Plan: 1 to add, 0 to change, 0 to destroy.
 ```
 
-> Note: You can use any combination of prefix and suffix values together in order to create a unique account specific bucket path.
+<br>
+
+> __Note:__ You can use any combination of prefix and suffix values together in order to create a unique account specific bucket path.
 
 <br>
 
@@ -309,9 +342,11 @@ Plan: 1 to add, 0 to change, 0 to destroy.
 
 <br><br>
 
-### s3_versioning_enabled
+### ![Optional](images/optional.png) s3_versioning_enabled
 
-`OPTIONAL`: This variable will turn flag versioning on or off on the bucket. It is important to note that once Versioning is turned on within S3 for a given bucket, it can be later disabled, but never removed.
+-----
+
+This variable will turn flag versioning on or off on the bucket. It is important to note that once Versioning is turned on within S3 for a given bucket, it can be later disabled, but never removed.
 
 <br>
 
@@ -325,7 +360,7 @@ variable "s3_versioning_enabled" {
 
 <br>
 
-`EXAMPLE`: Include the following in your tfvars file
+__EXAMPLE__: Include the following in your environments tfvars file
 
 ```terraform
 s3_versioning_enabled = true
@@ -333,9 +368,11 @@ s3_versioning_enabled = true
 
 <br><br>
 
-### s3_mfa_delete
+### ![Optional](images/optional.png) s3_mfa_delete
 
-`OPTIONAL`: This variable will turn flag the requirement for MFA authentication prior to removing an object version, or suspending versioning within a bucket that has versioning enabled.
+-----
+
+This variable will turn flag the requirement for MFA authentication prior to removing an object version, or suspending versioning within a bucket that has versioning enabled.
 
 <br>
 
@@ -349,7 +386,7 @@ variable "s3_mfa_delete" {
 
 <br>
 
-`EXAMPLE`: Include the following in your tfvars file
+__EXAMPLE__: Include the following in your environments tfvars file
 
 ```terraform
 s3_mfa_delete = true
@@ -357,9 +394,11 @@ s3_mfa_delete = true
 
 <br><br>
 
-### s3_bucket_acl
+### ![Optional](images/optional.png) s3_bucket_acl
 
-`OPTIONAL`: This variable is used to pass the desired permissions of the bucket at the time of provisioning the bucket. The default value is set to private but can be changed by providing a valid permission keyword in the s3_bucket_acl variable.
+-----
+
+This variable is used to pass the desired permissions of the bucket at the time of provisioning the bucket. The default value is set to private but can be changed by providing a valid permission keyword in the s3_bucket_acl variable.
 
 <br>
 
@@ -385,7 +424,7 @@ __Valid Permission Values:__
 
 <br>
 
-`EXAMPLE`: Include the following in your tfvars file
+__EXAMPLE__: Include the following in your environments tfvars file
 
 ```terraform
 s3_bucket_acl = "public-read"
@@ -393,13 +432,15 @@ s3_bucket_acl = "public-read"
 
 <br><br>
 
-### s3_encryption_enabled
+### ![Optional](images/optional.png) s3_encryption_enabled
 
-`OPTIONAL`: This variable is flag if encryption should be configured on the requested bucket. Setting this value to true will automatically turn on encyrption on the bucket at the time of provisioning using the default S3/AES256 AWS managed KMS Key.
+-----
+
+This variable is flag if encryption should be configured on the requested bucket. Setting this value to true will automatically turn on encyrption on the bucket at the time of provisioning using the default S3/AES256 AWS managed KMS Key.
 
 <br>
 
-> Note: It will also automatically create a bucket policy that will be attached to the bucket forcing encryption of new object that is PUT into the bucket.
+> __Note:__ It will also automatically create a bucket policy that will be attached to the bucket forcing encryption of new object that is PUT into the bucket.
 
 <br>
 
@@ -413,7 +454,7 @@ variable "s3_encryption_enabled" {
 
 <br>
 
-`EXAMPLE`: Include the following in your tfvars file
+__EXAMPLE__: Include the following in your environments tfvars file
 
 ```terraform
 s3_encryption_enabled = true
@@ -421,7 +462,7 @@ s3_encryption_enabled = true
 
 <br>
 
-> Note: Setting the `s3_encryption_enabled` option to true will automatically add the following bucket policy to the bucket at the time of provisioning:
+> __Note:__ Setting the `s3_encryption_enabled` option to true will automatically add the following bucket policy to the bucket at the time of provisioning:
 
 <br>
 
@@ -474,7 +515,7 @@ Statement:
       }
 ```
 
-<br>
+<br><br>
 
 `terraform plan -var='s3_bucket_name="mybucket"' -var s3_encryption_enabled='true'`
 
@@ -588,9 +629,11 @@ can't guarantee that exactly these actions will be performed if
 
 <br><br>
 
-### s3_kms_key_arn
+### ![Optional](images/optional.png) s3_kms_key_arn
 
-`OPTIONAL`: This variable is used to define an existing KMS CMK that is preferred to encrypt objects into the bucket. Using a CMK instead of the default AWS Managed KMS key allows more granular control over the permissioning of the encryption key used to encryption the objects within the bucket.
+-----
+
+This variable is used to define an existing KMS CMK that is preferred to encrypt objects into the bucket. Using a CMK instead of the default AWS Managed KMS key allows more granular control over the permissioning of the encryption key used to encryption the objects within the bucket.
 
 <br>
 
@@ -604,7 +647,7 @@ variable "s3_kms_key_arn" {
 
 <br>
 
-`EXAMPLE`: Include the following in your tfvars file
+__EXAMPLE__: Include the following in your environments tfvars file
 
 ```terraform
 s3_kms_key_arn = "arn:aws:kms:us-east-1:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"
@@ -612,9 +655,9 @@ s3_kms_key_arn = "arn:aws:kms:us-east-1:111122223333:key/1234abcd-12ab-34cd-56ef
 
 <br>
 
-> Note: When supplying a KMS CMK Key ARN, the bucket encryption type will automatically switch from **AES256** to **aws:kms**. Encryption will work the same way, only using the provided key instead of the Amazon managed default S3 key. The bucket policy shown above will also still be applied.
+> __Note:__ When supplying a KMS CMK Key ARN, the bucket encryption type will automatically switch from **AES256** to **aws:kms**. Encryption will work the same way, only using the provided key instead of the Amazon managed default S3 key. The bucket policy shown above will also still be applied.
 
-<br>
+<br><br>
 
 `terraform plan -var 's3_bucket_name="mybucket"' -var s3_encryption_enabled='true' -var s3_kms_key_arn= 'arn:aws:kms:us-east-1:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab'`
 
@@ -641,22 +684,10 @@ The template will finally create the following outputs that can be pulled and us
 ######################
 # S3 Bucket:         #
 ######################
-output "s3_bucket_id" {
-  value = "${var.s3_encryption_enabled == true ? aws_s3_bucket.encrypted_bucket.*.id : aws_s3_bucket.not_encrypted_bucket.*.id}"
-}
-
-output "s3_bucket_arn" {
-  value = "${var.s3_encryption_enabled == true ? aws_s3_bucket.encrypted_bucket.*.arn : aws_s3_bucket.not_encrypted_bucket.*.arn}"
-}
-
-output "s3_bucket_domain_name" {
-  value = "${var.s3_encryption_enabled == true ? aws_s3_bucket.encrypted_bucket.*.bucket_domain_name : aws_s3_bucket.not_encrypted_bucket.*.bucket_domain_name}"
-}
-
-output "s3_bucket_region" {
-  value = "${var.s3_encryption_enabled == true ? aws_s3_bucket.encrypted_bucket.*.region : aws_s3_bucket.not_encrypted_bucket.*.region}"
-}
-
+output "s3_bucket_id" {}
+output "s3_bucket_arn" {}
+output "s3_bucket_domain_name" {}
+output "s3_bucket_region" {}
 ```
 
 <br>
@@ -678,7 +709,7 @@ output "s3_bucket_region" {
 
 ## Contributions and Contacts
 
-This project is owned by [CloudMage](rnason@cloudmage.com).
+This project is owned by [CloudMage](rnason@cloudmage.io).
 
 To contribute, please:
 
