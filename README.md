@@ -1,14 +1,12 @@
-# Terrafrom KMS Key Module
+# Terrafrom S3 Bucket Module
 
 ## Description
-
------
 
 This AWS S3 bucket module is designed to produce a secure/in-secure AWS S3 bucket depending on the options passed to the module. This module was created with dynamic options that allow the consumer of the module to determine project by project what S3 bucket options should be enforced on the requested bucket at the time of the bucket provisioning provisioning. It has options that allow the provisioned bucket to be fully insecure, or conversly fully encrypted with an enforcing bucket policy ensuring objects within the bucket are both PUT and stored using either the S3 default encryption key, or an AWS KMS (Key Management Service) CMK (Customer Managed Key)
 
 <br>
 
-![Hero](images/tf_kms.png)
+<!-- ![Hero](images/tf_kms.png) -->
 
 <br>
 
