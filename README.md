@@ -6,7 +6,7 @@ This AWS S3 bucket module is designed to produce a secure/in-secure AWS S3 bucke
 
 <br>
 
-<!-- ![Hero](images/tf_kms.png) -->
+![Hero](images/tf_s3.png)
 
 <br>
 
