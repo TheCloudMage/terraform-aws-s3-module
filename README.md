@@ -1,4 +1,4 @@
-# Terrafrom S3 Bucket Module
+# Terraform S3 Bucket Module
 
 ![Hero](images/tf_s3.png)
 
@@ -20,7 +20,7 @@ None Defined for un-encrypted bucket. If the requested bucket requires encryptio
 
 ```terraform
 module "kms" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.0"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.1"
 
   // Required
   s3_bucket_name            = "backup-bucket"
