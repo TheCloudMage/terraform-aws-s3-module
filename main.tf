@@ -23,7 +23,7 @@ EOS
 // If a Suffix list was supplied then join it together, and prepend the already prefixed bucket name.
   suffixed_bucket_name  = <<EOS
 %{~ if length(var.s3_bucket_suffix_list) > 0 ~}
-${replace(replace(format("%s-%s", local.prefixed_bucket_name, join("-", var.s3_bucket_suffix_list)), "region_prefix", local.region), "account_prefix", data.aws_caller_identity.current.account_id)}
+${replace(replace(format("%s-%s", local.prefixed_bucket_name, join("-", var.s3_bucket_suffix_list)), "region_suffix", local.region), "account_suffix", data.aws_caller_identity.current.account_id)}
 %{~ else ~}
 ${local.prefixed_bucket_name}
 %{~ endif ~}
@@ -102,8 +102,9 @@ data "aws_iam_policy_document" "this" {
     ]
 
     resources = [
-      "%{ if var.s3_encryption_enabled }aws_s3_bucket.encrypted_bucket.arn, aws_s3_bucket.encrypted_bucket.arn/*%{ else }aws_s3_bucket.not_encrypted_bucket.arn, aws_s3_bucket.not_encrypted_bucket.arn/*%{ endif }"
-    ]
+      "arn:aws:s3:::${trimspace(local.bucket_name)}",
+      "arn:aws:s3:::${trimspace(local.bucket_name)}/*",
+      ]
 
     principals {
       type        = "AWS"
@@ -131,8 +132,9 @@ data "aws_iam_policy_document" "this" {
     ]
 
     resources = [
-      "%{ if var.s3_encryption_enabled }aws_s3_bucket.encrypted_bucket.arn, aws_s3_bucket.encrypted_bucket.arn/*%{ else }aws_s3_bucket.not_encrypted_bucket.arn, aws_s3_bucket.not_encrypted_bucket.arn/*%{ endif }"
-    ]
+      "arn:aws:s3:::${trimspace(local.bucket_name)}",
+      "arn:aws:s3:::${trimspace(local.bucket_name)}/*",
+      ]
 
     principals {
       type        = "AWS"
@@ -161,7 +163,8 @@ data "aws_iam_policy_document" "this" {
     ]
 
     resources = [
-      "%{ if var.s3_encryption_enabled }aws_s3_bucket.encrypted_bucket.arn, aws_s3_bucket.encrypted_bucket.arn/*%{ else }aws_s3_bucket.not_encrypted_bucket.arn, aws_s3_bucket.not_encrypted_bucket.arn/*%{ endif }"
+      "arn:aws:s3:::${trimspace(local.bucket_name)}",
+      "arn:aws:s3:::${trimspace(local.bucket_name)}/*",
     ]
 
     principals {
