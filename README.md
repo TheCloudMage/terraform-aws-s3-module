@@ -76,7 +76,21 @@ variable "s3_bucket_region" {
 ### Example .tfvars usage
 
 ```terraform
-s3_bucket_region = "us-west-2"
+s3_bucket_region = "us-east-1"
+```
+
+<br><br>
+
+### Module Usage in main.tf
+
+```terraform
+module "s3_bucket" {
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.1"
+
+  // Required
+  s3_bucket_region            = "us-east-1"
+  s3_bucket_name              = "myBucket"
+}
 ```
 
 <br><br><br>
@@ -115,7 +129,21 @@ variable "s3_bucket_name" {
 ### Example .tfvars usage
 
 ```terraform
-s3_bucket_name = "myawesomebucket"
+s3_bucket_name = "myBucket"
+```
+
+<br><br>
+
+### Module Usage in main.tf
+
+```terraform
+module "s3_bucket" {
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.1"
+
+  // Required
+  s3_bucket_region            = "us-east-1"
+  s3_bucket_name              = "myBucket"
+}
 ```
 
 <br><br><br>
@@ -171,6 +199,8 @@ module "s3_bucket" {
   s3_bucket_region            = "us-east-1"
 }
 ```
+
+<br><br>
 
 ### `terraform plan`
 
