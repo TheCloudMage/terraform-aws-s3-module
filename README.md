@@ -20,11 +20,11 @@ None Defined for an un-encrypted bucket. If the requested bucket requires encryp
 
 <br><br>
 
-# Module Usage
+# Module usage in project root main.tf
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
 
   // Required
   s3_bucket_name              = "backup-bucket"
@@ -61,7 +61,7 @@ This variable can contain a specific AWS region where the requested S3 bucket sh
 
 <br><br>
 
-### Declaration in variables.tf
+### Declaration in module variables.tf
 
 ```terraform
 variable "s3_bucket_region" {
@@ -73,19 +73,11 @@ variable "s3_bucket_region" {
 
 <br><br>
 
-### Example .tfvars usage
-
-```terraform
-s3_bucket_region = "us-east-1"
-```
-
-<br><br>
-
-### Module Usage in main.tf
+### Module usage in project root main.tf in project root main.tf
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
 
   // Required
   s3_bucket_region            = "us-east-1"
@@ -107,7 +99,7 @@ This variable should be passed containing the base name of the bucket that is be
 
 <br><br>
 
-### Declaration in variables.tf
+### Declaration in module variables.tf
 
 ```terraform
 variable "s3_bucket_name" {
@@ -124,19 +116,11 @@ variable "s3_bucket_name" {
 
 <br><br>
 
-### Example .tfvars usage
-
-```terraform
-s3_bucket_name = "myBucket"
-```
-
-<br><br>
-
-### Module Usage in main.tf
+### Module usage in project root main.tf in project root main.tf
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
 
   // Required
   s3_bucket_region            = "us-east-1"
@@ -166,7 +150,7 @@ __Note: Special s3_bucket_prefix_list Keywords:__
 
 <br><br>
 
-### Declaration in variables.tf
+### Declaration in module variables.tf
 
 ```terraform
 variable "s3_bucket_prefix_list" {
@@ -178,19 +162,11 @@ variable "s3_bucket_prefix_list" {
 
 <br><br>
 
-### Example .tfvars usage
-
-```terraform
-s3_bucket_prefix_list = ["rds", "region_prefix"]
-```
-
-<br><br>
-
-### Module Usage in main.tf without Prefix
+### Module usage in project root main.tf in project root main.tf without Prefix
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
 
   // Required
   s3_bucket_name              = "myBucket"
@@ -200,13 +176,13 @@ module "s3_bucket" {
 
 <br><br>
 
-### `terraform plan`
+### Example `terraform plan` output
 
 ```terraform
 Terraform will perform the following actions:
 
-  # aws_s3_bucket.not_encrypted_bucket[0] will be created
-  + resource "aws_s3_bucket" "not_encrypted_bucket" {
+  # aws_s3_bucket.un_encrypted_bucket[0] will be created
+  + resource "aws_s3_bucket" "un_encrypted_bucket" {
       + acceleration_status         = (known after apply)
       + acl                         = "private"
       + arn                         = (known after apply)
@@ -236,11 +212,11 @@ Plan: 1 to add, 0 to change, 0 to destroy.
 
 <br><br>
 
-### Module Usage in main.tf with region_prefix
+### Module usage in project root main.tf in project root main.tf with region_prefix
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
 
   // Required
   s3_bucket_name              = "myBucket"
@@ -251,13 +227,13 @@ module "s3_bucket" {
 
 <br><br>
 
-### `terraform plan`
+### Example `terraform plan` output
 
 ```terraform
 Terraform will perform the following actions:
 
-  # aws_s3_bucket.not_encrypted_bucket[0] will be created
-  + resource "aws_s3_bucket" "not_encrypted_bucket" {
+  # aws_s3_bucket.un_encrypted_bucket[0] will be created
+  + resource "aws_s3_bucket" "un_encrypted_bucket" {
       + acceleration_status         = (known after apply)
       + acl                         = "private"
       + arn                         = (known after apply)
@@ -283,11 +259,11 @@ Plan: 1 to add, 0 to change, 0 to destroy.
 
 <br><br>
 
-### Module Usage in main.tf with account_prefix
+### Module usage in project root main.tf in project root main.tf with account_prefix
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
 
   // Required
   s3_bucket_name              = "myBucket"
@@ -298,13 +274,13 @@ module "s3_bucket" {
 
 <br><br>
 
-### `terraform plan`
+### Example `terraform plan` output
 
 ```terraform
 Terraform will perform the following actions:
 
-  # aws_s3_bucket.not_encrypted_bucket[0] will be created
-  + resource "aws_s3_bucket" "not_encrypted_bucket" {
+  # aws_s3_bucket.un_encrypted_bucket[0] will be created
+  + resource "aws_s3_bucket" "un_encrypted_bucket" {
       + acceleration_status         = (known after apply)
       + acl                         = "private"
       + arn                         = (known after apply)
@@ -350,7 +326,7 @@ __Note: Special s3_bucket_suffix_list Keywords:__
 
 <br><br>
 
-### Declaration in variables.tf
+### Declaration in module variables.tf
 
 ```terraform
 variable "s3_bucket_suffix_list" {
@@ -362,19 +338,11 @@ variable "s3_bucket_suffix_list" {
 
 <br><br>
 
-### Example .tfvars usage
-
-```terraform
-s3_bucket_suffix_list = ["account_suffix", "w00t"]
-```
-
-<br><br>
-
-### Module Usage in main.tf
+### Module usage in project root main.tf in project root main.tf
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
 
   // Required
   s3_bucket_name              = "myBucket"
@@ -388,13 +356,13 @@ module "s3_bucket" {
 
 <br><br>
 
-### `terraform plan`
+### Example `terraform plan` output
 
 ```terraform
 Terraform will perform the following actions:
 
-  # aws_s3_bucket.not_encrypted_bucket[0] will be created
-  + resource "aws_s3_bucket" "not_encrypted_bucket" {
+  # aws_s3_bucket.un_encrypted_bucket[0] will be created
+  + resource "aws_s3_bucket" "un_encrypted_bucket" {
       + acceleration_status         = (known after apply)
       + acl                         = "private"
       + arn                         = (known after apply)
@@ -424,11 +392,11 @@ Plan: 1 to add, 0 to change, 0 to destroy.
 
 <br><br>
 
-### Module Usage in main.tf using Prefix and Suffix
+### Module usage in project root main.tf in project root main.tf using Prefix and Suffix
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
 
   // Required
   s3_bucket_name              = "myBucket"
@@ -440,13 +408,13 @@ module "s3_bucket" {
 
 <br><br>
 
-### `terraform plan`
+### Example `terraform plan` output
 
 ```terraform
 Terraform will perform the following actions:
 
-  # aws_s3_bucket.not_encrypted_bucket[0] will be created
-  + resource "aws_s3_bucket" "not_encrypted_bucket" {
+  # aws_s3_bucket.un_encrypted_bucket[0] will be created
+  + resource "aws_s3_bucket" "un_encrypted_bucket" {
       + acceleration_status         = (known after apply)
       + acl                         = "private"
       + arn                         = (known after apply)
@@ -484,7 +452,7 @@ This variable will turn flag versioning on or off on the bucket. It is important
 
 <br><br>
 
-### Declaration in variables.tf
+### Declaration in module variables.tf
 
 ```terraform
 variable "s3_versioning_enabled" {
@@ -496,19 +464,11 @@ variable "s3_versioning_enabled" {
 
 <br><br>
 
-### Module Usage in main.tf
-
-```terraform
-s3_versioning_enabled = true
-```
-
-<br><br>
-
-### Module Usage
+### Module usage in project root main.tf
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
 
   // Required
   s3_bucket_name              = "myBucket"
@@ -535,7 +495,7 @@ This variable will turn flag the requirement for MFA authentication before remov
 
 <br><br>
 
-### Declaration in variables.tf
+### Declaration in module variables.tf
 
 ```terraform
 variable "s3_mfa_delete" {
@@ -547,19 +507,11 @@ variable "s3_mfa_delete" {
 
 <br><br>
 
-### Example .tfvars usage
-
-```terraform
-s3_mfa_delete = true
-```
-
-<br><br>
-
-### Module Usage
+### Module usage in project root main.tf
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
 
   // Required
   s3_bucket_name              = "myBucket"
@@ -587,7 +539,7 @@ This variable is used to pass the desired permissions of the bucket at the time 
 
 <br><br>
 
-### Declaration in variables.tf
+### Declaration in module variables.tf
 
 ```terraform
 variable "s3_bucket_acl" {
@@ -611,19 +563,11 @@ __Valid Permission Values:__
 
 <br><br>
 
-### Example .tfvars usage
-
-```terraform
-s3_bucket_acl = "public-read"
-```
-
-<br><br>
-
-### Module Usage
+### Module usage in project root main.tf
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
 
   // Required
   s3_bucket_name              = "myBucket"
@@ -656,7 +600,7 @@ This variable is a flag if encryption should be configured on the requested buck
 
 <br><br>
 
-### Declaration in variables.tf
+### Declaration in module variables.tf
 
 ```terraform
 variable "s3_encryption_enabled" {
@@ -668,19 +612,11 @@ variable "s3_encryption_enabled" {
 
 <br><br>
 
-### Example .tfvars usage
-
-```terraform
-s3_encryption_enabled = true
-```
-
-<br><br>
-
-### Module Usage
+### Module usage in project root main.tf
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
 
   // Required
   s3_bucket_name              = "myBucket"
@@ -755,7 +691,7 @@ Statement:
 
 <br><br>
 
-### `terraform plan`
+### Example `terraform plan` output
 
 ```terraform
 Refreshing Terraform state in-memory prior to plan...
@@ -879,7 +815,7 @@ This variable is used to define an existing KMS CMK that is preferred to encrypt
 
 <br><br>
 
-### Declaration in variables.tf
+### Declaration in module variables.tf
 
 ```terraform
 variable "s3_kms_key_arn" {
@@ -889,25 +825,17 @@ variable "s3_kms_key_arn" {
 }
 ```
 
-<br><br>
-
-### Example .tfvars usage
-
-```terraform
-s3_kms_key_arn = "arn:aws:kms:us-east-1:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"
-```
-
 <br>
 
 > __Note:__ When supplying a KMS CMK Key ARN, the bucket encryption type will automatically switch from **AES256** to **aws:kms**. Encryption will work the same way, only using the provided key instead of the Amazon managed default S3 key. The bucket policy shown above will also still be applied.
 
 <br><br>
 
-### Module Usage
+### Module usage in project root main.tf
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
 
   // Required
   s3_bucket_name              = "myBucket"
@@ -926,7 +854,7 @@ module "s3_bucket" {
 
 <br><br>
 
-### `terraform plan`
+### Example `terraform plan` output
 
 ```terraform
 + server_side_encryption_configuration {
@@ -941,7 +869,13 @@ module "s3_bucket" {
 
 <br><br>
 
-# Outputs
+# Module Example Usage
+
+An example of how to use this module can be found within the `example` directory of this repository
+
+<br><br>
+
+# Module Outputs
 
 The template will finally create the following outputs that can be pulled and used in subsequent terraform runs via data sources. The outputs will be written to the Terraform state file.
 
@@ -956,6 +890,39 @@ output "s3_bucket_arn" {}
 output "s3_bucket_domain_name" {}
 output "s3_bucket_region" {}
 ```
+
+<br><br>
+
+# Module Output Usage
+
+When using and calling the module within a root project, the output values of the module are available to the project root by simply referencing the module outputs from the root project `outputs.tf` file.
+
+<br>
+
+```terraform
+######################
+# S3 Bucket          #
+######################
+output "bucket_id" {
+  value = module.s3bucket.s3_bucket_id
+}
+
+output "bucket_arn" {
+  value = module.s3bucket.s3_bucket_arn
+}
+
+output "bucket_domain_name" {
+  value = module.s3bucket.s3_bucket_domain_name
+}
+
+output "bucket_region" {
+  value = module.s3bucket.s3_bucket_region
+}
+```
+
+<br>
+
+> __Note:__ When referencing the module outputs be sure that the output value contains the identifier given to the module call. As an example if the module was defined as `module "demo_s3bucket" {}` then the output reference would be constructed as `module.demo_s3bucket.s3_bucket_arn`.
 
 <br><br>
 

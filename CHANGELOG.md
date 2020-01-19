@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <br>
 
+## 1.0.2 - [2020-01-19]
+
+### Added
+
+- Example project using the module has been added to the repository
+
+### Changed
+
+- Renamed the not_encrypted_bucket module resource to un_encrypted_bucket
+
+### Removed
+
+- None
+
+<br><br>
+
 ## 1.0.1 - [2019-09-22]
 
 ### Added

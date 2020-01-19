@@ -68,7 +68,7 @@ resource "aws_s3_bucket" "encrypted_bucket" {
 }
 
 // Not Encrypted
-resource "aws_s3_bucket" "not_encrypted_bucket" {
+resource "aws_s3_bucket" "un_encrypted_bucket" {
   count = "${var.s3_encryption_enabled == false ? 1 : 0}"
   region                               = local.region
   bucket                               = trimspace(local.bucket_name)
