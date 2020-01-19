@@ -41,11 +41,11 @@ EOS
 
 // Encrypted
 resource "aws_s3_bucket" "encrypted_bucket" {
-  count = "${var.s3_encryption_enabled == true ? 1 : 0}"
-  region                               = local.region
-  bucket                               = trimspace(local.bucket_name)
-  acl                                  = var.s3_bucket_acl
-  policy                               = data.aws_iam_policy_document.this.json
+  count         = var.s3_encryption_enabled == true ? 1 : 0
+  region        = local.region
+  bucket        = trimspace(local.bucket_name)
+  acl           = var.s3_bucket_acl
+  policy        = data.aws_iam_policy_document.this.json
   
   versioning { 
     enabled    = var.s3_versioning_enabled
@@ -69,10 +69,10 @@ resource "aws_s3_bucket" "encrypted_bucket" {
 
 // Not Encrypted
 resource "aws_s3_bucket" "un_encrypted_bucket" {
-  count = "${var.s3_encryption_enabled == false ? 1 : 0}"
-  region                               = local.region
-  bucket                               = trimspace(local.bucket_name)
-  acl                                  = var.s3_bucket_acl
+  count        = var.s3_encryption_enabled == false ? 1 : 0
+  region       = local.region
+  bucket       = trimspace(local.bucket_name)
+  acl          = var.s3_bucket_acl
   
   versioning { 
     enabled    = var.s3_versioning_enabled
