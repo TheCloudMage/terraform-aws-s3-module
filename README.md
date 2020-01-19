@@ -10,13 +10,13 @@
 
 # Getting Started
 
-This AWS S3 bucket module is designed to produce a secure/in-secure AWS S3 bucket depending on the options passed to the module. This module was created with dynamic options that allow the consumer of the module to determine project by project what S3 bucket options should be enforced on the requested bucket at the time of the bucket provisioning provisioning. It has options that allow the provisioned bucket to be fully insecure, or conversely fully encrypted with an enforcing bucket policy ensuring objects within the bucket are both PUT and stored using either the S3 default encryption key, or an AWS KMS (Key Management Service) CMK (Customer Managed Key)
+This AWS S3 bucket module is designed to produce a secure/in-secure AWS S3 bucket depending on the options passed to the module. This module was created with dynamic options that allow the consumer of the module to determine, project by project, what S3 bucket options should be enforced on the requested bucket at the time of the bucket provisioning. It has options that allow the provisioned bucket to be fully insecure, or conversely fully encrypted with an enforcing bucket policy ensuring objects within the bucket are both PUT and stored using either the S3 default encryption key or an AWS KMS (Key Management Service) CMK (Customer Managed Key)
 
 <br><br>
 
 # Module Pre-Requisites
 
-None Defined for un-encrypted bucket. If the requested bucket requires encryption using a CMK, then the CMK will have to have already been provisioned via the direct TF root project or by using a KMS CMK module.
+None Defined for an un-encrypted bucket. If the requested bucket requires encryption using a CMK, then the CMK will have to have already been provisioned via the direct TF root project or by using a KMS CMK module.
 
 <br><br>
 
@@ -118,11 +118,9 @@ variable "s3_bucket_name" {
 
 <br>
 
-> __Note:__ If values are supplied for either the `s3_bucket_prefix_list`, `s3_bucket_suffix_list` or both, then the specified values will be added to the s3_bucket_name. See the variable section pertaining to those lists for additional information on how they can be used to change the requested S3 bucket name.
+> __Note:__ If values are supplied for either the `s3_bucket_prefix_list`, `s3_bucket_suffix_list` or `both`, then the specified values will be added to the s3_bucket_name. See the variable section about those lists for additional information on how they can be used to change the requested S3 bucket name.
 
-> __BucketName:__ The bucket name must be all lowercase, with only numbers, lowercase characters or a hyphan. The Bucket name must also be globally unique which is where the prefix or suffix variable helpers come in to help uniquely the desired bucket name.
-
-> __BucketName Case:__ In the event that an upper case name is provided for the bucket name variable, the module will run a lower() function on the final bucket name before assigning the bucket name to the bucket api call to ensure that all passed bucket names are lowercase.
+> __BucketName:__ The bucket name must be all lowercase, with only numbers, lowercase characters or a hyphen. The Bucket name must also be globally unique which is where the prefix or suffix variable helpers come in to help uniquely the desired bucket name. In the event that an upper case name is provided for the bucket name variable, the module will run a lower() function on the final bucket name before assigning the bucket name to the bucket API call to ensure that all passed bucket names are lowercase.
 
 <br><br>
 
@@ -156,7 +154,7 @@ module "s3_bucket" {
 
 <br>
 
-This list variable should contain the values of any prefix that you want to prepend to beginning of the requested S3 bucket. Specifying any sequence of values to the list will change the calculated bucket name by adding each of the specified values with a hyphan to the begging of the supplied s3_bucket_name.
+This list variable should contain the values of any prefix that you want to prepend to the beginning of the requested S3 bucket. Specifying any sequence of values to the list will change the calculated bucket name by adding each of the specified values with a hyphen to the begging of the supplied s3_bucket_name.
 
 <br>
 
@@ -234,7 +232,7 @@ Plan: 1 to add, 0 to change, 0 to destroy.
 
 <br>
 
-> __Note:__ how the command passed in an upper case character in *myBucket*, and it was auto converted to a lower case character.
+> __Note:__ Observe how the command passed in an upper case character in myBucket, and it was auto-converted to a lower case character.
 
 <br><br>
 
@@ -340,7 +338,7 @@ Plan: 1 to add, 0 to change, 0 to destroy.
 
 <br>
 
-This list variable should contain the values of any suffix that you want to append to end of the requested S3 bucket. Specifying any sequence of values to the list will change the calculated bucket name by adding each of the specified values with a hyphan to the end of the supplied s3_bucket_name.
+This list variable should contain the values of any suffix that you want to append to the end of the requested S3 bucket. Specifying any sequence of values to the list will change the calculated bucket name by adding each of the specified values with a hyphen to the end of the supplied s3_bucket_name.
 
 <br>
 
@@ -422,7 +420,7 @@ Plan: 1 to add, 0 to change, 0 to destroy.
 
 <br>
 
-> __Note:__ You can use any combination of prefix and suffix values together in order to create a unique account specific bucket path.
+> __Note:__ You can use any combination of prefix and suffix values together to create a unique account-specific bucket path.
 
 <br><br>
 
@@ -533,7 +531,7 @@ module "s3_bucket" {
 
 <br>
 
-This variable will turn flag the requirement for MFA authentication prior to removing an object version, or suspending versioning within a bucket that has versioning enabled.
+This variable will turn flag the requirement for MFA authentication before removing an object version or suspending versioning within a bucket that has versioning enabled.
 
 <br><br>
 
@@ -650,7 +648,7 @@ module "s3_bucket" {
 
 <br>
 
-This variable is flag if encryption should be configured on the requested bucket. Setting this value to true will automatically turn on encyrption on the bucket at the time of provisioning using the default S3/AES256 AWS managed KMS Key.
+This variable is a flag if encryption should be configured on the requested bucket. Setting this value to true will automatically turn on encryption on the bucket at the time of provisioning using the default S3/AES256 AWS managed KMS Key.
 
 <br>
 
@@ -877,7 +875,7 @@ can't guarantee that exactly these actions will be performed if
 
 <br>
 
-This variable is used to define an existing KMS CMK that is preferred to encrypt objects into the bucket. Using a CMK instead of the default AWS Managed KMS key allows more granular control over the permissioning of the encryption key used to encryption the objects within the bucket.
+This variable is used to define an existing KMS CMK that is preferred to encrypt objects into the bucket. Using a CMK instead of the default AWS Managed KMS key allows more granular control over the permissions of the encryption key used to encrypt the objects within the bucket.
 
 <br><br>
 
@@ -945,7 +943,7 @@ module "s3_bucket" {
 
 # Outputs
 
-The template will finally create the following outputs that can be pulled and used in subsequent terraform runs via data sources. The outputs will be written to the terraform state file.
+The template will finally create the following outputs that can be pulled and used in subsequent terraform runs via data sources. The outputs will be written to the Terraform state file.
 
 <br>
 
