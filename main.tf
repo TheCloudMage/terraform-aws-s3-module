@@ -55,8 +55,8 @@ resource "aws_s3_bucket" "encrypted_bucket" {
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
-        sse_algorithm     = "${var.s3_kms_key_arn == "AES256" ? "AES256" : "aws:kms"}"
-        kms_master_key_id = "${var.s3_kms_key_arn != "AES256" ? var.s3_kms_key_arn : null}"
+        sse_algorithm     = var.s3_kms_key_arn == "AES256" ? "AES256" : "aws:kms"
+        kms_master_key_id = var.s3_kms_key_arn != "AES256" ? var.s3_kms_key_arn : null
       }
     }
   }

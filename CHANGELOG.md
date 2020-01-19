@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Renamed the not_encrypted_bucket module resource to un_encrypted_bucket
-- Changed non constant expression from module resource count ${var.s3_var} -> var.s3_var
+- Changed non constant expressions in module to fix interpolation-only expression deprecation warning ${var.s3_var} -> var.s3_var
 
 ### Removed
 
