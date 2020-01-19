@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <br>
 
-## 1.0.2 - [2020-01-19]
+## 1.0.3 - [2020-01-19]
 
 ### Added
 
@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed non constant expressions in module to fix interpolation-only expression deprecation warning ${var.s3_var} -> var.s3_var
 
 ### Removed
+
+- v1.0.2 removed to fix interpolation warnings
 
 - None
 

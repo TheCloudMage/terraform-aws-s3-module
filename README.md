@@ -24,7 +24,7 @@ None Defined for an un-encrypted bucket. If the requested bucket requires encryp
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.3"
 
   // Required
   s3_bucket_name              = "backup-bucket"
@@ -48,6 +48,115 @@ module "s3_bucket" {
 The following variables are utilized by this module and cause the module to behave dynamically based upon the variables that are populated and passed into the module.
 
 <br><br>
+
+## :red_circle: s3_bucket_name
+
+<br>
+
+![Required](images/neon_required.png)
+
+<br>
+
+This variable should be passed containing the base name of the bucket that is being requested.
+
+<br>
+
+> __BucketName:__ The bucket name must be all lowercase, with only numbers, lowercase characters or a hyphen. The Bucket name must also be globally unique which is where the prefix or suffix variable helpers come in to help uniquely the desired bucket name. In the event that an upper case name is provided for the bucket name variable, the module will run a lower() function on the final bucket name before assigning the bucket name to the bucket API call to ensure that all passed bucket names are lowercase.
+
+<br><br>
+
+### Declaration in module variables.tf
+
+```terraform
+variable "s3_bucket_name" {
+  type        = string
+  description = "The base name of the S3 bucket that is being requested. This base name can be made unique by specifing values for either the s3_bucket_prefix_list, the s3_bucket_suffix_list, or both module variables."
+}
+```
+
+<br>
+
+> __Note:__ If values are supplied for either the `s3_bucket_prefix_list`, `s3_bucket_suffix_list` or `both`, then the specified values will be added to the s3_bucket_name. See the variable section about those lists for additional information on how they can be used to change the requested S3 bucket name.
+
+<br><br>
+
+### Module usage in project root main.tf in project root main.tf
+
+```terraform
+module "s3_bucket" {
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.3"
+
+  s3_bucket_name              = "myBucket"
+
+  # Optional
+  // s3_bucket_region            = var.s3_bucket_region
+  // s3_bucket_prefix_list       = var.s3_bucket_prefix_list
+  // s3_bucket_suffix_list       = var.s3_bucket_suffix_list
+  // s3_versioning_enabled       = var.s3_versioning_enabled
+  // s3_mfa_delete               = var.s3_mfa_delete
+  // s3_bucket_acl               = var.s3_bucket_acl
+  // s3_encryption_enabled       = var.s3_encryption_enabled
+  // s3_kms_key_arn              = var.s3_kms_key_arn
+}
+```
+
+<br><br>
+
+### Example `terraform plan` output
+
+```terraform
+Refreshing Terraform state in-memory prior to plan...
+The refreshed state will be used to calculate this plan, but will not be
+persisted to local or remote state storage.
+
+module.demo_s3bucket.data.aws_region.current: Refreshing state...
+module.demo_s3bucket.data.aws_caller_identity.current: Refreshing state...
+module.demo_s3bucket.data.aws_iam_policy_document.this: Refreshing state...
+
+------------------------------------------------------------------------
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # module.demo_s3bucket.aws_s3_bucket.un_encrypted_bucket[0] will be created
+  + resource "aws_s3_bucket" "un_encrypted_bucket" {
+      + acceleration_status         = (known after apply)
+      + acl                         = "private"
+      + arn                         = (known after apply)
+      + bucket                      = "mybucket"
+      + bucket_domain_name          = (known after apply)
+      + bucket_regional_domain_name = (known after apply)
+      + force_destroy               = false
+      + hosted_zone_id              = (known after apply)
+      + id                          = (known after apply)
+      + region                      = "us-east-1"
+      + request_payer               = (known after apply)
+      + website_domain              = (known after apply)
+      + website_endpoint            = (known after apply)
+
+      + versioning {
+          + enabled    = false
+          + mfa_delete = false
+        }
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+------------------------------------------------------------------------
+
+Note: You didn't specify an "-out" parameter to save this plan, so Terraform
+can't guarantee that exactly these actions will be performed if
+"terraform apply" is subsequently run.
+```
+
+<br>
+
+> __Note:__ Observe how the command passed in an upper case character in myBucket, and it was auto-converted to a lower case character.
+
+<br><br><br>
 
 ## :large_blue_circle: s3_bucket_region
 
@@ -77,55 +186,72 @@ variable "s3_bucket_region" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.3"
 
-  // Required
-  s3_bucket_region            = "us-east-1"
   s3_bucket_name              = "myBucket"
+  s3_bucket_region            = "us-west-2"
+
+  # Optional
+  // s3_bucket_prefix_list       = var.s3_bucket_prefix_list
+  // s3_bucket_suffix_list       = var.s3_bucket_suffix_list
+  // s3_versioning_enabled       = var.s3_versioning_enabled
+  // s3_mfa_delete               = var.s3_mfa_delete
+  // s3_bucket_acl               = var.s3_bucket_acl
+  // s3_encryption_enabled       = var.s3_encryption_enabled
+  // s3_kms_key_arn              = var.s3_kms_key_arn
 }
 ```
 
-<br><br><br>
-
-## :red_circle: s3_bucket_name
-
-<br>
-
-![Required](images/neon_required.png)
-
-<br>
-
-This variable should be passed containing the base name of the bucket that is being requested.
-
 <br><br>
 
-### Declaration in module variables.tf
+### Example `terraform plan` output
 
 ```terraform
-variable "s3_bucket_name" {
-  type        = string
-  description = "The base name of the S3 bucket that is being requested. This base name can be made unique by specifing values for either the s3_bucket_prefix_list, the s3_bucket_suffix_list, or both module variables."
-}
-```
+Refreshing Terraform state in-memory prior to plan...
+The refreshed state will be used to calculate this plan, but will not be
+persisted to local or remote state storage.
 
-<br>
+module.demo_s3bucket.data.aws_caller_identity.current: Refreshing state...
+module.demo_s3bucket.data.aws_region.current: Refreshing state...
+module.demo_s3bucket.data.aws_iam_policy_document.this: Refreshing state...
 
-> __Note:__ If values are supplied for either the `s3_bucket_prefix_list`, `s3_bucket_suffix_list` or `both`, then the specified values will be added to the s3_bucket_name. See the variable section about those lists for additional information on how they can be used to change the requested S3 bucket name.
+------------------------------------------------------------------------
 
-> __BucketName:__ The bucket name must be all lowercase, with only numbers, lowercase characters or a hyphen. The Bucket name must also be globally unique which is where the prefix or suffix variable helpers come in to help uniquely the desired bucket name. In the event that an upper case name is provided for the bucket name variable, the module will run a lower() function on the final bucket name before assigning the bucket name to the bucket API call to ensure that all passed bucket names are lowercase.
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
 
-<br><br>
+Terraform will perform the following actions:
 
-### Module usage in project root main.tf in project root main.tf
+  # module.demo_s3bucket.aws_s3_bucket.un_encrypted_bucket[0] will be created
+  + resource "aws_s3_bucket" "un_encrypted_bucket" {
+      + acceleration_status         = (known after apply)
+      + acl                         = "private"
+      + arn                         = (known after apply)
+      + bucket                      = "mybucket"
+      + bucket_domain_name          = (known after apply)
+      + bucket_regional_domain_name = (known after apply)
+      + force_destroy               = false
+      + hosted_zone_id              = (known after apply)
+      + id                          = (known after apply)
+      + region                      = "us-west-2"
+      + request_payer               = (known after apply)
+      + website_domain              = (known after apply)
+      + website_endpoint            = (known after apply)
 
-```terraform
-module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
+      + versioning {
+          + enabled    = false
+          + mfa_delete = false
+        }
+    }
 
-  // Required
-  s3_bucket_region            = "us-east-1"
-  s3_bucket_name              = "myBucket"
-}
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+------------------------------------------------------------------------
+
+Note: You didn't specify an "-out" parameter to save this plan, so Terraform
+can't guarantee that exactly these actions will be performed if
+"terraform apply" is subsequently run.
 ```
 
 <br><br><br>
@@ -162,15 +288,23 @@ variable "s3_bucket_prefix_list" {
 
 <br><br>
 
-### Module usage in project root main.tf in project root main.tf without Prefix
+### Module usage in project root main.tf with account_prefix
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.3"
 
-  // Required
   s3_bucket_name              = "myBucket"
   s3_bucket_region            = "us-east-1"
+  s3_bucket_prefix_list       = ["dev", "account_prefix"]
+
+  # Optional
+  // s3_bucket_suffix_list       = var.s3_bucket_suffix_list
+  // s3_versioning_enabled       = var.s3_versioning_enabled
+  // s3_mfa_delete               = var.s3_mfa_delete
+  // s3_bucket_acl               = var.s3_bucket_acl
+  // s3_encryption_enabled       = var.s3_encryption_enabled
+  // s3_kms_key_arn              = var.s3_kms_key_arn
 }
 ```
 
@@ -179,14 +313,28 @@ module "s3_bucket" {
 ### Example `terraform plan` output
 
 ```terraform
+Refreshing Terraform state in-memory prior to plan...
+The refreshed state will be used to calculate this plan, but will not be
+persisted to local or remote state storage.
+
+module.demo_s3bucket.data.aws_region.current: Refreshing state...
+module.demo_s3bucket.data.aws_caller_identity.current: Refreshing state...
+module.demo_s3bucket.data.aws_iam_policy_document.this: Refreshing state...
+
+------------------------------------------------------------------------
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
 Terraform will perform the following actions:
 
-  # aws_s3_bucket.un_encrypted_bucket[0] will be created
+  # module.demo_s3bucket.aws_s3_bucket.un_encrypted_bucket[0] will be created
   + resource "aws_s3_bucket" "un_encrypted_bucket" {
       + acceleration_status         = (known after apply)
       + acl                         = "private"
       + arn                         = (known after apply)
-      + bucket                      = "mybucket"
+      + bucket                      = "dev-123456789101-mybucket"
       + bucket_domain_name          = (known after apply)
       + bucket_regional_domain_name = (known after apply)
       + force_destroy               = false
@@ -204,57 +352,12 @@ Terraform will perform the following actions:
     }
 
 Plan: 1 to add, 0 to change, 0 to destroy.
-```
 
-<br>
+------------------------------------------------------------------------
 
-> __Note:__ Observe how the command passed in an upper case character in myBucket, and it was auto-converted to a lower case character.
-
-<br><br>
-
-### Module usage in project root main.tf in project root main.tf with region_prefix
-
-```terraform
-module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
-
-  // Required
-  s3_bucket_name              = "myBucket"
-  s3_bucket_region            = "us-east-1"
-  s3_bucket_prefix_list       = ["rds", "region_prefix"]
-}
-```
-
-<br><br>
-
-### Example `terraform plan` output
-
-```terraform
-Terraform will perform the following actions:
-
-  # aws_s3_bucket.un_encrypted_bucket[0] will be created
-  + resource "aws_s3_bucket" "un_encrypted_bucket" {
-      + acceleration_status         = (known after apply)
-      + acl                         = "private"
-      + arn                         = (known after apply)
-      + bucket                      = "rds-us-east-1-mybucket"
-      + bucket_domain_name          = (known after apply)
-      + bucket_regional_domain_name = (known after apply)
-      + force_destroy               = false
-      + hosted_zone_id              = (known after apply)
-      + id                          = (known after apply)
-      + region                      = "us-east-1"
-      + request_payer               = (known after apply)
-      + website_domain              = (known after apply)
-      + website_endpoint            = (known after apply)
-
-      + versioning {
-          + enabled    = false
-          + mfa_delete = false
-        }
-    }
-
-Plan: 1 to add, 0 to change, 0 to destroy.
+Note: You didn't specify an "-out" parameter to save this plan, so Terraform
+can't guarantee that exactly these actions will be performed if
+"terraform apply" is subsequently run.
 ```
 
 <br><br>
@@ -263,12 +366,19 @@ Plan: 1 to add, 0 to change, 0 to destroy.
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.3"
 
-  // Required
   s3_bucket_name              = "myBucket"
   s3_bucket_region            = "us-east-1"
-  s3_bucket_prefix_list       = ["rds", "account_prefix"]
+  s3_bucket_prefix_list       = ["dev", "region_prefix"]
+
+  # Optional
+  // s3_bucket_suffix_list       = var.s3_bucket_suffix_list
+  // s3_versioning_enabled       = var.s3_versioning_enabled
+  // s3_mfa_delete               = var.s3_mfa_delete
+  // s3_bucket_acl               = var.s3_bucket_acl
+  // s3_encryption_enabled       = var.s3_encryption_enabled
+  // s3_kms_key_arn              = var.s3_kms_key_arn
 }
 ```
 
@@ -277,14 +387,28 @@ module "s3_bucket" {
 ### Example `terraform plan` output
 
 ```terraform
+Refreshing Terraform state in-memory prior to plan...
+The refreshed state will be used to calculate this plan, but will not be
+persisted to local or remote state storage.
+
+module.demo_s3bucket.data.aws_region.current: Refreshing state...
+module.demo_s3bucket.data.aws_caller_identity.current: Refreshing state...
+module.demo_s3bucket.data.aws_iam_policy_document.this: Refreshing state...
+
+------------------------------------------------------------------------
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
 Terraform will perform the following actions:
 
-  # aws_s3_bucket.un_encrypted_bucket[0] will be created
+  # module.demo_s3bucket.aws_s3_bucket.un_encrypted_bucket[0] will be created
   + resource "aws_s3_bucket" "un_encrypted_bucket" {
       + acceleration_status         = (known after apply)
       + acl                         = "private"
       + arn                         = (known after apply)
-      + bucket                      = "rds-123456789101-mybucket"
+      + bucket                      = "dev-us-east-1-mybucket"
       + bucket_domain_name          = (known after apply)
       + bucket_regional_domain_name = (known after apply)
       + force_destroy               = false
@@ -302,6 +426,12 @@ Terraform will perform the following actions:
     }
 
 Plan: 1 to add, 0 to change, 0 to destroy.
+
+------------------------------------------------------------------------
+
+Note: You didn't specify an "-out" parameter to save this plan, so Terraform
+can't guarantee that exactly these actions will be performed if
+"terraform apply" is subsequently run.
 ```
 
 <br><br><br>
@@ -338,19 +468,23 @@ variable "s3_bucket_suffix_list" {
 
 <br><br>
 
-### Module usage in project root main.tf in project root main.tf
+### Module usage in project root main.tf
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.3"
 
-  // Required
   s3_bucket_name              = "myBucket"
   s3_bucket_region            = "us-east-1"
   s3_bucket_suffix_list       = ["account_suffix", "w00t"]
-  
-  // Optional
-  // s3_bucket_prefix_list       = [var.s3_bucket_prefix_list]
+
+  # Optional
+  // s3_bucket_prefix_list       = var.s3_bucket_prefix_list
+  // s3_versioning_enabled       = var.s3_versioning_enabled
+  // s3_mfa_delete               = var.s3_mfa_delete
+  // s3_bucket_acl               = var.s3_bucket_acl
+  // s3_encryption_enabled       = var.s3_encryption_enabled
+  // s3_kms_key_arn              = var.s3_kms_key_arn
 }
 ```
 
@@ -359,14 +493,28 @@ module "s3_bucket" {
 ### Example `terraform plan` output
 
 ```terraform
+Refreshing Terraform state in-memory prior to plan...
+The refreshed state will be used to calculate this plan, but will not be
+persisted to local or remote state storage.
+
+module.demo_s3bucket.data.aws_caller_identity.current: Refreshing state...
+module.demo_s3bucket.data.aws_region.current: Refreshing state...
+module.demo_s3bucket.data.aws_iam_policy_document.this: Refreshing state...
+
+------------------------------------------------------------------------
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
 Terraform will perform the following actions:
 
-  # aws_s3_bucket.un_encrypted_bucket[0] will be created
+  # module.demo_s3bucket.aws_s3_bucket.un_encrypted_bucket[0] will be created
   + resource "aws_s3_bucket" "un_encrypted_bucket" {
       + acceleration_status         = (known after apply)
       + acl                         = "private"
       + arn                         = (known after apply)
-      + bucket                      = "mybucket-123456789101-w00t"
+      + bucket                      = "mybucket-987303449646-w00t"
       + bucket_domain_name          = (known after apply)
       + bucket_regional_domain_name = (known after apply)
       + force_destroy               = false
@@ -384,6 +532,12 @@ Terraform will perform the following actions:
     }
 
 Plan: 1 to add, 0 to change, 0 to destroy.
+
+------------------------------------------------------------------------
+
+Note: You didn't specify an "-out" parameter to save this plan, so Terraform
+can't guarantee that exactly these actions will be performed if
+"terraform apply" is subsequently run.
 ```
 
 <br>
@@ -392,17 +546,23 @@ Plan: 1 to add, 0 to change, 0 to destroy.
 
 <br><br>
 
-### Module usage in project root main.tf in project root main.tf using Prefix and Suffix
+### Module usage in project root main.tf in project root main.tf using prefix and suffix combination
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.3"
 
-  // Required
   s3_bucket_name              = "myBucket"
   s3_bucket_region            = "us-east-1"
-  s3_bucket_prefix_list       = ["prod", "account_prefix"]
-  s3_bucket_suffix_list       = ["region_suffix"]
+  s3_bucket_prefix_list       = ["dev", "account_prefix"]
+  s3_bucket_suffix_list       = ["region_suffix", "w00t"]
+
+  # Optional
+  // s3_versioning_enabled       = var.s3_versioning_enabled
+  // s3_mfa_delete               = var.s3_mfa_delete
+  // s3_bucket_acl               = var.s3_bucket_acl
+  // s3_encryption_enabled       = var.s3_encryption_enabled
+  // s3_kms_key_arn              = var.s3_kms_key_arn
 }
 ```
 
@@ -411,14 +571,28 @@ module "s3_bucket" {
 ### Example `terraform plan` output
 
 ```terraform
+Refreshing Terraform state in-memory prior to plan...
+The refreshed state will be used to calculate this plan, but will not be
+persisted to local or remote state storage.
+
+module.demo_s3bucket.data.aws_caller_identity.current: Refreshing state...
+module.demo_s3bucket.data.aws_region.current: Refreshing state...
+module.demo_s3bucket.data.aws_iam_policy_document.this: Refreshing state...
+
+------------------------------------------------------------------------
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
 Terraform will perform the following actions:
 
-  # aws_s3_bucket.un_encrypted_bucket[0] will be created
+  # module.demo_s3bucket.aws_s3_bucket.un_encrypted_bucket[0] will be created
   + resource "aws_s3_bucket" "un_encrypted_bucket" {
       + acceleration_status         = (known after apply)
       + acl                         = "private"
       + arn                         = (known after apply)
-      + bucket                      = "prod-123456789101-mybucket-us-east-1"
+      + bucket                      = "dev-123456789101-mybucket-us-east-1-w00t"
       + bucket_domain_name          = (known after apply)
       + bucket_regional_domain_name = (known after apply)
       + force_destroy               = false
@@ -436,6 +610,12 @@ Terraform will perform the following actions:
     }
 
 Plan: 1 to add, 0 to change, 0 to destroy.
+
+------------------------------------------------------------------------
+
+Note: You didn't specify an "-out" parameter to save this plan, so Terraform
+can't guarantee that exactly these actions will be performed if
+"terraform apply" is subsequently run.
 ```
 
 <br><br><br>
@@ -468,17 +648,72 @@ variable "s3_versioning_enabled" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.3"
 
-  // Required
   s3_bucket_name              = "myBucket"
   s3_bucket_region            = "us-east-1"
   s3_versioning_enabled       = true
 
-  // Optional
+  # Optional
   // s3_bucket_prefix_list       = var.s3_bucket_prefix_list
   // s3_bucket_suffix_list       = var.s3_bucket_suffix_list
+  // s3_mfa_delete               = var.s3_mfa_delete
+  // s3_bucket_acl               = var.s3_bucket_acl
+  // s3_encryption_enabled       = var.s3_encryption_enabled
+  // s3_kms_key_arn              = var.s3_kms_key_arn
 }
+```
+
+<br><br>
+
+### Example `terraform plan` output
+
+```terraform
+Refreshing Terraform state in-memory prior to plan...
+The refreshed state will be used to calculate this plan, but will not be
+persisted to local or remote state storage.
+
+module.demo_s3bucket.data.aws_caller_identity.current: Refreshing state...
+module.demo_s3bucket.data.aws_region.current: Refreshing state...
+module.demo_s3bucket.data.aws_iam_policy_document.this: Refreshing state...
+
+------------------------------------------------------------------------
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # module.demo_s3bucket.aws_s3_bucket.un_encrypted_bucket[0] will be created
+  + resource "aws_s3_bucket" "un_encrypted_bucket" {
+      + acceleration_status         = (known after apply)
+      + acl                         = "private"
+      + arn                         = (known after apply)
+      + bucket                      = "mybucket"
+      + bucket_domain_name          = (known after apply)
+      + bucket_regional_domain_name = (known after apply)
+      + force_destroy               = false
+      + hosted_zone_id              = (known after apply)
+      + id                          = (known after apply)
+      + region                      = "us-east-1"
+      + request_payer               = (known after apply)
+      + website_domain              = (known after apply)
+      + website_endpoint            = (known after apply)
+
+      + versioning {
+          + enabled    = true
+          + mfa_delete = false
+        }
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+------------------------------------------------------------------------
+
+Note: You didn't specify an "-out" parameter to save this plan, so Terraform
+can't guarantee that exactly these actions will be performed if
+"terraform apply" is subsequently run.
 ```
 
 <br><br><br>
@@ -511,18 +746,72 @@ variable "s3_mfa_delete" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.3"
 
-  // Required
   s3_bucket_name              = "myBucket"
   s3_bucket_region            = "us-east-1"
+  s3_versioning_enabled       = true
   s3_mfa_delete               = true
 
-  // Optional
+  # Optional
   // s3_bucket_prefix_list       = var.s3_bucket_prefix_list
   // s3_bucket_suffix_list       = var.s3_bucket_suffix_list
-  // s3_versioning_enabled       = var.s3_versioning_enabled
+  // s3_bucket_acl               = var.s3_bucket_acl
+  // s3_encryption_enabled       = var.s3_encryption_enabled
+  // s3_kms_key_arn              = var.s3_kms_key_arn
 }
+```
+
+<br><br>
+
+### Example `terraform plan` output
+
+```terraform
+Refreshing Terraform state in-memory prior to plan...
+The refreshed state will be used to calculate this plan, but will not be
+persisted to local or remote state storage.
+
+module.demo_s3bucket.data.aws_region.current: Refreshing state...
+module.demo_s3bucket.data.aws_caller_identity.current: Refreshing state...
+module.demo_s3bucket.data.aws_iam_policy_document.this: Refreshing state...
+
+------------------------------------------------------------------------
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # module.demo_s3bucket.aws_s3_bucket.un_encrypted_bucket[0] will be created
+  + resource "aws_s3_bucket" "un_encrypted_bucket" {
+      + acceleration_status         = (known after apply)
+      + acl                         = "private"
+      + arn                         = (known after apply)
+      + bucket                      = "mybucket"
+      + bucket_domain_name          = (known after apply)
+      + bucket_regional_domain_name = (known after apply)
+      + force_destroy               = false
+      + hosted_zone_id              = (known after apply)
+      + id                          = (known after apply)
+      + region                      = "us-east-1"
+      + request_payer               = (known after apply)
+      + website_domain              = (known after apply)
+      + website_endpoint            = (known after apply)
+
+      + versioning {
+          + enabled    = true
+          + mfa_delete = true
+        }
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+------------------------------------------------------------------------
+
+Note: You didn't specify an "-out" parameter to save this plan, so Terraform
+can't guarantee that exactly these actions will be performed if
+"terraform apply" is subsequently run.
 ```
 
 <br><br><br>
@@ -567,19 +856,72 @@ __Valid Permission Values:__
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.3"
 
-  // Required
   s3_bucket_name              = "myBucket"
   s3_bucket_region            = "us-east-1"
-  s3_bucket_acl               = "public-read"
+  s3_bucket_acl               = "bucket-owner-read"
 
-  // Optional
+  # Optional
   // s3_bucket_prefix_list       = var.s3_bucket_prefix_list
   // s3_bucket_suffix_list       = var.s3_bucket_suffix_list
   // s3_versioning_enabled       = var.s3_versioning_enabled
   // s3_mfa_delete               = var.s3_mfa_delete
+  // s3_encryption_enabled       = var.s3_encryption_enabled
+  // s3_kms_key_arn              = var.s3_kms_key_arn
 }
+```
+
+<br><br>
+
+### Example `terraform plan` output
+
+```terraform
+Refreshing Terraform state in-memory prior to plan...
+The refreshed state will be used to calculate this plan, but will not be
+persisted to local or remote state storage.
+
+module.demo_s3bucket.data.aws_caller_identity.current: Refreshing state...
+module.demo_s3bucket.data.aws_region.current: Refreshing state...
+module.demo_s3bucket.data.aws_iam_policy_document.this: Refreshing state...
+
+------------------------------------------------------------------------
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # module.demo_s3bucket.aws_s3_bucket.un_encrypted_bucket[0] will be created
+  + resource "aws_s3_bucket" "un_encrypted_bucket" {
+      + acceleration_status         = (known after apply)
+      + acl                         = "bucket-owner-read"
+      + arn                         = (known after apply)
+      + bucket                      = "mybucket"
+      + bucket_domain_name          = (known after apply)
+      + bucket_regional_domain_name = (known after apply)
+      + force_destroy               = false
+      + hosted_zone_id              = (known after apply)
+      + id                          = (known after apply)
+      + region                      = "us-east-1"
+      + request_payer               = (known after apply)
+      + website_domain              = (known after apply)
+      + website_endpoint            = (known after apply)
+
+      + versioning {
+          + enabled    = false
+          + mfa_delete = false
+        }
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+------------------------------------------------------------------------
+
+Note: You didn't specify an "-out" parameter to save this plan, so Terraform
+can't guarantee that exactly these actions will be performed if
+"terraform apply" is subsequently run.
 ```
 
 <br><br><br>
@@ -616,19 +958,20 @@ variable "s3_encryption_enabled" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.3"
 
   // Required
   s3_bucket_name              = "myBucket"
   s3_bucket_region            = "us-east-1"
   s3_encryption_enabled       = true
 
-  // Optional
+  # Optional
   // s3_bucket_prefix_list       = var.s3_bucket_prefix_list
   // s3_bucket_suffix_list       = var.s3_bucket_suffix_list
   // s3_versioning_enabled       = var.s3_versioning_enabled
   // s3_mfa_delete               = var.s3_mfa_delete
-  // s3_bucket_acl               = "public-read"
+  // s3_bucket_acl               = var.s3_bucket_acl
+  // s3_kms_key_arn              = var.s3_kms_key_arn
 }
 ```
 
@@ -698,9 +1041,9 @@ Refreshing Terraform state in-memory prior to plan...
 The refreshed state will be used to calculate this plan, but will not be
 persisted to local or remote state storage.
 
-data.aws_region.current: Refreshing state...
-data.aws_caller_identity.current: Refreshing state...
-data.aws_iam_policy_document.this: Refreshing state...
+module.demo_s3bucket.data.aws_caller_identity.current: Refreshing state...
+module.demo_s3bucket.data.aws_region.current: Refreshing state...
+module.demo_s3bucket.data.aws_iam_policy_document.this: Refreshing state...
 
 ------------------------------------------------------------------------
 
@@ -710,7 +1053,7 @@ Resource actions are indicated with the following symbols:
 
 Terraform will perform the following actions:
 
-  # aws_s3_bucket.encrypted_bucket[0] will be created
+  # module.demo_s3bucket.aws_s3_bucket.encrypted_bucket[0] will be created
   + resource "aws_s3_bucket" "encrypted_bucket" {
       + acceleration_status         = (known after apply)
       + acl                         = "private"
@@ -735,7 +1078,10 @@ Terraform will perform the following actions:
                       + Principal = {
                           + AWS = "*"
                         }
-                      + Resource  = "aws_s3_bucket.encrypted_bucket.arn, aws_s3_bucket.encrypted_bucket.arn/*"
+                      + Resource  = [
+                          + "arn:aws:s3:::mybucket/*",
+                          + "arn:aws:s3:::mybucket",
+                        ]
                       + Sid       = "DenyNonSecureTransport"
                     },
                   + {
@@ -752,7 +1098,10 @@ Terraform will perform the following actions:
                       + Principal = {
                           + AWS = "*"
                         }
-                      + Resource  = "aws_s3_bucket.encrypted_bucket.arn, aws_s3_bucket.encrypted_bucket.arn/*"
+                      + Resource  = [
+                          + "arn:aws:s3:::mybucket/*",
+                          + "arn:aws:s3:::mybucket",
+                        ]
                       + Sid       = "DenyIncorrectEncryptionHeader"
                     },
                   + {
@@ -766,7 +1115,10 @@ Terraform will perform the following actions:
                       + Principal = {
                           + AWS = "*"
                         }
-                      + Resource  = "aws_s3_bucket.encrypted_bucket.arn, aws_s3_bucket.encrypted_bucket.arn/*"
+                      + Resource  = [
+                          + "arn:aws:s3:::mybucket/*",
+                          + "arn:aws:s3:::mybucket",
+                        ]
                       + Sid       = "DenyUnEncryptedObjectUploads"
                     },
                 ]
@@ -781,7 +1133,7 @@ Terraform will perform the following actions:
       + server_side_encryption_configuration {
           + rule {
               + apply_server_side_encryption_by_default {
-                  + sse_algorithm     = "AES256"
+                  + sse_algorithm = "AES256"
                 }
             }
         }
@@ -835,7 +1187,7 @@ variable "s3_kms_key_arn" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.2"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.3"
 
   // Required
   s3_bucket_name              = "myBucket"
@@ -843,12 +1195,12 @@ module "s3_bucket" {
   s3_encryption_enabled       = true
   s3_kms_key_arn              = "arn:aws:kms:us-east-1:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"
 
-  // Optional
+  # Optional
   // s3_bucket_prefix_list       = var.s3_bucket_prefix_list
   // s3_bucket_suffix_list       = var.s3_bucket_suffix_list
   // s3_versioning_enabled       = var.s3_versioning_enabled
   // s3_mfa_delete               = var.s3_mfa_delete
-  // s3_bucket_acl               = "public-read"
+  // s3_bucket_acl               = var.s3_bucket_acl
 }
 ```
 
@@ -857,7 +1209,100 @@ module "s3_bucket" {
 ### Example `terraform plan` output
 
 ```terraform
-+ server_side_encryption_configuration {
+Refreshing Terraform state in-memory prior to plan...
+The refreshed state will be used to calculate this plan, but will not be
+persisted to local or remote state storage.
+
+module.demo_s3bucket.data.aws_caller_identity.current: Refreshing state...
+module.demo_s3bucket.data.aws_region.current: Refreshing state...
+module.demo_s3bucket.data.aws_iam_policy_document.this: Refreshing state...
+
+------------------------------------------------------------------------
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # module.demo_s3bucket.aws_s3_bucket.encrypted_bucket[0] will be created
+  + resource "aws_s3_bucket" "encrypted_bucket" {
+      + acceleration_status         = (known after apply)
+      + acl                         = "private"
+      + arn                         = (known after apply)
+      + bucket                      = "mybucket"
+      + bucket_domain_name          = (known after apply)
+      + bucket_regional_domain_name = (known after apply)
+      + force_destroy               = false
+      + hosted_zone_id              = (known after apply)
+      + id                          = (known after apply)
+      + policy                      = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "s3:*"
+                      + Condition = {
+                          + Bool = {
+                              + aws:SecureTransport = "false"
+                            }
+                        }
+                      + Effect    = "Deny"
+                      + Principal = {
+                          + AWS = "*"
+                        }
+                      + Resource  = [
+                          + "arn:aws:s3:::mybucket/*",
+                          + "arn:aws:s3:::mybucket",
+                        ]
+                      + Sid       = "DenyNonSecureTransport"
+                    },
+                  + {
+                      + Action    = "s3:PutObject"
+                      + Condition = {
+                          + StringNotEquals = {
+                              + s3:x-amz-server-side-encryption = [
+                                  + "aws:kms",
+                                  + "AES256",
+                                ]
+                            }
+                        }
+                      + Effect    = "Deny"
+                      + Principal = {
+                          + AWS = "*"
+                        }
+                      + Resource  = [
+                          + "arn:aws:s3:::mybucket/*",
+                          + "arn:aws:s3:::mybucket",
+                        ]
+                      + Sid       = "DenyIncorrectEncryptionHeader"
+                    },
+                  + {
+                      + Action    = "s3:PutObject"
+                      + Condition = {
+                          + Null = {
+                              + s3:x-amz-server-side-encryption = "true"
+                            }
+                        }
+                      + Effect    = "Deny"
+                      + Principal = {
+                          + AWS = "*"
+                        }
+                      + Resource  = [
+                          + "arn:aws:s3:::mybucket/*",
+                          + "arn:aws:s3:::mybucket",
+                        ]
+                      + Sid       = "DenyUnEncryptedObjectUploads"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + region                      = "us-east-1"
+      + request_payer               = (known after apply)
+      + website_domain              = (known after apply)
+      + website_endpoint            = (known after apply)
+
+      + server_side_encryption_configuration {
           + rule {
               + apply_server_side_encryption_by_default {
                   + kms_master_key_id = "arn:aws:kms:us-east-1:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"
@@ -865,6 +1310,20 @@ module "s3_bucket" {
                 }
             }
         }
+
+      + versioning {
+          + enabled    = false
+          + mfa_delete = false
+        }
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+------------------------------------------------------------------------
+
+Note: You didn't specify an "-out" parameter to save this plan, so Terraform
+can't guarantee that exactly these actions will be performed if
+"terraform apply" is subsequently run.
 ```
 
 <br><br>
