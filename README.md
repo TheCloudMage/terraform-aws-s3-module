@@ -962,7 +962,7 @@ This variable is a flag if encryption should be configured on the requested buck
 
 <br>
 
-> __Note:__ It will also automatically create a bucket policy that will be attached to the bucket forcing encryption in transit on PUT.
+> __Note:__ Activating this variable will automatically create a bucket policy that will be attached to the bucket forcing encryption in transit for all upload and PUT requests to the bucket.
 
 <br><br>
 
@@ -1309,6 +1309,10 @@ module "s3_bucket" {
   # s3_kms_key_arn              = "AES256"
 }
 ```
+
+<br><br>
+
+![S3 Module Tags](images/tf_s3_tags.png)
 
 <br><br>
 
