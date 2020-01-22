@@ -40,7 +40,7 @@ module "s3_bucket" {
   // Tags
   # s3_bucket_tags            = {
   #   Provisoned_By  = "Terraform"
-  #   GitHub_URL     = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+  #   Module_GitHub_URL     = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
   # }
 }
 ```
@@ -1275,7 +1275,7 @@ variable "s3_bucket_tags" {
   description = "Specify any tags that should be added to the S3 bucket being provisioned."
   default     = {
     Provisoned_By  = "Terraform"
-    GitHub_URL     = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+    Module_GitHub_URL     = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
   }
 }
 ```
@@ -1295,7 +1295,7 @@ module "s3_bucket" {
   // Tags
   kms_tags = {
      Provisoned_By  = "Terraform"
-     GitHub_URL     = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+     Module_GitHub_URL     = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
      Environment    = "Prod"
    }
 
@@ -1398,7 +1398,7 @@ variable "s3_bucket_tags" {
   description = "Specify any tags that should be added to the S3 bucket being provisioned."
   default     = {
     Provisoned_By  = "Terraform"
-    GitHub_URL     = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+    Module_GitHub_URL     = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
   }
 }
 ```
@@ -1434,7 +1434,7 @@ s3_bucket_acl         = "private"
 
 s3_bucket_tags        = {
     Provisoned_By  = "Terraform"
-    GitHub_URL     = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+    Module_GitHub_URL     = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
 }
 ```
 

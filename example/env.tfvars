@@ -29,5 +29,5 @@ s3_bucket_acl         = "private"
 
 s3_bucket_tags        = {
     Provisoned_By  = "Terraform"
-    GitHub_URL     = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+    Module_GitHub_URL     = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
 }
