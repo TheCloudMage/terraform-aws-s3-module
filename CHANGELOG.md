@@ -1,3 +1,5 @@
+<!-- VSCode Markdown Exclusions-->
+<!-- markdownlint-disable MD024 Multiple Headings with the Same Content-->
 # CloudMage TF-AWS-S3Bucket-Module CHANGELOG
 
 All notable changes to this project will be documented in this file.
@@ -6,6 +8,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 <br>
+
+## 1.1.0 - [2020-01-21]
+
+### Added
+
+- Added tagging logic to the s3 bucket resources to give buckets any desired tags.
+- Added merge to passed tags to also create Name, Created_By, Creator_ARN, Creation_Date and Updated_On auto tags.
+- Lifecycle ignore_changes placed on Created_By, Creator_ARN, and Creation_Date auto tags.
+- Updated_On tag unlike the others will automatically update on subsequent terraform apply executions.
+- Added tags variable, and set value in example variables.tf and env.tfvars.
+- Additional Encrypted tag, that will have a value of true or false depending on if the bucket is encrypted.
+- Additional CMK_ARN tag, that will hold the value of the kms encryption key on the encrypted resource version.
+
+### Changed
+
+- Changed outputs to produce single string value instead of list value. This could be breaking change as it changes output format.
+- Put variables.tf example variables.tf and env.tfvars into consistant format.
+
+### Removed
+
+- Removed bucket policy statement enforcing --sse option on PUT as encrypted buckets have default encryption enabled.
+- Removed bucket policy statement enforcing --sse-kms-key-id on PUT. Bucket has assigned CMK if encrypted bucket.
+
+<br><br>
 
 ## 1.0.3 - [2020-01-19]
 
@@ -21,8 +47,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 - v1.0.2 removed to fix interpolation warnings
-
-- None
 
 <br><br>
 

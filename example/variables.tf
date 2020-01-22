@@ -1,14 +1,31 @@
+###########################################################################
+# Terraform Config Vars:                                                  #
+###########################################################################
 variable "provider_region" {
   type        = string
   description = "AWS region to use when making calls to the AWS provider."
   default     = "us-east-1"
 }
 
+
+###########################################################################
+# Required S3 Bucket Module Vars:                                         #
+#-------------------------------------------------------------------------#
+# The following variables require consumer defined values to be provided. #
+###########################################################################
 variable "bucket_name" {
   type        = string
   description = "The name specified for the provisioned bucket."
 }
 
+
+###########################################################################
+# Optional S3 Bucket Module Vars:                                         #
+#-------------------------------------------------------------------------#
+# The following variables have default values already set by the module.  #
+# They will not need to be included in a project root module variables.tf #
+# file unless a non-default value needs be assigned to the variable.      #
+###########################################################################
 variable "bucket_region" {
   type        = string
   description = "The AWS region where the S3 bucket will be provisioned."
@@ -57,4 +74,13 @@ variable "bucket_acl" {
   type        = string
   description = "The Access Control List that will be placed on the bucket. Acceptable Values are: 'private', 'public-read', 'public-read-write', 'aws-exec-read', 'authenticated-read', 'bucket-owner-read', 'bucket-owner-full-control', or 'log-delivery-write'"
   default     = "private"
+}
+
+variable "bucket_tags" {
+  type        = map
+  description = "Specify any tags that should be added to the S3 bucket being provisioned."
+  default     = {
+    Provisoned_By  = "Terraform"
+    GitHub_URL     = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+  }
 }

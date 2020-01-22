@@ -1,11 +1,21 @@
-######################
-# S3 Bucket Vars:    #
-######################
+###########################################################################
+# Required S3 Bucket Module Vars:                                         #
+#-------------------------------------------------------------------------#
+# The following variables require consumer defined values to be provided. #
+###########################################################################
 variable "s3_bucket_name" {
   type        = string
   description = "The base name of the S3 bucket that is being requested. This base name can be made unique by specifing values for either the s3_bucket_prefix_list, the s3_bucket_suffix_list, or both module variables."
 }
 
+
+###########################################################################
+# Optional S3 Bucket Module Vars:                                         #
+#-------------------------------------------------------------------------#
+# The following variables have default values already set by the module.  #
+# They will not need to be included in a project root module variables.tf #
+# file unless a non-default value needs be assigned to the variable.      #
+###########################################################################
 variable "s3_bucket_region" {
   type        = string
   description = "The AWS region where the S3 bucket will be provisioned."
@@ -52,4 +62,13 @@ variable "s3_bucket_acl" {
   type        = string
   description = "The Access Control List that will be placed on the bucket. Acceptable Values are: 'private', 'public-read', 'public-read-write', 'aws-exec-read', 'authenticated-read', 'bucket-owner-read', 'bucket-owner-full-control', or 'log-delivery-write'"
   default     = "private"
+}
+
+variable "s3_bucket_tags" {
+  type        = map
+  description = "Specify any tags that should be added to the S3 bucket being provisioned."
+  default     = {
+    Provisoned_By  = "Terraform"
+    GitHub_URL     = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+  }
 }

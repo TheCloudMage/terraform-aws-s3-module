@@ -14,38 +14,103 @@ This AWS S3 bucket module is designed to produce a secure/in-secure AWS S3 bucke
 
 <br><br>
 
-# Module Pre-Requisites
+# Module Pre-Requisites and Dependencies
 
 None Defined for an un-encrypted bucket. If the requested bucket requires encryption using a CMK, then the CMK will have to have already been provisioned via the direct TF root project or by using a KMS CMK module.
 
 <br><br>
 
-# Module usage in project root main.tf
+# Module Usage
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.3"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
 
-  // Required
+  // Required Variables
   s3_bucket_name              = "backup-bucket"
   
-  // Optional
-  s3_bucket_region            = "us-east-1"
-  s3_bucket_prefix_list       = ["production", "region_prefix"]
-  s3_bucket_suffix_list       = ["account_suffix"]
-  s3_versioning_enabled       = true
-  s3_mfa_delete               = true
-  s3_bucket_acl               = "public-read"
-  s3_encryption_enabled       = true
-  s3_kms_key_arn              = "arn:aws:kms:us-east-1:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"
+  // Optional Variables with module defined default values assigned
+  # s3_bucket_region          = "empty"
+  # s3_bucket_prefix_list     = []
+  # s3_bucket_suffix_list     = []
+  # s3_versioning_enabled     = false
+  # s3_mfa_delete             = false
+  # s3_bucket_acl             = "private"
+  # s3_encryption_enabled     = false
+  # s3_kms_key_arn            = "AES256"
+  
+  // Tags
+  # s3_bucket_tags            = {
+  #   Provisoned_By  = "Terraform"
+  #   GitHub_URL     = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+  # }
 }
 ```
 
 <br><br>
 
-# Variables
+# Terraform Variables
 
-The following variables are utilized by this module and cause the module to behave dynamically based upon the variables that are populated and passed into the module.
+Module variables that need to either be defined or re-defined with a non-default value can easily be hardcoded inline directly within the module call block or from within the root project that is consuming the module. If using the second approach then the root project must have it's own custom variables defined within the projects `variables.tf` file with set default values or with the values provided from a separate environmental `terraform.tfvar` file. Examples of both approaches can be found below. Note that for the standards used within this documentation, all variables will mostly use the first approach for ease of readability.
+
+<br>
+
+> __NOTE:__ There is also a third way to provide variable values using Terraform data sources. A data source is a unique type of code block used within a project that either instantiates or collects data that can be referenced throughout the project. A data source, for example,  can be declared to read the terraform state file and gather all of the available information from a previously deployed project stack. Any of the data contained within the data source can then be referenced to set the value of a project or module variable.
+
+<br><br>
+
+## Setting Variables Inline
+
+```terraform
+module "s3" {
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
+
+  // Required Variables
+  s3_bucket_name        = "somebucketname"
+}
+```
+
+<br><br>
+
+## Setting Variables in a Terraform Root Project
+
+<br>
+
+### Terraform Root Project/variables.tf
+
+```terraform
+variable "bucket_name" {
+  type        = string
+  description = "Bucket Name"
+}
+```
+
+<br>
+
+### Terraform Root Project/terraform.tfvars
+
+```terraform
+bucket_name = "somebucketname"
+```
+
+<br>
+
+### Terraform Root Project/main.tf
+
+```terraform
+module "s3" {
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
+
+  // Required Variables
+  s3_bucket_name = var.bucket_name
+}
+```
+
+<br><br>
+
+# Required Variables
+
+The following required module variables do not contain default values and must be set by the consumer of the module to use the module successfully.
 
 <br><br>
 
@@ -84,21 +149,18 @@ variable "s3_bucket_name" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.3"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
 
+  // Required Variables
   s3_bucket_name              = "myBucket"
-
-  # Optional
-  // s3_bucket_region            = var.s3_bucket_region
-  // s3_bucket_prefix_list       = var.s3_bucket_prefix_list
-  // s3_bucket_suffix_list       = var.s3_bucket_suffix_list
-  // s3_versioning_enabled       = var.s3_versioning_enabled
-  // s3_mfa_delete               = var.s3_mfa_delete
-  // s3_bucket_acl               = var.s3_bucket_acl
-  // s3_encryption_enabled       = var.s3_encryption_enabled
-  // s3_kms_key_arn              = var.s3_kms_key_arn
 }
 ```
+
+<br><br><br>
+
+## Base Module Execution
+
+Once all of the modules required values have been assigned, then the module can be executed in its base capacity.
 
 <br><br>
 
@@ -154,9 +216,15 @@ can't guarantee that exactly these actions will be performed if
 
 <br>
 
-> __Note:__ Observe how the command passed in an upper case character in myBucket, and it was auto-converted to a lower case character.
+> __Note:__ Observe how the command passed in an upper case character in myBucket, and it was auto-converted to lower case characters.
 
-<br><br><br>
+<br><br>
+
+# Optional Variables
+
+The following optional module variables are not required because they already have default values assigned when the variables where defined within the modules `variables.tf` file. If the default values do not need to be changed by the root project consuming the module, then they do not even need to be included in the root project. If any of the variables do need to be changed, then they can be added to the root project in the same way that the required variables were defined and utilized. Optional variables also may alter how the module provisions resources in the cases of encryption or IAM policy generation. A variable could flag an encryption requirement when provisioning an S3 bucket or Dynamo table by providing a KMS CMK, for example. Another use case may be the passage of ARN values to allow users or roles access to services or resources, whereas by default permissions would be more restrictive or only assigned to the account root or a single IAM role. A detailed explanation of each of this modules optional variables can be found below:
+
+<br><br>
 
 ## :large_blue_circle: s3_bucket_region
 
@@ -166,7 +234,7 @@ can't guarantee that exactly these actions will be performed if
 
 <br>
 
-This variable can contain a specific AWS region where the requested S3 bucket should be provisioned. If no region is specified, the bucket will be created in the region, from which the module is running against via the terraform root module. The string value of the region is set to **empty**, this allows the module to replace the empty string with the currently executed AWS region data source constructed in the module.
+This variable can contain a specific AWS region where the requested S3 bucket should be provisioned. If no region is specified, the bucket will be created in the region, from which the module is running against via the root project. The default string value of the region variable is set to **empty**, this allows the module to replace the empty string with the current AWS region obtained by the Terraform data source provider `aws_region`.
 
 <br><br>
 
@@ -186,19 +254,11 @@ variable "s3_bucket_region" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.3"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
 
+  // Required Variables
   s3_bucket_name              = "myBucket"
   s3_bucket_region            = "us-west-2"
-
-  # Optional
-  // s3_bucket_prefix_list       = var.s3_bucket_prefix_list
-  // s3_bucket_suffix_list       = var.s3_bucket_suffix_list
-  // s3_versioning_enabled       = var.s3_versioning_enabled
-  // s3_mfa_delete               = var.s3_mfa_delete
-  // s3_bucket_acl               = var.s3_bucket_acl
-  // s3_encryption_enabled       = var.s3_encryption_enabled
-  // s3_kms_key_arn              = var.s3_kms_key_arn
 }
 ```
 
@@ -292,19 +352,12 @@ variable "s3_bucket_prefix_list" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.3"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
 
+  // Required Variables
   s3_bucket_name              = "myBucket"
   s3_bucket_region            = "us-east-1"
   s3_bucket_prefix_list       = ["dev", "account_prefix"]
-
-  # Optional
-  // s3_bucket_suffix_list       = var.s3_bucket_suffix_list
-  // s3_versioning_enabled       = var.s3_versioning_enabled
-  // s3_mfa_delete               = var.s3_mfa_delete
-  // s3_bucket_acl               = var.s3_bucket_acl
-  // s3_encryption_enabled       = var.s3_encryption_enabled
-  // s3_kms_key_arn              = var.s3_kms_key_arn
 }
 ```
 
@@ -366,19 +419,12 @@ can't guarantee that exactly these actions will be performed if
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.3"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
 
+  // Required Variables
   s3_bucket_name              = "myBucket"
   s3_bucket_region            = "us-east-1"
   s3_bucket_prefix_list       = ["dev", "region_prefix"]
-
-  # Optional
-  // s3_bucket_suffix_list       = var.s3_bucket_suffix_list
-  // s3_versioning_enabled       = var.s3_versioning_enabled
-  // s3_mfa_delete               = var.s3_mfa_delete
-  // s3_bucket_acl               = var.s3_bucket_acl
-  // s3_encryption_enabled       = var.s3_encryption_enabled
-  // s3_kms_key_arn              = var.s3_kms_key_arn
 }
 ```
 
@@ -472,19 +518,15 @@ variable "s3_bucket_suffix_list" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.3"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
 
+  // Required Variables
   s3_bucket_name              = "myBucket"
   s3_bucket_region            = "us-east-1"
   s3_bucket_suffix_list       = ["account_suffix", "w00t"]
 
-  # Optional
-  // s3_bucket_prefix_list       = var.s3_bucket_prefix_list
-  // s3_versioning_enabled       = var.s3_versioning_enabled
-  // s3_mfa_delete               = var.s3_mfa_delete
-  // s3_bucket_acl               = var.s3_bucket_acl
-  // s3_encryption_enabled       = var.s3_encryption_enabled
-  // s3_kms_key_arn              = var.s3_kms_key_arn
+  // Optional Variables with module defined default values assigned
+  # s3_bucket_prefix_list       = []
 }
 ```
 
@@ -550,19 +592,13 @@ can't guarantee that exactly these actions will be performed if
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.3"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
 
+  // Required Variables
   s3_bucket_name              = "myBucket"
   s3_bucket_region            = "us-east-1"
   s3_bucket_prefix_list       = ["dev", "account_prefix"]
   s3_bucket_suffix_list       = ["region_suffix", "w00t"]
-
-  # Optional
-  // s3_versioning_enabled       = var.s3_versioning_enabled
-  // s3_mfa_delete               = var.s3_mfa_delete
-  // s3_bucket_acl               = var.s3_bucket_acl
-  // s3_encryption_enabled       = var.s3_encryption_enabled
-  // s3_kms_key_arn              = var.s3_kms_key_arn
 }
 ```
 
@@ -648,19 +684,16 @@ variable "s3_versioning_enabled" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.3"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
 
+  // Required Variables
   s3_bucket_name              = "myBucket"
   s3_bucket_region            = "us-east-1"
   s3_versioning_enabled       = true
 
-  # Optional
-  // s3_bucket_prefix_list       = var.s3_bucket_prefix_list
-  // s3_bucket_suffix_list       = var.s3_bucket_suffix_list
-  // s3_mfa_delete               = var.s3_mfa_delete
-  // s3_bucket_acl               = var.s3_bucket_acl
-  // s3_encryption_enabled       = var.s3_encryption_enabled
-  // s3_kms_key_arn              = var.s3_kms_key_arn
+  // Optional Variables with module defined default values assigned
+  # s3_bucket_prefix_list       = []
+  # s3_bucket_suffix_list       = []
 }
 ```
 
@@ -726,7 +759,7 @@ can't guarantee that exactly these actions will be performed if
 
 <br>
 
-This variable will turn flag the requirement for MFA authentication before removing an object version or suspending versioning within a bucket that has versioning enabled.
+This variable will flag the requirement for MFA authentication before removing an object version or suspending versioning within a bucket that has versioning enabled.
 
 <br><br>
 
@@ -746,19 +779,17 @@ variable "s3_mfa_delete" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.3"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
 
+  // Required Variables
   s3_bucket_name              = "myBucket"
   s3_bucket_region            = "us-east-1"
   s3_versioning_enabled       = true
   s3_mfa_delete               = true
 
-  # Optional
-  // s3_bucket_prefix_list       = var.s3_bucket_prefix_list
-  // s3_bucket_suffix_list       = var.s3_bucket_suffix_list
-  // s3_bucket_acl               = var.s3_bucket_acl
-  // s3_encryption_enabled       = var.s3_encryption_enabled
-  // s3_kms_key_arn              = var.s3_kms_key_arn
+  // Optional Variables with module defined default values assigned
+  # s3_bucket_prefix_list       = []
+  # s3_bucket_suffix_list       = []
 }
 ```
 
@@ -824,7 +855,16 @@ can't guarantee that exactly these actions will be performed if
 
 <br>
 
-This variable is used to pass the desired permissions of the bucket at the time of provisioning the bucket. The default value is set to private but can be changed by providing a valid permission keyword in the s3_bucket_acl variable.
+This variable is used to pass the desired permissions of the bucket at the time of provisioning the bucket. The default value is set to private but can be changed by providing a valid permission keyword as the value for the s3_bucket_acl variable. Valid values for this variable are as follows:
+
+* __private__ - Owner gets FULL_CONTROL. No one else has access rights (default).
+* __public-read__ - Owner gets FULL_CONTROL. The AllUsers group gets READ access.
+* __public-read-write__ - Owner gets FULL_CONTROL. The AllUsers group gets READ and WRITE access. Not generally recommended.
+* __aws-exec-read__ - Owner gets FULL_CONTROL. EC2 gets READ access to GET an AMI bundle from Amazon S3.
+* __authenticated-read__ - Owner gets FULL_CONTROL. The AuthenticatedUsers group gets READ access.
+* __bucket-owner-read__ - Object owner gets FULL_CONTROL. Bucket owner gets READ access.
+* __bucket-owner-full-control__ - Both the object owner and the bucket owner get FULL_CONTROL over the object.
+* __log-delivery-write__ - The LogDelivery group gets WRITE and READ_ACP permissions on the bucket.
 
 <br><br>
 
@@ -837,38 +877,24 @@ variable "s3_bucket_acl" {
   default     = "private"
 ```
 
-<br>
-
-__Valid Permission Values:__
-
-* **private:** Owner gets FULL_CONTROL. No one else has access rights (default).
-* **public-read:** Owner gets FULL_CONTROL. The AllUsers group (see Who Is a Grantee?) gets READ access.
-* **public-read-write:** Owner gets FULL_CONTROL. The AllUsers group gets READ and WRITE access. Granting this on a bucket is generally not recommended.
-* **aws-exec-read:** Owner gets FULL_CONTROL. Amazon EC2 gets READ access to GET an Amazon Machine Image (AMI) bundle from Amazon S3.
-* **authenticated-read:** Owner gets FULL_CONTROL. The AuthenticatedUsers group gets READ access.
-* **bucket-owner-read:** Object owner gets FULL_CONTROL. Bucket owner gets READ access. If you specify this canned ACL when creating a bucket, Amazon S3 ignores it.
-* **bucket-owner-full-control:** Both the object owner and the bucket owner get FULL_CONTROL over the object. If you specify this canned ACL when creating a bucket, Amazon S3 ignores it.
-* **log-delivery-write:** The LogDelivery group gets WRITE and READ_ACP permissions on the bucket. For more information about logs, see (Amazon S3 Server Access Logging).
-
 <br><br>
 
 ### Module usage in project root main.tf
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.3"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
 
+  // Required Variables
   s3_bucket_name              = "myBucket"
   s3_bucket_region            = "us-east-1"
   s3_bucket_acl               = "bucket-owner-read"
 
-  # Optional
-  // s3_bucket_prefix_list       = var.s3_bucket_prefix_list
-  // s3_bucket_suffix_list       = var.s3_bucket_suffix_list
-  // s3_versioning_enabled       = var.s3_versioning_enabled
-  // s3_mfa_delete               = var.s3_mfa_delete
-  // s3_encryption_enabled       = var.s3_encryption_enabled
-  // s3_kms_key_arn              = var.s3_kms_key_arn
+  // Optional Variables with module defined default values assigned
+  # s3_bucket_prefix_list       = []
+  # s3_bucket_suffix_list       = []
+  # s3_versioning_enabled       = false
+  # s3_mfa_delete               = false
 }
 ```
 
@@ -938,7 +964,7 @@ This variable is a flag if encryption should be configured on the requested buck
 
 <br>
 
-> __Note:__ It will also automatically create a bucket policy that will be attached to the bucket forcing encryption of new object that is PUT into the bucket.
+> __Note:__ It will also automatically create a bucket policy that will be attached to the bucket forcing encryption in transit on PUT.
 
 <br><br>
 
@@ -958,20 +984,19 @@ variable "s3_encryption_enabled" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.3"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
 
-  // Required
+  // Required Variables
   s3_bucket_name              = "myBucket"
   s3_bucket_region            = "us-east-1"
   s3_encryption_enabled       = true
 
-  # Optional
-  // s3_bucket_prefix_list       = var.s3_bucket_prefix_list
-  // s3_bucket_suffix_list       = var.s3_bucket_suffix_list
-  // s3_versioning_enabled       = var.s3_versioning_enabled
-  // s3_mfa_delete               = var.s3_mfa_delete
-  // s3_bucket_acl               = var.s3_bucket_acl
-  // s3_kms_key_arn              = var.s3_kms_key_arn
+  // Optional Variables with module defined default values assigned
+  # s3_bucket_prefix_list       = []
+  # s3_bucket_suffix_list       = []
+  # s3_versioning_enabled       = false
+  # s3_mfa_delete               = false
+  # s3_bucket_acl               = "private"
 }
 ```
 
@@ -998,36 +1023,6 @@ Statement:
       Condition: {
         "Bool": {
           "aws:SecureTransport: "false"
-        }
-      }
-  - Sid: "DenyIncorrectEncryptionHeader"
-    Effect: Deny
-    Principal:
-      AWS:
-        - "*"
-      Action:
-        - "s3:PutObject"
-      Resources:
-        - "arn:aws:s3:::my_bucket"
-        - "arn:aws:s3:::my_bucket/*"
-      Condition: {
-        "StringNotEquals": {
-          "s3:x-amz-server-side-encryption": ["aws:kms","AES256"]
-        }
-      }
-  - Sid: "DenyUnEncryptedObjectUploads"
-    Effect: Deny
-    Principal:
-      AWS:
-        - "*"
-      Action:
-        - "s3:PutObject"
-      Resources:
-        - "arn:aws:s3:::my_bucket"
-        - "arn:aws:s3:::my_bucket/*"
-      Condition: {
-        "Null": {
-          "s3:x-amz-server-side-encryption": "true"
         }
       }
 ```
@@ -1083,44 +1078,7 @@ Terraform will perform the following actions:
                           + "arn:aws:s3:::mybucket",
                         ]
                       + Sid       = "DenyNonSecureTransport"
-                    },
-                  + {
-                      + Action    = "s3:PutObject"
-                      + Condition = {
-                          + StringNotEquals = {
-                              + s3:x-amz-server-side-encryption = [
-                                  + "aws:kms",
-                                  + "AES256",
-                                ]
-                            }
-                        }
-                      + Effect    = "Deny"
-                      + Principal = {
-                          + AWS = "*"
-                        }
-                      + Resource  = [
-                          + "arn:aws:s3:::mybucket/*",
-                          + "arn:aws:s3:::mybucket",
-                        ]
-                      + Sid       = "DenyIncorrectEncryptionHeader"
-                    },
-                  + {
-                      + Action    = "s3:PutObject"
-                      + Condition = {
-                          + Null = {
-                              + s3:x-amz-server-side-encryption = "true"
-                            }
-                        }
-                      + Effect    = "Deny"
-                      + Principal = {
-                          + AWS = "*"
-                        }
-                      + Resource  = [
-                          + "arn:aws:s3:::mybucket/*",
-                          + "arn:aws:s3:::mybucket",
-                        ]
-                      + Sid       = "DenyUnEncryptedObjectUploads"
-                    },
+                    }
                 ]
               + Version   = "2012-10-17"
             }
@@ -1187,20 +1145,20 @@ variable "s3_kms_key_arn" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.0.3"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
 
-  // Required
+  // Required Variables
   s3_bucket_name              = "myBucket"
   s3_bucket_region            = "us-east-1"
   s3_encryption_enabled       = true
   s3_kms_key_arn              = "arn:aws:kms:us-east-1:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"
 
-  # Optional
-  // s3_bucket_prefix_list       = var.s3_bucket_prefix_list
-  // s3_bucket_suffix_list       = var.s3_bucket_suffix_list
-  // s3_versioning_enabled       = var.s3_versioning_enabled
-  // s3_mfa_delete               = var.s3_mfa_delete
-  // s3_bucket_acl               = var.s3_bucket_acl
+  // Optional Variables with module defined default values assigned
+  # s3_bucket_prefix_list       = var.s3_bucket_prefix_list
+  # s3_bucket_suffix_list       = var.s3_bucket_suffix_list
+  # s3_versioning_enabled       = var.s3_versioning_enabled
+  # s3_mfa_delete               = var.s3_mfa_delete
+  # s3_bucket_acl               = "private"
 }
 ```
 
@@ -1255,44 +1213,7 @@ Terraform will perform the following actions:
                           + "arn:aws:s3:::mybucket",
                         ]
                       + Sid       = "DenyNonSecureTransport"
-                    },
-                  + {
-                      + Action    = "s3:PutObject"
-                      + Condition = {
-                          + StringNotEquals = {
-                              + s3:x-amz-server-side-encryption = [
-                                  + "aws:kms",
-                                  + "AES256",
-                                ]
-                            }
-                        }
-                      + Effect    = "Deny"
-                      + Principal = {
-                          + AWS = "*"
-                        }
-                      + Resource  = [
-                          + "arn:aws:s3:::mybucket/*",
-                          + "arn:aws:s3:::mybucket",
-                        ]
-                      + Sid       = "DenyIncorrectEncryptionHeader"
-                    },
-                  + {
-                      + Action    = "s3:PutObject"
-                      + Condition = {
-                          + Null = {
-                              + s3:x-amz-server-side-encryption = "true"
-                            }
-                        }
-                      + Effect    = "Deny"
-                      + Principal = {
-                          + AWS = "*"
-                        }
-                      + Resource  = [
-                          + "arn:aws:s3:::mybucket/*",
-                          + "arn:aws:s3:::mybucket",
-                        ]
-                      + Sid       = "DenyUnEncryptedObjectUploads"
-                    },
+                    }
                 ]
               + Version   = "2012-10-17"
             }
@@ -1326,11 +1247,204 @@ can't guarantee that exactly these actions will be performed if
 "terraform apply" is subsequently run.
 ```
 
+<br><br><br>
+
+
+
+
+
+
+
+## :large_blue_circle: s3_bucket_tags
+
+<br>
+
+![Optional](images/neon_optional.png)
+
+<br>
+
+This variable should contain a map of tags that will be assigned to the S3 bucket upon creation. Any tags contained within the `s3_bucket_tags` map variable will be passed to the module and automatically merged with a few tags that are also automatically created when the module is executed. The automatically generated tags are as follows:
+
+* __Name__ - This tag is assigned the value from the `s3_bucket_name` required variable that is passed during module execution
+* __Created_By__ - This tag is assigned the value of the aws user that was used to execute the Terraform module to create the S3 bucket. It uses the Terraform `aws_caller_identity {}` data source provider to obtain the User_Id value. This tag will be ignored for any future executions of the module, ensuring that its value will not be changed after it's initial creation.
+* __Creator_ARN__ - This tag is assigned the ARN value of the aws user that was used to execute the Terraform module to create the S3 Bucket. It uses the Terraform `aws_caller_identity {}` data source provider to obtain the User_ARN value. This tag will be ignored for any future executions of the module, ensuring that its value will not be changed after it's initial creation.
+* __Creation_Date__ - This tag is assigned a value that is obtained by the Terraform `timestamp()` function. This tag will be ignored for any future executions of the module, ensuring that its value will not be changed after it's initial creation.
+* __Updated_On__ - This tag is assigned a value that is obtained by the Terraform `timestamp()` function. This tag will be updated on each future execution of the module to ensure that it's value displays the last `terraform apply` date.
+* __Encrypted__ - This tag is assigned the value from the `s3_encryption_enabled` variable. If the consumer of the module did not flag the encryption option, then by default the value of the s3_encryption_enabled variable is set to `false`.
+* __CMK_ARN__ - This tag is assigned the value from the `s3_kms_key_arn` variable if provisioning an encrypted bucket. If the bucket is not encrypted this tag will be excluded. If encryption was enabled and a kms cmk was not passed, then the tag will indicate that encryption is configured using the default aws/s3 managed key.
+
+<br><br>
+
+### Declaration in module variables.tf
+
+```terraform
+variable "s3_bucket_tags" {
+  type        = map
+  description = "Specify any tags that should be added to the S3 bucket being provisioned."
+  default     = {
+    Provisoned_By  = "Terraform"
+    GitHub_URL     = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+  }
+}
+```
+
+<br><br>
+
+### Module usage in project root main.tf
+
+```terraform
+module "s3_bucket" {
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
+
+  // Required Variables
+  s3_bucket_name              = "myBucket"
+  s3_bucket_region            = "us-east-1"
+
+  // Tags
+  kms_tags = {
+     Provisoned_By  = "Terraform"
+     GitHub_URL     = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+     Environment    = "Prod"
+   }
+
+  // Optional Variables with module defined default values assigned
+  # s3_bucket_prefix_list       = var.s3_bucket_prefix_list
+  # s3_bucket_suffix_list       = var.s3_bucket_suffix_list
+  # s3_versioning_enabled       = var.s3_versioning_enabled
+  # s3_mfa_delete               = var.s3_mfa_delete
+  # s3_bucket_acl               = "private"
+  # s3_encryption_enabled       = false
+  # s3_kms_key_arn              = "AES256"
+}
+```
+
 <br><br>
 
 # Module Example Usage
 
 An example of how to use this module can be found within the `example` directory of this repository
+
+<br><br>
+
+# Variables and TFVars File Templates
+
+The following code block can be used or appended to an existing tfvars file within the project root consuming this module. Optional Variables are commented out and have their values set to the default values defined in the modules variables.tf file. If the values do not need to be changed, then they do not need to be redefined in the project root. If they do need to be changed, then include them in the root project and change the values accordingly.
+
+<br><br>
+
+## Complete Module variables.tf File
+
+```terraform
+###########################################################################
+# Required S3 Bucket Module Vars:                                         #
+#-------------------------------------------------------------------------#
+# The following variables require consumer defined values to be provided. #
+###########################################################################
+variable "s3_bucket_name" {
+  type        = string
+  description = "The base name of the S3 bucket that is being requested. This base name can be made unique by specifing values for either the s3_bucket_prefix_list, the s3_bucket_suffix_list, or both module variables."
+}
+
+
+###########################################################################
+# Optional S3 Bucket Module Vars:                                         #
+#-------------------------------------------------------------------------#
+# The following variables have default values already set by the module.  #
+# They will not need to be included in a project root module variables.tf #
+# file unless a non-default value needs be assigned to the variable.      #
+###########################################################################
+variable "s3_bucket_region" {
+  type        = string
+  description = "The AWS region where the S3 bucket will be provisioned."
+  default     = "empty"
+}
+
+variable "s3_bucket_prefix_list" {
+  type        = list
+  description = "A prefix list that will be added to the start of the bucket name. For example if s3_bucket_prefix_list=['test'], then the bucket will be named 'test-$${s3_bucket_name}'. This module will also look for the keywords 'region_prefix' and 'account_prefix' and will substitue the current region, or account_id within the module as in the example: s3_bucket_prefix_list=['test', 'region_prefix', 'account_prefix'], resulting in the bucket 'test-us-east-1-1234567890101-$${s3_bucket_name}'. If left blank no prefix will be added."
+  default     = []
+}
+
+variable "s3_bucket_suffix_list" {
+  type        = list
+  description = "A suffix list that will be added to the end of the bucket name. For example if s3_bucket_suffix_list=['test'], then the bucket will be named '$${s3_bucket_name}-test'. This module will also look for the keywords 'region_suffix' and 'account_suffix' and will substitue the current region, or account_id within the module as in the example: s3_bucket_suffix_list=['region_suffix', 'account_suffix', 'test'], resulting in the bucket name '$${s3_bucket_name}-us-east-1-1234567890101-test'. If left blank no suffix will be added."
+  default     = []
+}
+
+variable "s3_versioning_enabled" {
+  type        = bool
+  description = "Flag to enable bucket object versioning."
+  default     = false
+}
+
+variable "s3_mfa_delete" {
+  type        = bool
+  description = "Flag to enable the requirement of MFA in order to delete a bucket, object, or disable object versioning."
+  default     = false
+}
+
+variable "s3_encryption_enabled" {
+  type        = bool
+  description = "Flag to enable bucket object encryption."
+  default     = false
+}
+
+variable "s3_kms_key_arn" {
+  type        = string
+  description = "The key that will be used to encrypt objects within the new bucket. If the default value of AES256 is unchanged, S3 will encrypt objects with the default KMS key. If a KMS CMK ARN is provided, then S3 will encrypt objects with the specified KMS key instead."
+  default     = "AES256"
+}
+
+variable "s3_bucket_acl" {
+  type        = string
+  description = "The Access Control List that will be placed on the bucket. Acceptable Values are: 'private', 'public-read', 'public-read-write', 'aws-exec-read', 'authenticated-read', 'bucket-owner-read', 'bucket-owner-full-control', or 'log-delivery-write'"
+  default     = "private"
+}
+
+variable "s3_bucket_tags" {
+  type        = map
+  description = "Specify any tags that should be added to the S3 bucket being provisioned."
+  default     = {
+    Provisoned_By  = "Terraform"
+    GitHub_URL     = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+  }
+}
+```
+
+<br><br>
+
+## Complete Module TFVars File
+
+```terraform
+###########################################################################
+# Required S3 Bucket Module Vars:                                         #
+#-------------------------------------------------------------------------#
+# The following variables require consumer defined values to be provided. #
+###########################################################################
+s3_bucket_name            = "Value Required"
+
+
+###########################################################################
+# Optional S3 Bucket Module Vars:                                         #
+#-------------------------------------------------------------------------#
+# The following variables have default values already set by the module.  #
+# They will not need to be included in a project root module variables.tf #
+# file unless a non-default value needs be assigned to the variable.      #
+###########################################################################
+s3_bucket_region      = "empty"
+s3_bucket_prefix_list = []
+s3_bucket_suffix_list = []
+s3_versioning_enabled = false
+s3_mfa_delete         = false
+s3_encryption_enabled = false
+s3_kms_key_arn        = "AES256"
+s3_bucket_acl         = "private"
+
+s3_bucket_tags        = {
+    Provisoned_By  = "Terraform"
+    GitHub_URL     = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+}
+```
 
 <br><br>
 
@@ -1342,7 +1456,7 @@ The template will finally create the following outputs that can be pulled and us
 
 ```terraform
 ######################
-# S3 Bucket:         #
+# S3 Bucket Outputs  #
 ######################
 output "s3_bucket_id" {}
 output "s3_bucket_arn" {}
@@ -1360,7 +1474,7 @@ When using and calling the module within a root project, the output values of th
 
 ```terraform
 ######################
-# S3 Bucket          #
+# S3 Bucket Outputs  #
 ######################
 output "bucket_id" {
   value = module.s3bucket.s3_bucket_id
@@ -1385,12 +1499,6 @@ output "bucket_region" {
 
 <br><br>
 
-# Dependencies
-
-This module does not currently have any dependencies
-
-<br><br>
-
 # Requirements
 
 * [Terraform](https://www.terraform.io/)
@@ -1406,7 +1514,7 @@ This module does not currently have any dependencies
 
 <br><br>
 
-## Contributions and Contacts
+# Contacts and Contributions
 
 This project is owned by [CloudMage](rnason@cloudmage.io).
 

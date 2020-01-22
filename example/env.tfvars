@@ -1,11 +1,33 @@
-# S3 Bucket Module Variables #
-##############################
-bucket_name        = "myBucket"
-bucket_region      = "us-west-2"
-bucket_prefix      = ["dev", "account_prefix"]
-bucket_suffix      = ["region_suffix", "w00t"]
-bucket_versioning  = true
-bucket_mfa         = true
-bucket_encryption  = true
-bucket_cmk_arn     = "arn:aws:kms:us-east-1:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"
-bucket_acl         = "bucket-owner-read"
+###########################################################################
+# Terraform Config Vars:                                                  #
+###########################################################################
+
+
+###########################################################################
+# Required S3 Bucket Module Vars:                                         #
+#-------------------------------------------------------------------------#
+# The following variables require consumer defined values to be provided. #
+###########################################################################
+s3_bucket_name            = "Value Required"
+
+
+###########################################################################
+# Optional S3 Bucket Module Vars:                                         #
+#-------------------------------------------------------------------------#
+# The following variables have default values already set by the module.  #
+# They will not need to be included in a project root module variables.tf #
+# file unless a non-default value needs be assigned to the variable.      #
+###########################################################################
+s3_bucket_region      = "empty"
+s3_bucket_prefix_list = []
+s3_bucket_suffix_list = []
+s3_versioning_enabled = false
+s3_mfa_delete         = false
+s3_encryption_enabled = false
+s3_kms_key_arn        = "AES256"
+s3_bucket_acl         = "private"
+
+s3_bucket_tags        = {
+    Provisoned_By  = "Terraform"
+    GitHub_URL     = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+}

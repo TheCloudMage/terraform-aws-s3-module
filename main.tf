@@ -9,7 +9,7 @@ data "aws_region" "current" {}
 ######################
 locals {
   // Set local region variable by either taking a passed value or by quering the data source.
-  region         = "${var.s3_bucket_region != "empty" ? var.s3_bucket_region : data.aws_region.current.name}"
+  region = "${var.s3_bucket_region != "empty" ? var.s3_bucket_region : data.aws_region.current.name}"
   
   // If a Prefix list was supplied then join it together, and append the passed bucket name.
   prefixed_bucket_name  = <<EOS
@@ -61,10 +61,28 @@ resource "aws_s3_bucket" "encrypted_bucket" {
     }
   }
 
+  // Set the Name tag, and add Created_By, Creation_Date, and Creator_ARN tags with ignore change lifecycle policy.
+  // Allow Updated_On to update on each exectuion.
+  tags = merge(
+    var.s3_bucket_tags,
+    {
+      Name            = lower(format("%s", trimspace(local.bucket_name))),
+      Created_By      = data.aws_caller_identity.current.user_id
+      Creator_ARN     = data.aws_caller_identity.current.arn
+      Creation_Date   = timestamp()
+      Updated_On      = timestamp()
+      Encrypted       = format("%s", var.s3_encryption_enabled)
+      CMK_ARN         = var.s3_kms_key_arn != "AES256" ? var.s3_kms_key_arn : "AWS KMS-AES256-[AWS/S3] Default Managed Key"
+    }
+  )
+
+  lifecycle {
+    ignore_changes = [tags["Created_By"], tags["Creation_Date"], tags["Creator_ARN"]]
+  }
+
   // TODO:
-    //logging
-    // replication_configuration
-    //tags
+    # logging
+    # replication_configuration
 }
 
 // Not Encrypted
@@ -79,10 +97,27 @@ resource "aws_s3_bucket" "un_encrypted_bucket" {
     mfa_delete = var.s3_mfa_delete
   }
   
+  // Set the Name tag, and add Created_By, Creation_Date, and Creator_ARN tags with ignore change lifecycle policy.
+  // Allow Updated_On to update on each exectuion.
+  tags = merge(
+    var.s3_bucket_tags,
+    {
+      Name            = lower(format("%s", trimspace(local.bucket_name))),
+      Created_By      = data.aws_caller_identity.current.user_id
+      Creator_ARN     = data.aws_caller_identity.current.arn
+      Creation_Date   = timestamp()
+      Updated_On      = timestamp()
+      Encrypted       = format("%s", var.s3_encryption_enabled)
+    }
+  )
+
+  lifecycle {
+    ignore_changes = [tags["Created_By"], tags["Creation_Date"], tags["Creator_ARN"]]
+  }
+
   // TODO:
-    //logging
-    // replication_configuration
-    //tags
+    # logging
+    # replication_configuration
 }
 
 ######################
@@ -117,67 +152,6 @@ data "aws_iam_policy_document" "this" {
 
       values     = [
         "false"
-      ]
-    }
-  }
-
-  // Deny PutObject if Encryption Method/Key is not specified
-  statement {
-    sid     = "DenyIncorrectEncryptionHeader"
-
-    effect  = "Deny"
-
-    actions = [
-      "s3:PutObject"
-    ]
-
-    resources = [
-      "arn:aws:s3:::${trimspace(local.bucket_name)}",
-      "arn:aws:s3:::${trimspace(local.bucket_name)}/*",
-      ]
-
-    principals {
-      type        = "AWS"
-      identifiers = ["*"]
-    }
-
-    condition {
-      test       = "StringNotEquals"
-      variable   = "s3:x-amz-server-side-encryption"
-
-      values     = [
-        "aws:kms",
-        "AES256"
-      ]
-    }
-  }
-
-  // Deny PutObject if serverside Encryption is not specifed in the put header
-  statement {
-    sid     = "DenyUnEncryptedObjectUploads"
-
-    effect  = "Deny"
-
-    actions = [
-      "s3:PutObject"
-    ]
-
-    resources = [
-      "arn:aws:s3:::${trimspace(local.bucket_name)}",
-      "arn:aws:s3:::${trimspace(local.bucket_name)}/*",
-    ]
-
-    principals {
-      type        = "AWS"
-      identifiers = ["*"]
-    }
-
-    condition {
-      test       = "Null"
-      variable   = "s3:x-amz-server-side-encryption"
-
-      values     = [
-        "true"
       ]
     }
   }
