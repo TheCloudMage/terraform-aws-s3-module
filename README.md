@@ -1,7 +1,5 @@
-<!-- markdownlint-disable MD024 -->
-<!-- markdownlint-disable MD025 -->
-<!-- markdownlint-disable MD028 -->
-
+<!-- VSCode Markdown Exclusions-->
+<!-- markdownlint-disable MD025 Single Title Headers-->
 # Terraform S3 Bucket Module
 
 ![Hero](images/tf_s3.png)
@@ -1249,12 +1247,6 @@ can't guarantee that exactly these actions will be performed if
 
 <br><br><br>
 
-
-
-
-
-
-
 ## :large_blue_circle: s3_bucket_tags
 
 <br>
@@ -1361,13 +1353,13 @@ variable "s3_bucket_region" {
 
 variable "s3_bucket_prefix_list" {
   type        = list
-  description = "A prefix list that will be added to the start of the bucket name. For example if s3_bucket_prefix_list=['test'], then the bucket will be named 'test-$${s3_bucket_name}'. This module will also look for the keywords 'region_prefix' and 'account_prefix' and will substitue the current region, or account_id within the module as in the example: s3_bucket_prefix_list=['test', 'region_prefix', 'account_prefix'], resulting in the bucket 'test-us-east-1-1234567890101-$${s3_bucket_name}'. If left blank no prefix will be added."
+  description = "A prefix list that will be added to the start of the bucket name. For example if s3_bucket_prefix_list=['test'], then the bucket will be named 'test-$${s3_bucket_name}'. This module will also look for the keywords 'region_prefix' and 'account_prefix' and will substitute the current region, or account_id within the module as in the example: s3_bucket_prefix_list=['test', 'region_prefix', 'account_prefix'], resulting in the bucket 'test-us-east-1-1234567890101-$${s3_bucket_name}'. If left blank no prefix will be added."
   default     = []
 }
 
 variable "s3_bucket_suffix_list" {
   type        = list
-  description = "A suffix list that will be added to the end of the bucket name. For example if s3_bucket_suffix_list=['test'], then the bucket will be named '$${s3_bucket_name}-test'. This module will also look for the keywords 'region_suffix' and 'account_suffix' and will substitue the current region, or account_id within the module as in the example: s3_bucket_suffix_list=['region_suffix', 'account_suffix', 'test'], resulting in the bucket name '$${s3_bucket_name}-us-east-1-1234567890101-test'. If left blank no suffix will be added."
+  description = "A suffix list that will be added to the end of the bucket name. For example if s3_bucket_suffix_list=['test'], then the bucket will be named '$${s3_bucket_name}-test'. This module will also look for the keywords 'region_suffix' and 'account_suffix' and will substitute the current region, or account_id within the module as in the example: s3_bucket_suffix_list=['region_suffix', 'account_suffix', 'test'], resulting in the bucket name '$${s3_bucket_name}-us-east-1-1234567890101-test'. If left blank no suffix will be added."
   default     = []
 }
 

@@ -1,5 +1,5 @@
 ######################
-# S3 Bucket:         #
+# S3 Bucket Outputs: #
 ######################
 output "bucket_id" {
   value = module.demo_s3bucket.s3_bucket_id
