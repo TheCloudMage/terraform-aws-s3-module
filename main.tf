@@ -10,9 +10,9 @@ data "aws_region" "current" {}
 locals {
   // Set local region variable by either taking a passed value or by quering the data source.
   region = "${var.s3_bucket_region != "empty" ? var.s3_bucket_region : data.aws_region.current.name}"
-  
+
   // If a Prefix list was supplied then join it together, and append the passed bucket name.
-  prefixed_bucket_name  = <<EOS
+  prefixed_bucket_name = <<EOS
 %{~ if length(var.s3_bucket_prefix_list) > 0 ~}
 ${replace(replace(format("%s-%s", join("-", var.s3_bucket_prefix_list), var.s3_bucket_name), "region_prefix", local.region), "account_prefix", data.aws_caller_identity.current.account_id)}
 %{~ else ~}
@@ -21,7 +21,7 @@ ${var.s3_bucket_name}
 EOS
 
 // If a Suffix list was supplied then join it together, and prepend the already prefixed bucket name.
-  suffixed_bucket_name  = <<EOS
+  suffixed_bucket_name = <<EOS
 %{~ if length(var.s3_bucket_suffix_list) > 0 ~}
 ${replace(replace(format("%s-%s", local.prefixed_bucket_name, join("-", var.s3_bucket_suffix_list)), "region_suffix", local.region), "account_suffix", data.aws_caller_identity.current.account_id)}
 %{~ else ~}
@@ -30,7 +30,7 @@ ${local.prefixed_bucket_name}
 EOS
 
   // Set the bucket name
-  bucket_name          = "${lower(local.suffixed_bucket_name)}"
+  bucket_name = "${lower(local.suffixed_bucket_name)}"
 
 }
 
@@ -41,17 +41,17 @@ EOS
 
 // Encrypted
 resource "aws_s3_bucket" "encrypted_bucket" {
-  count         = var.s3_encryption_enabled == true ? 1 : 0
-  region        = local.region
-  bucket        = trimspace(local.bucket_name)
-  acl           = var.s3_bucket_acl
-  policy        = data.aws_iam_policy_document.this.json
-  
+  count        = var.s3_encryption_enabled == true ? 1 : 0
+  region       = local.region
+  bucket       = trimspace(local.bucket_name)
+  acl          = var.s3_bucket_acl
+  policy       = data.aws_iam_policy_document.this.json
+
   versioning { 
     enabled    = var.s3_versioning_enabled
     mfa_delete = var.s3_mfa_delete
   }
-  
+
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
@@ -91,12 +91,12 @@ resource "aws_s3_bucket" "un_encrypted_bucket" {
   region       = local.region
   bucket       = trimspace(local.bucket_name)
   acl          = var.s3_bucket_acl
-  
+
   versioning { 
     enabled    = var.s3_versioning_enabled
     mfa_delete = var.s3_mfa_delete
   }
-  
+
   // Set the Name tag, and add Created_By, Creation_Date, and Creator_ARN tags with ignore change lifecycle policy.
   // Allow Updated_On to update on each exectuion.
   tags = merge(
@@ -124,7 +124,6 @@ resource "aws_s3_bucket" "un_encrypted_bucket" {
 # S3 Policy:         #
 ######################
 // Construct the S3 Bucket Policy to be applied to the bucket
-
 data "aws_iam_policy_document" "this" {
   // Deny UnEncrypted Transport of Objects
   statement {
@@ -139,7 +138,7 @@ data "aws_iam_policy_document" "this" {
     resources = [
       "arn:aws:s3:::${trimspace(local.bucket_name)}",
       "arn:aws:s3:::${trimspace(local.bucket_name)}/*",
-      ]
+    ]
 
     principals {
       type        = "AWS"
