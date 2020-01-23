@@ -80,7 +80,7 @@ variable "bucket_tags" {
   type        = map
   description = "Specify any tags that should be added to the S3 bucket being provisioned."
   default     = {
-    Provisoned_By     = "Terraform"
+    Provisioned_By    = "Terraform"
     Module_GitHub_URL = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
   }
 }

@@ -14,7 +14,7 @@ provider "aws" {
 
 // Create the required S3 Bucket
 module "demo_s3bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module.git?ref=v1.1.0"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module.git?ref=v1.1.1"
 
   // Required
   s3_bucket_name              = var.bucket_name

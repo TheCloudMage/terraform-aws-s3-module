@@ -22,7 +22,7 @@ None Defined for an un-encrypted bucket. If the requested bucket requires encryp
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
 
   // Required Variables
   s3_bucket_name              = "backup-bucket"
@@ -39,8 +39,8 @@ module "s3_bucket" {
   
   // Tags
   # s3_bucket_tags            = {
-  #   Provisoned_By  = "Terraform"
-  #   Module_GitHub_URL     = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+  #   Provisioned_By    = "Terraform"
+  #   Module_GitHub_URL = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
   # }
 }
 ```
@@ -61,7 +61,7 @@ Module variables that need to either be defined or re-defined with a non-default
 
 ```terraform
 module "s3" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
 
   // Required Variables
   s3_bucket_name        = "somebucketname"
@@ -97,7 +97,7 @@ bucket_name = "somebucketname"
 
 ```terraform
 module "s3" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
 
   // Required Variables
   s3_bucket_name = var.bucket_name
@@ -147,7 +147,7 @@ variable "s3_bucket_name" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
 
   // Required Variables
   s3_bucket_name              = "myBucket"
@@ -252,7 +252,7 @@ variable "s3_bucket_region" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
 
   // Required Variables
   s3_bucket_name              = "myBucket"
@@ -350,7 +350,7 @@ variable "s3_bucket_prefix_list" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
 
   // Required Variables
   s3_bucket_name              = "myBucket"
@@ -417,7 +417,7 @@ can't guarantee that exactly these actions will be performed if
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
 
   // Required Variables
   s3_bucket_name              = "myBucket"
@@ -516,7 +516,7 @@ variable "s3_bucket_suffix_list" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
 
   // Required Variables
   s3_bucket_name              = "myBucket"
@@ -590,7 +590,7 @@ can't guarantee that exactly these actions will be performed if
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
 
   // Required Variables
   s3_bucket_name              = "myBucket"
@@ -682,7 +682,7 @@ variable "s3_versioning_enabled" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
 
   // Required Variables
   s3_bucket_name              = "myBucket"
@@ -777,7 +777,7 @@ variable "s3_mfa_delete" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
 
   // Required Variables
   s3_bucket_name              = "myBucket"
@@ -881,7 +881,7 @@ variable "s3_bucket_acl" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
 
   // Required Variables
   s3_bucket_name              = "myBucket"
@@ -982,7 +982,7 @@ variable "s3_encryption_enabled" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
 
   // Required Variables
   s3_bucket_name              = "myBucket"
@@ -1143,7 +1143,7 @@ variable "s3_kms_key_arn" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
 
   // Required Variables
   s3_bucket_name              = "myBucket"
@@ -1274,8 +1274,8 @@ variable "s3_bucket_tags" {
   type        = map
   description = "Specify any tags that should be added to the S3 bucket being provisioned."
   default     = {
-    Provisoned_By  = "Terraform"
-    Module_GitHub_URL     = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+    Provisioned_By    = "Terraform"
+    Module_GitHub_URL = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
   }
 }
 ```
@@ -1286,7 +1286,7 @@ variable "s3_bucket_tags" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.0"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
 
   // Required Variables
   s3_bucket_name              = "myBucket"
@@ -1294,9 +1294,9 @@ module "s3_bucket" {
 
   // Tags
   kms_tags = {
-     Provisoned_By  = "Terraform"
-     Module_GitHub_URL     = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
-     Environment    = "Prod"
+     Provisioned_By    = "Terraform"
+     Module_GitHub_URL = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+     Environment       = "Prod"
    }
 
   // Optional Variables with module defined default values assigned
@@ -1401,8 +1401,8 @@ variable "s3_bucket_tags" {
   type        = map
   description = "Specify any tags that should be added to the S3 bucket being provisioned."
   default     = {
-    Provisoned_By      = "Terraform"
-    Module_GitHub_URL  = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+    Provisioned_By    = "Terraform"
+    Module_GitHub_URL = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
   }
 }
 ```
@@ -1437,8 +1437,8 @@ s3_kms_key_arn        = "AES256"
 s3_bucket_acl         = "private"
 
 s3_bucket_tags        = {
-    Provisoned_By      = "Terraform"
-    Module_GitHub_URL  = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+    Provisioned_By    = "Terraform"
+    Module_GitHub_URL = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
 }
 ```
 
