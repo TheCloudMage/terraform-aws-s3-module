@@ -22,7 +22,7 @@ None Defined for an un-encrypted bucket. If the requested bucket requires encryp
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.2.0"
 
   // Required Variables
   s3_bucket_name              = "backup-bucket"
@@ -36,6 +36,7 @@ module "s3_bucket" {
   # s3_bucket_acl             = "private"
   # s3_encryption_enabled     = false
   # s3_kms_key_arn            = "AES256"
+  # s3_shared_principal_list  = []
   
   // Tags
   # s3_bucket_tags            = {
@@ -61,7 +62,7 @@ Module variables that need to either be defined or re-defined with a non-default
 
 ```terraform
 module "s3" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.2.0"
 
   // Required Variables
   s3_bucket_name        = "somebucketname"
@@ -97,7 +98,7 @@ bucket_name = "somebucketname"
 
 ```terraform
 module "s3" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.2.0"
 
   // Required Variables
   s3_bucket_name = var.bucket_name
@@ -147,7 +148,7 @@ variable "s3_bucket_name" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.2.0"
 
   // Required Variables
   s3_bucket_name              = "myBucket"
@@ -252,7 +253,7 @@ variable "s3_bucket_region" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.2.0"
 
   // Required Variables
   s3_bucket_name              = "myBucket"
@@ -350,7 +351,7 @@ variable "s3_bucket_prefix_list" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.2.0"
 
   // Required Variables
   s3_bucket_name              = "myBucket"
@@ -417,7 +418,7 @@ can't guarantee that exactly these actions will be performed if
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.2.0"
 
   // Required Variables
   s3_bucket_name              = "myBucket"
@@ -516,7 +517,7 @@ variable "s3_bucket_suffix_list" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.2.0"
 
   // Required Variables
   s3_bucket_name              = "myBucket"
@@ -590,7 +591,7 @@ can't guarantee that exactly these actions will be performed if
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.2.0"
 
   // Required Variables
   s3_bucket_name              = "myBucket"
@@ -682,7 +683,7 @@ variable "s3_versioning_enabled" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.2.0"
 
   // Required Variables
   s3_bucket_name              = "myBucket"
@@ -777,7 +778,7 @@ variable "s3_mfa_delete" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.2.0"
 
   // Required Variables
   s3_bucket_name              = "myBucket"
@@ -881,7 +882,7 @@ variable "s3_bucket_acl" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.2.0"
 
   // Required Variables
   s3_bucket_name              = "myBucket"
@@ -982,7 +983,7 @@ variable "s3_encryption_enabled" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.2.0"
 
   // Required Variables
   s3_bucket_name              = "myBucket"
@@ -1143,7 +1144,7 @@ variable "s3_kms_key_arn" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.2.0"
 
   // Required Variables
   s3_bucket_name              = "myBucket"
@@ -1247,6 +1248,232 @@ can't guarantee that exactly these actions will be performed if
 
 <br><br><br>
 
+## :large_blue_circle: s3_shared_principal_list
+
+<br>
+
+![Optional](images/neon_optional.png)
+
+<br>
+
+This variable is used to define a list of users/roles that will be added to the S3 bucket policy on the provisioned bucket for cross account access. If the variable is not defined, then no additional bucket policy statement will be applied to the bucket. If a list of roles/users is defined, then the provided list will instead be used to construct a bucket policy allowing those principals access to the provisioned S3 bucket. Typically this variable will only be used if the bucket requires access from users/roles in another account that require access to the bucket. The provisioned bucket policy statement enabled by this variable will be appended to the forced encryption in transit policy created by enabling encryption on the bucket. If encryption was not enabled on the bucket, then the policy will only contain this policy statement alone.
+
+<br>
+
+> __Note:__ Activating this variable will automatically create a bucket policy that will be attached to the bucket allowing cross account access to the users/roles specified by their ARNs within the list variable.
+
+<br><br>
+
+### Declaration in module variables.tf
+
+```terraform
+variable "s3_shared_principal_list" {
+  type        = list(string)
+  description = "List of users/roles that will be granted permissions to GET, PUT, and DELETE objects from/to the provisioned S3 bucket."
+  default     = []
+}
+```
+
+<br><br>
+
+### Module usage in project root main.tf
+
+```terraform
+module "s3_bucket" {
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.2.0"
+
+  // Required Variables
+  s3_bucket_name              = "myBucket"
+  s3_bucket_region            = "us-east-1"
+  s3_encryption_enabled       = true
+  s3_shared_principal_list    = ["arn:aws:iam::123456789101:role/S3-Bucket-Role"]
+
+  // Optional Variables with module defined default values assigned
+  # s3_bucket_prefix_list       = var.s3_bucket_prefix_list
+  # s3_bucket_suffix_list       = var.s3_bucket_suffix_list
+  # s3_versioning_enabled       = var.s3_versioning_enabled
+  # s3_mfa_delete               = var.s3_mfa_delete
+  # s3_bucket_acl               = "private"
+  # s3_kms_key_arn              = "AES256"
+}
+```
+
+<br>
+
+> __Note:__ Setting the `s3_shared_principal_list` option to true will automatically add the following bucket policy to the bucket at the time of provisioning:
+
+<br><br>
+
+### Generated Bucket Policy
+
+```yaml
+Statement:
+  - Sid: "AllowCrossAcctListAccess"
+    Effect: Allow
+    Principal:
+      AWS:
+        - "arn:aws:iam::123456789101:role/S3-Bucket-Role"
+    Action:
+      - "s3:ListBucket"
+      - "s3:ListBucketVersions"
+      - "s3:ListBucketMultipartUploads"
+    Resources:
+      - "arn:aws:s3:::my_bucket"
+      - "arn:aws:s3:::my_bucket/*"
+  - Sid: "AllowCrossAcctPUTAccess"
+    Effect: Allow
+    Principal:
+      AWS:
+        - "arn:aws:iam::123456789101:role/S3-Bucket-Role"
+    Action:
+      - "s3:AbortMultipartUpload"
+      - "s3:DeleteObject"
+      - "s3:DeleteObjectVersion"
+      - "s3:GetBucketVersioning"
+      - "s3:GetEncryptionConfiguration"
+      - "s3:GetObject"
+      - "s3:GetObjectTagging"
+      - "s3:GetObjectVersion"
+      - "s3:ListMultipartUploadParts"
+      - "s3:PutObject"
+      - "s3:PutObjectRetention"
+      - "s3:RestoreObject"
+    Resources:
+      - "arn:aws:s3:::my_bucket"
+      - "arn:aws:s3:::my_bucket/*"
+```
+
+<br><br>
+
+### Example `terraform plan` output
+
+```terraform
+Refreshing Terraform state in-memory prior to plan...
+The refreshed state will be used to calculate this plan, but will not be
+persisted to local or remote state storage.
+
+module.demo_s3bucket.data.aws_caller_identity.current: Refreshing state...
+module.demo_s3bucket.data.aws_region.current: Refreshing state...
+module.demo_s3bucket.data.aws_iam_policy_document.this: Refreshing state...
+
+------------------------------------------------------------------------
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # module.demo_s3bucket.aws_s3_bucket.encrypted_bucket[0] will be created
+  + resource "aws_s3_bucket" "encrypted_bucket" {
+      + acceleration_status         = (known after apply)
+      + acl                         = "private"
+      + arn                         = (known after apply)
+      + bucket                      = "mybucket"
+      + bucket_domain_name          = (known after apply)
+      + bucket_regional_domain_name = (known after apply)
+      + force_destroy               = false
+      + hosted_zone_id              = (known after apply)
+      + id                          = (known after apply)
+      + policy                      = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "s3:*"
+                      + Condition = {
+                          + Bool = {
+                              + aws:SecureTransport = "false"
+                            }
+                        }
+                      + Effect    = "Deny"
+                      + Principal = {
+                          + AWS = "*"
+                        }
+                      + Resource  = [
+                          + "arn:aws:s3:::mybucket/*",
+                          + "arn:aws:s3:::mybucket",
+                        ]
+                      + Sid  = "DenyNonSecureTransport"
+                    },
+                    + {
+                      + Action    = [
+                          + "s3:ListBucket",
+                          + "s3:ListBucketVersions",
+                          + "s3:ListBucketMultipartUploads"
+                      ]
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + AWS = [
+                              + "arn:aws:iam::123456789101:role/S3-Bucket-Role"
+                          ]
+                        }
+                      + Resource  = [
+                          + "arn:aws:s3:::mybucket/*",
+                          + "arn:aws:s3:::mybucket",
+                        ]
+                      + Sid = "AllowCrossAcctListAccess"
+                    },
+                    + {
+                      + Action    = [
+                          + "s3:AbortMultipartUpload",
+                          + "s3:DeleteObject",
+                          + "s3:DeleteObjectVersion",
+                          + "s3:GetBucketVersioning",
+                          + "s3:GetEncryptionConfiguration",
+                          + "s3:GetObject",
+                          + "s3:GetObjectTagging",
+                          + "s3:GetObjectVersion",
+                          + "s3:ListMultipartUploadParts",
+                          + "s3:PutObject",
+                          + "s3:PutObjectRetention",
+                          + "s3:RestoreObject"
+                      ]
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + AWS = [
+                              + "arn:aws:iam::123456789101:role/S3-Bucket-Role"
+                          ]
+                        }
+                      + Resource  = [
+                          + "arn:aws:s3:::mybucket/*",
+                          + "arn:aws:s3:::mybucket",
+                        ]
+                      + Sid       = "AllowCrossAcctPUTAccess"
+                    }
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + region                      = "us-east-1"
+      + request_payer               = (known after apply)
+      + website_domain              = (known after apply)
+      + website_endpoint            = (known after apply)
+
+      + server_side_encryption_configuration {
+          + rule {
+              + apply_server_side_encryption_by_default {
+                  + sse_algorithm = "AES256"
+                }
+            }
+        }
+
+      + versioning {
+          + enabled    = false
+          + mfa_delete = false
+        }
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+------------------------------------------------------------------------
+
+Note: You didn't specify an "-out" parameter to save this plan, so Terraform
+can't guarantee that exactly these actions will be performed if
+"terraform apply" is subsequently run.
+```
+
+<br><br><br>
+
 ## :large_blue_circle: s3_bucket_tags
 
 <br>
@@ -1286,7 +1513,7 @@ variable "s3_bucket_tags" {
 
 ```terraform
 module "s3_bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.1.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.2.0"
 
   // Required Variables
   s3_bucket_name              = "myBucket"
@@ -1307,6 +1534,7 @@ module "s3_bucket" {
   # s3_bucket_acl               = "private"
   # s3_encryption_enabled       = false
   # s3_kms_key_arn              = "AES256"
+  # s3_shared_principal_list    = []
 }
 ```
 
@@ -1397,6 +1625,12 @@ variable "s3_bucket_acl" {
   default     = "private"
 }
 
+variable "s3_shared_principal_list" {
+  type        = list(string)
+  description = "List of users/roles that will be granted permissions to GET, PUT, and DELETE objects from/to the provisioned S3 bucket."
+  default     = []
+}
+
 variable "s3_bucket_tags" {
   type        = map
   description = "Specify any tags that should be added to the S3 bucket being provisioned."
@@ -1427,14 +1661,15 @@ s3_bucket_name            = "Value Required"
 # They will not need to be included in a project root module variables.tf #
 # file unless a non-default value needs be assigned to the variable.      #
 ###########################################################################
-s3_bucket_region      = "empty"
-s3_bucket_prefix_list = []
-s3_bucket_suffix_list = []
-s3_versioning_enabled = false
-s3_mfa_delete         = false
-s3_encryption_enabled = false
-s3_kms_key_arn        = "AES256"
-s3_bucket_acl         = "private"
+s3_bucket_region         = "empty"
+s3_bucket_prefix_list    = []
+s3_bucket_suffix_list    = []
+s3_versioning_enabled    = false
+s3_mfa_delete            = false
+s3_encryption_enabled    = false
+s3_kms_key_arn           = "AES256"
+s3_bucket_acl            = "private"
+s3_shared_principal_list = []
 
 s3_bucket_tags        = {
     Provisioned_By    = "Terraform"
@@ -1454,10 +1689,10 @@ The template will finally create the following outputs that can be pulled and us
 ######################
 # S3 Bucket Outputs  #
 ######################
-output "s3_bucket_id" {}
-output "s3_bucket_arn" {}
-output "s3_bucket_domain_name" {}
-output "s3_bucket_region" {}
+output "id" {}
+output "arn" {}
+output "domain_name" {}
+output "region" {}
 ```
 
 <br><br>
@@ -1473,25 +1708,25 @@ When using and calling the module within a root project, the output values of th
 # S3 Bucket Outputs  #
 ######################
 output "bucket_id" {
-  value = module.s3bucket.s3_bucket_id
+  value = module.s3bucket.id
 }
 
 output "bucket_arn" {
-  value = module.s3bucket.s3_bucket_arn
+  value = module.s3bucket.arn
 }
 
 output "bucket_domain_name" {
-  value = module.s3bucket.s3_bucket_domain_name
+  value = module.s3bucket.domain_name
 }
 
 output "bucket_region" {
-  value = module.s3bucket.s3_bucket_region
+  value = module.s3bucket.region
 }
 ```
 
 <br>
 
-> __Note:__ When referencing the module outputs be sure that the output value contains the identifier given to the module call. As an example if the module was defined as `module "demo_s3bucket" {}` then the output reference would be constructed as `module.demo_s3bucket.s3_bucket_arn`.
+> __Note:__ When referencing the module outputs be sure that the output value contains the identifier given to the module call. As an example if the module was defined as `module "demo_s3bucket" {}` then the output reference would be constructed as `module.demo_s3bucket.arn`. The outputs were designated to match the available resource provider attributes for easy consumption.
 
 <br><br>
 

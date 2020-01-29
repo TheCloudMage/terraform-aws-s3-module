@@ -9,6 +9,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <br>
 
+## v1.2.0 - [2020-01-29]
+
+### Added
+
+- s3_shared_principal_list variable added to hold user/role ARNs that will be granted permissions to GET, PUT, and DELETE objects to/from the provisioned bucket.
+- Optional Bucket Policy to allow shared access to the bucket based on an Arn List type variable. The policy will stack on the encrypted policy if bucket is encrypted, or will be added standalone to an unencrypted bucket if user/role ARNs are populated in the s3_shared_principal_list variable.
+
+### Changed
+
+- Outputs renamed to the standard values, instead of for example `s3_bucket_arn`, the output is now just `arn` to allow easier consumption of the outputs by module consumers.
+- Fixed all Documentation to address miss-spelled tag
+- Readme updated to reflect new sharing list variable and the access that it's usage provides.
+- Examles have been changed to reflect new variable, and updated module version.
+
+### Removed
+
+- None
+
+<br><br>
+
 ## v1.1.1 - [2020-01-23]
 
 ### Added

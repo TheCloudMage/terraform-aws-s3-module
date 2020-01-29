@@ -37,7 +37,7 @@ EOS
 ######################
 # S3 Bucket:           #
 ######################
-// Although 2 blocks are specified, only 1 will be exectued depandant upon the var.s3_encryption_enabled setting
+// Although two blocks are specified, only one will be executed depending upon the var.s3_encryption_enabled setting.
 
 // Encrypted
 resource "aws_s3_bucket" "encrypted_bucket" {
@@ -72,7 +72,7 @@ resource "aws_s3_bucket" "encrypted_bucket" {
       Creation_Date   = timestamp()
       Updated_On      = timestamp()
       Encrypted       = format("%s", var.s3_encryption_enabled)
-      CMK_ARN         = var.s3_kms_key_arn != "AES256" ? var.s3_kms_key_arn : "AWS KMS-AES256-[AWS/S3] Default Managed Key"
+      CMK_ARN         = var.s3_kms_key_arn != "AES256" ? var.s3_kms_key_arn : "AWS KMS-AES256 aws/s3 Default Managed Key"
     }
   )
 
@@ -91,6 +91,7 @@ resource "aws_s3_bucket" "un_encrypted_bucket" {
   region       = local.region
   bucket       = trimspace(local.bucket_name)
   acl          = var.s3_bucket_acl
+  policy       = length(var.s3_shared_principal_list) > 0 ? data.aws_iam_policy_document.shared_access_bucket_policy.json : null
 
   versioning { 
     enabled    = var.s3_versioning_enabled
@@ -120,12 +121,11 @@ resource "aws_s3_bucket" "un_encrypted_bucket" {
     # replication_configuration
 }
 
-######################
-# S3 Policy:         #
-######################
-// Construct the S3 Bucket Policy to be applied to the bucket
-data "aws_iam_policy_document" "this" {
-  // Deny UnEncrypted Transport of Objects
+#######################
+# S3 Bucket Policies: #
+#######################
+// Construct the S3 Bucket Policy to deny the unencrypted transport of objects
+data "aws_iam_policy_document" "encryption_in_transit_bucket_policy" {
   statement {
     sid     = "DenyNonSecureTransport"
 
@@ -154,4 +154,67 @@ data "aws_iam_policy_document" "this" {
       ]
     }
   }
+}
+
+// Construct the S3 Bucket Policy to allow access to shared accounts.
+data "aws_iam_policy_document" "shared_access_bucket_policy" {
+  statement {
+    sid     = "AllowCrossAcctListAccess"
+
+    effect  = "Allow"
+
+    actions = [
+      "s3:ListBucket",
+      "s3:ListBucketVersions",
+      "s3:ListBucketMultipartUploads"
+    ]
+
+    resources = [
+      "arn:aws:s3:::${trimspace(local.bucket_name)}",
+      "arn:aws:s3:::${trimspace(local.bucket_name)}/*",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = length(var.s3_shared_principal_list) > 0 ? var.s3_shared_principal_list : ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+    }
+  }
+
+  statement {
+    sid     = "AllowCrossAcctPUTAccess"
+
+    effect  = "Allow"
+
+    actions = [
+      "s3:AbortMultipartUpload",
+      "s3:DeleteObject",
+      "s3:DeleteObjectVersion",
+      "s3:GetBucketVersioning",
+      "s3:GetEncryptionConfiguration",
+      "s3:GetObject",
+      "s3:GetObjectTagging",
+      "s3:GetObjectVersion",
+      "s3:ListMultipartUploadParts",
+      "s3:PutObject",
+      "s3:PutObjectRetention",
+      "s3:RestoreObject"
+    ]
+
+    resources = [
+      "arn:aws:s3:::${trimspace(local.bucket_name)}",
+      "arn:aws:s3:::${trimspace(local.bucket_name)}/*",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = length(var.s3_shared_principal_list) > 0 ? var.s3_shared_principal_list : ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+    }
+  }
+}
+
+// Use policy overrides to evalute a new policy to pass to the next layer.
+// This is essentially a dynamic conditional merge of the encryption_in_transit and shared_access bucket policies.
+data "aws_iam_policy_document" "this" {
+  source_json   = data.aws_iam_policy_document.encryption_in_transit_bucket_policy.json
+  override_json = length(var.s3_shared_principal_list) > 0 ? data.aws_iam_policy_document.shared_access_bucket_policy.json : null
 }

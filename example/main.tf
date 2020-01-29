@@ -14,7 +14,7 @@ provider "aws" {
 
 // Create the required S3 Bucket
 module "demo_s3bucket" {
-  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module.git?ref=v1.1.1"
+  source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module.git?ref=v1.2.0"
 
   // Required
   s3_bucket_name              = var.bucket_name
@@ -28,5 +28,6 @@ module "demo_s3bucket" {
   # s3_bucket_acl               = var.bucket_acl
   # s3_encryption_enabled       = var.bucket_encryption
   # s3_kms_key_arn              = var.bucket_cmk_arn
+  # s3_shared_principal_list    = var.bucket_access_list
   # s3_bucket_tags              = var.bucket_tags
 }

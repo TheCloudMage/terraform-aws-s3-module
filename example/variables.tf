@@ -76,6 +76,12 @@ variable "bucket_acl" {
   default     = "private"
 }
 
+variable "bucket_access_list" {
+  type        = list(string)
+  description = "List of users/roles that will be granted permissions to GET, PUT, and DELETE objects from/to the provisioned S3 bucket."
+  default     = []
+}
+
 variable "bucket_tags" {
   type        = map
   description = "Specify any tags that should be added to the S3 bucket being provisioned."
