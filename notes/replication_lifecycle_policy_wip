@@ -1,0 +1,332 @@
+######################
+# Data Sources:      #
+######################
+data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}
+
+######################
+# Local Variables:   #
+######################
+locals {
+  // Set local region variable by either taking a passed value or by quering the data source.
+  region = "${var.region != null ? var.region : data.aws_region.current.name}"
+
+  // If a Prefix list was supplied then join it together, and append the passed bucket name.
+  prefixed_bucket_name = <<EOS
+%{~ if length(var.bucket_prefix) > 0 ~}
+${replace(replace(format("%s-%s", join("-", var.bucket_prefix), var.bucket), "region_prefix", local.region), "account_prefix", data.aws_caller_identity.current.account_id)}
+%{~ else ~}
+${var.bucket}
+%{~ endif ~}
+EOS
+
+// If a Suffix list was supplied then join it together, and prepend the already prefixed bucket name.
+  suffixed_bucket_name = <<EOS
+%{~ if length(var.bucket_suffix) > 0 ~}
+${replace(replace(format("%s-%s", local.prefixed_bucket_name, join("-", var.bucket_suffix)), "region_suffix", local.region), "account_suffix", data.aws_caller_identity.current.account_id)}
+%{~ else ~}
+${local.prefixed_bucket_name}
+%{~ endif ~}
+EOS
+
+  // Set the bucket name
+  bucket_name = trimspace(lower(local.suffixed_bucket_name))
+
+  // Bucket name to hold S3 access logs (buckets are in AccountBaseline)
+  log_bucket_name = var.logging_bucket != null ? trimspace(lower(var.logging_bucket)) : null
+
+  // Set Encryption Setting
+  sse_algorithm = var.kms_master_key_id == "AES256" ? "AES256" : "aws:kms"
+}
+
+######################
+# S3 Bucket:           #
+######################
+// Although two blocks are specified, only one will be executed depending upon the var.encryption setting.
+
+// Encrypted
+resource "aws_s3_bucket" "this" {
+  count        = var.module_enabled ? 1 : 0
+
+  region       = local.region
+  bucket       = local.bucket_name
+  acl          = var.acl
+  policy       = data.aws_iam_policy_document.this.json
+
+  // Bucket Versioning
+  versioning { 
+    enabled    = var.versioning
+    mfa_delete = var.mfa_delete
+  }
+
+  // Bucket Logging
+  dynamic "logging" {
+    for_each = var.log_bucket_name =! null ? toset(["${var.log_bucket_name}"]) : toset([])
+    content {
+      target_bucket = logging.value
+      target_prefix = "${local.bucket_name}/"
+    }
+  }
+
+  // Server Sided Encryption
+  dynamic "server_side_encryption_configuration" {
+    for_each = var.encryption ? toset(["${local.sse_algorithm}"]) : toset([])
+    content {
+      rule {
+        apply_server_side_encryption_by_default {
+          sse_algorithm     = server_side_encryption_configuration.value
+          kms_master_key_id = local.sse_algorithm != "AES256" ? local.sse_algorithm : null
+        }
+      }
+    }
+  }
+
+  // Lifecycle policy
+  dynamic "lifecycle_rule" {
+    for_each = length(var.lifecycle_rules) > 0 ? toset(var.lifecycle_rules) : toset([])
+    content {
+      id      = lifecycle_rule.id
+      enabled = lifecycle_rule.enabled
+      prefix  = lifecycle_rule.prefix != null ? lifecycle_rule.prefix : null
+
+      dynamic "transition" {
+        for_each = var.lifecycle_rule.transition
+        content {
+          storage_class = transition.storage_class
+          days          = transition.days
+        }
+      }
+
+      dynamic "noncurrent_version_transition" {
+        for_each = toset(var.lifecycle_rule.noncurrent_version_transition)
+        content {
+          storage_class = noncurrent_version_transition.storage_class
+          days          = noncurrent_version_transition.days
+        }
+      }
+
+      dynamic "expiration" {
+        for_each = var.s3_expiration_days != null ? toset([1]) : toset([])
+        content {
+          days = var.s3_expiration_days
+        }
+      }
+    }
+  }
+  
+
+    dynamic "replication_configuration" {
+        for_each = length(keys(var.replication_configuration)) == 0 ? [] : [var.replication_configuration]
+
+        content {
+        role = replication_configuration.value.role
+        dynamic "rules" {
+            for_each = replication_configuration.value.rules
+
+            content {
+            id     = lookup(rules.value, "id", null)
+            status = lookup(rules.value, "status", null)
+
+            dynamic "destination" {
+                for_each = length(keys(lookup(rules.value, "destination", {}))) == 0 ? [] : [lookup(rules.value, "destination", {})]
+
+                content {
+                bucket             = lookup(destination.value, "bucket", null)
+                storage_class      = "STANDARD"
+                replica_kms_key_id = lookup(destination.value, "replica_kms_key_id", null)
+                }
+            }
+
+            dynamic "source_selection_criteria" {
+                for_each = length(keys(lookup(rules.value, "source_selection_criteria", {}))) == 0 ? [] : [lookup(rules.value, "source_selection_criteria", {})]
+
+                content {
+                dynamic "sse_kms_encrypted_objects" {
+                    for_each = length(keys(lookup(source_selection_criteria.value, "sse_kms_encrypted_objects", {}))) == 0 ? [] : [lookup(source_selection_criteria.value, "sse_kms_encrypted_objects", {})]
+
+                    content {
+                    enabled = sse_kms_encrypted_objects.value.enabled
+                    }
+                }
+                }
+            }
+            }
+        }
+        }
+    }
+
+
+  // Set the Name tag, and add Created_By, Creation_Date, and Creator_ARN tags with ignore change lifecycle policy.
+  // Allow Updated_On to update on each exectuion.
+  tags = merge(
+    var.tags,
+    {
+      Name            = local.bucket_name,
+      Created_By      = data.aws_caller_identity.current.user_id
+      Creator_ARN     = data.aws_caller_identity.current.arn
+      Creation_Date   = timestamp()
+      Updated_On      = timestamp()
+      Encrypted       = format("%s", var.encryption)
+      CMK_ARN         = local.sse_algorithm != "AES256" ? local.sse_algorithm : "AWS KMS-AES256 aws/s3 Default Managed Key"
+    }
+  )
+
+  lifecycle {
+    ignore_changes = [tags["Created_By"], tags["Creation_Date"], tags["Creator_ARN"]]
+  }
+
+}
+
+#######################
+# S3 Bucket Policies: #
+#######################
+// Construct the S3 Bucket Policy to deny the unencrypted transport of objects
+data "aws_iam_policy_document" "encryption_in_transit_bucket_policy" {
+  statement {
+    sid     = "DenyNonSecureTransport"
+
+    effect  = "Deny"
+
+    actions = [
+      "s3:*"
+    ]
+
+    resources = [
+      "arn:aws:s3:::${trimspace(local.bucket_name)}",
+      "arn:aws:s3:::${trimspace(local.bucket_name)}/*",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test       = "Bool"
+      variable   = "aws:SecureTransport"
+
+      values     = [
+        "false"
+      ]
+    }
+  }
+}
+
+// Construct the S3 Bucket Policy to allow access to shared accounts.
+data "aws_iam_policy_document" "shared_access_bucket_policy" {
+  statement {
+    sid     = "AllowCrossAcctListAccess"
+
+    effect  = "Allow"
+
+    actions = [
+      "s3:ListBucket",
+      "s3:ListBucketVersions",
+      "s3:ListBucketMultipartUploads"
+    ]
+
+    resources = [
+      "arn:aws:s3:::${trimspace(local.bucket_name)}",
+      "arn:aws:s3:::${trimspace(local.bucket_name)}/*",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = length(var.s3_shared_principal_list) > 0 ? var.s3_shared_principal_list : ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+    }
+  }
+
+  statement {
+    sid     = "AllowCrossAcctPUTAccess"
+
+    effect  = "Allow"
+
+    actions = [
+      "s3:AbortMultipartUpload",
+      "s3:DeleteObject",
+      "s3:DeleteObjectVersion",
+      "s3:GetBucketVersioning",
+      "s3:GetEncryptionConfiguration",
+      "s3:GetObject",
+      "s3:GetObjectTagging",
+      "s3:GetObjectVersion",
+      "s3:ListMultipartUploadParts",
+      "s3:PutObject",
+      "s3:PutObjectRetention",
+      "s3:RestoreObject"
+    ]
+
+    resources = [
+      "arn:aws:s3:::${trimspace(local.bucket_name)}",
+      "arn:aws:s3:::${trimspace(local.bucket_name)}/*",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = length(var.s3_shared_principal_list) > 0 ? var.s3_shared_principal_list : ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+    }
+  }
+}
+
+// Use policy overrides to evalute a new policy to pass to the next layer.
+// This is essentially a dynamic conditional merge of the encryption_in_transit and shared_access bucket policies.
+data "aws_iam_policy_document" "this" {
+  source_json   = data.aws_iam_policy_document.encryption_in_transit_bucket_policy.json
+  override_json = length(var.s3_shared_principal_list) > 0 ? data.aws_iam_policy_document.shared_access_bucket_policy.json : null
+}
+
+
+
+variable "lifecycle_rules" {
+  type        = list
+  description = "A list of maps containing transition rules for the S3 bucket being provisioned"
+  default     = []
+  # default     = [
+  #   {
+  #     id = "logs",
+  #     enabled = true,
+  #     prefix = null,
+  #     tags = {}
+  #     transition {
+  #       days = 30
+  #       storage_class = "STANDARD_IA"
+  #     }
+  #     transition {
+  #       days = 60
+  #       storage_class = "GLACIER"
+  #     }
+  #     expiration {
+  #       days = 90
+  #     }
+  #   },
+  #   {
+  #     id = "versions",
+  #     enabled = true,
+  #     prefix = null,
+  #     tags = {}
+  #     noncurrent_version_transition {
+  #       days = 30
+  #       storage_class = "STANDARD_IA"
+  #     }
+  #     noncurrent_version_transition {
+  #       days = 60
+  #       storage_class = "GLACIER"
+  #     }
+  #     noncurrent_version_expiration {
+  #       days = 90
+  #     }
+  #   }
+  # ]
+}
+
+variable "replication_configuration" {
+  description = "Map containing cross-region replication configuration."
+  type        = any
+  default     = {}
+}
+
+variable "s3_expiration_days" {
+  description = "If set, number of days to expire objects"
+  type        = number
+  default     = null
+}

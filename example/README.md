@@ -1,4 +1,4 @@
-# Terraform S3Bucket Module Example
+# Terraform S3 Bucket Module Example
 
 ## Getting Started
 

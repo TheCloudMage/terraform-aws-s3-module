@@ -9,6 +9,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <br>
 
+## v1.3.0 - [2020-06-15]
+
+### Added
+
+- Additional variable module_enabled to control module provisioning added and updated in corresponding module resource
+- Logging Bucket variable added to allow the configuration of S3 bucket access logging.
+- static_hosting, index, and error variables added to allow the bucket to be configured as a static S3 hosting bucket.
+- cors variable added to allow the passing of Cross Origin Resource Sharing rules.
+- policy and policy_override variables added to allow custom policies to be added to the bucket policy, or to allow a custom policy to simply override the constructed bucket policy with one that is provided by the user instead.
+
+### Changed
+
+- Outputs changed to consume the now single bucket `this`
+- Variables renamed to the standard provider values, instead of for example `s3_bucket_name`, the variable is now just `bucket` to allow easier consumption of the variables by module consumers.
+- s3_shared_principal_list replaced with `read_access` and `write_access`. Both variables are used to create and attach cooresponding read/write bucket polices.
+- Logging, SSE Configuration, website and CORs configuration all built using dynamic blocks.
+- Removed the second S3 resource and logic pertaining to if encrypted use encrypted_bucket resource vs non_encrypted_bucket_resource
+
+### Removed
+
+- None
+
+<br><br>
+
 ## v1.2.0 - [2020-01-29]
 
 ### Added

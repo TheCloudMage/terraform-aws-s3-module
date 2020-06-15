@@ -1,0 +1,629 @@
+Config:
+    Type: Module
+#############################
+# Repository Configuration: #
+#############################
+Git:
+    Repository: git@github.com:CloudMage-TF/AWS-S3Bucket-Module.git
+    Version:
+
+############################
+# README.md Configuration: #
+############################
+ReadMe:
+    Title:
+    HeroImage: images/tf_s3.png
+    DocLink:
+    GettingStarted: |-
+        This AWS S3 bucket module is designed to produce a secure/in-secure AWS S3 bucket depending on the options passed to the module. This module was created with dynamic options that allow the consumer of the module to determine, project by project, what S3 bucket options should be enforced on the requested bucket at the time of the bucket provisioning. It has options that allow the provisioned bucket to be fully insecure, or conversely fully encrypted with an enforcing bucket policy ensuring objects within the bucket are both PUT and stored using either the S3 default encryption key or an AWS KMS (Key Management Service) CMK (Customer Managed Key)
+    PreRequisites: |-
+        None Defined for an un-encrypted bucket. If the requested bucket requires encryption using a CMK, then the CMK will have to have already been provisioned via the direct TF root project or by using a KMS CMK module.
+    Module: 
+    Changelog:
+    Contact:
+        UserName:
+        Email:
+
+############################
+# Variables Configuration: #
+############################
+Variables:
+    #######################
+    # Required Variables: #
+    #######################
+    Required:
+        Image:
+        bucket:
+            ExampleValue: test-backup-bucket
+            GeneralDetails:
+                Description: >-
+                    The bucket name must be all lowercase, with only numbers, lowercase characters or a hyphen. The Bucket name must also be globally unique which is where the prefix or suffix variable helpers come in to help uniquely the desired bucket name. In the event that an upper case name is provided for the bucket name variable, the module will run a lower() function on the final bucket name before assigning the bucket name to the bucket API call to ensure that all passed bucket names are lowercase.
+                Notes:
+                Images:
+            VariableDetails:
+                Description:
+                Notes: |-
+                  If values are supplied for either the `bucket_prefix`, `bucket_suffix` or `both`, then the specified values will be added to the bucket. See the variable section about those lists for additional information on how they can be used to change the requested S3 bucket name.
+                Images:
+            UsageDetails:
+                Description:
+                Notes:
+                Images:
+            Additional:
+                Description:
+                Notes:
+                Images:
+    #######################
+    # Optional Variables: #
+    #######################
+    Optional:
+        Image:
+        region:
+            ExampleValue: us-east-1
+            DefaultValue: null
+            GeneralDetails:
+                Description: >-
+                    This variable can contain a specific AWS region where the requested S3 bucket should be provisioned. If no region is specified, the bucket will be created in the region, from which the module is running against via the root project. The default string value of the region variable is set to **empty**, this allows the module to replace the empty string with the current AWS region obtained by the Terraform data source provider `aws_region`.
+                Notes:
+                Images:
+            VariableDetails:
+                Description:
+                Notes:
+                Images:
+            UsageDetails:
+                Description:
+                Notes:
+                Images:
+            Additional:
+                Description:
+                Notes:
+                Images:
+        bucket_prefix:
+            ExampleValue: ["account_prefix"]
+            DefaultValue: []
+            GeneralDetails:
+                Description: >-
+                    A prefix list that will be added to the start of the bucket name. For example if bucket_prefix=['test'], then the bucket will be named 'test-$${bucket}'. This module will also look for the keywords 'region_prefix' and 'account_prefix' and will substitute the current region, or account_id within the module as in the example: bucket_prefix=['test', 'region_prefix', 'account_prefix'], resulting in the bucket 'test-us-east-1-1234567890101-$${bucket}'. If left blank no prefix will be added. This list variable should contain the values of any prefix that you want to prepend to the beginning of the requested S3 bucket. Specifying any sequence of values to the list will change the calculated bucket name by adding each of the specified values with a hyphen to the begging of the supplied bucket.
+
+                    <br>
+                    
+                    __Note: Special bucket_prefix Keywords:__
+
+                    * `region_prefix`: Adding this keyword to the bucket prefix list will result in the resolution of the desired or current execution region, and will place that region into the bucket name string.
+
+                    * `account_prefix`: Adding this keyword to the bucket prefix list will result in the resolution of the current execution region, and will place that account Id into the bucket name string.
+                Notes:
+                Images:
+            VariableDetails:
+                Description:
+                Notes:
+                Images:
+            UsageDetails:
+                Description:
+                Notes:
+                Images:
+            Additional:
+                Description:
+                Notes:
+                Images:
+        bucket_suffix:
+            ExampleValue: ["region_suffix"]
+            DefaultValue: []
+            GeneralDetails:
+                Description: >-
+                    A suffix list that will be added to the end of the bucket name. For example if bucket_suffix=['test'], then the bucket will be named '$${bucket}-test'. This module will also look for the keywords 'region_suffix' and 'account_suffix' and will substitute the current region, or account_id within the module as in the example: bucket_suffix=['region_suffix', 'account_suffix', 'test'], resulting in the bucket name '$${bucket}-us-east-1-1234567890101-test'. If left blank no suffix will be added. This list variable should contain the values of any suffix that you want to append to the end of the requested S3 bucket. Specifying any sequence of values to the list will change the calculated bucket name by adding each of the specified values with a hyphen to the end of the supplied bucket.
+
+                    <br>
+
+                    __Note: Special bucket_suffix Keywords:__
+
+                    * `region_suffix`: Adding this keyword to the bucket prefix list will result in the resolution of the desired or current execution region, and will place that region into the bucket name string.
+
+                    * `account_suffix`: Adding this keyword to the bucket prefix list will result in the resolution of the current execution region, and will place that account Id into the bucket name string.
+                Notes:
+                Images:
+            VariableDetails:
+                Description:
+                Notes: You can use any combination of prefix and suffix values together to create a unique account-specific bucket path.
+                Images:
+            UsageDetails:
+                Description:
+                Notes:
+                Images:
+            Additional:
+                Description:
+                Notes:
+                Images:
+        versioning:
+            ExampleValue: True
+            DefaultValue: False
+            GeneralDetails:
+                Description: >-
+                    This variable will turn flag versioning on or off on the bucket. It is important to note that once versioning is turned on within S3 for a given bucket, it can be later disabled, but never removed.
+                Notes:
+                Images:
+            VariableDetails:
+                Description:
+                Notes:
+                Images:
+            UsageDetails:
+                Description:
+                Notes:
+                Images:
+            Additional:
+                Description:
+                Notes:
+                Images:
+        mfa_delete:
+            ExampleValue: True
+            DefaultValue: False
+            GeneralDetails:
+                Description: >-
+                    This variable will flag the requirement for MFA authentication before removing an object version or suspending versioning within a bucket that has versioning enabled.
+                Notes:
+                Images:
+            VariableDetails:
+                Description:
+                Notes:
+                Images:
+            UsageDetails:
+                Description:
+                Notes:
+                Images:
+            Additional:
+                Description:
+                Notes:
+                Images:
+        encryption:
+            ExampleValue: True
+            DefaultValue: False
+            GeneralDetails:
+                Description: |-
+                    This variable is a flag if encryption should be configured on the requested bucket. Setting this value to true will automatically turn on encryption on the bucket at the time of provisioning using the default S3/AES256 AWS managed KMS Key.
+                Notes: |-
+                    Activating this variable will automatically create a bucket policy that will be attached to the bucket forcing encryption in transit for all upload and PUT requests to the bucket.
+                Images:
+            VariableDetails:
+                Description:
+                Notes:
+                Images:
+            UsageDetails:
+                Description:
+                Notes: |-
+                    Setting the `encryption` option to true will automatically add the following bucket policy to the bucket at the time of provisioning unless policy_override is set:
+
+                    <br><br>
+
+                    ### Generated Bucket Policy
+
+                    ```yaml
+                    Statement:
+                    - Sid: "DenyNonSecureTransport"
+                        Effect: Deny
+                        Principal:
+                        AWS:
+                            - "*"
+                        Action:
+                            - "s3:*"
+                        Resources:
+                            - "arn:aws:s3:::my_bucket"
+                            - "arn:aws:s3:::my_bucket/*"
+                        Condition: {
+                            "Bool": {
+                            "aws:SecureTransport: "false"
+                            }
+                        }
+                Images:
+            Additional:
+                Description:
+                Notes:
+                Images:
+        kms_master_key_id:
+            ExampleValue: arn:aws:kms:us-east-1:123456789101:key/127ab3c4-de5f-6e7d-898c-7ba6b5432abc
+            DefaultValue: AES256
+            GeneralDetails:
+                Description: >-
+                    This variable is used to define an existing KMS CMK that is preferred to encrypt objects into the bucket. Using a CMK instead of the default AWS Managed KMS key allows more granular control over the permissions of the encryption key used to encrypt the objects within the bucket.
+                Notes:
+                Images:
+            VariableDetails:
+                Description:
+                Notes: |-
+                    When supplying a KMS CMK Key ARN, the bucket encryption type will automatically switch from **AES256** to **aws:kms**. Encryption will work the same way, only using the provided key instead of the Amazon managed default S3 key. The bucket policy shown above will also still be applied.
+                Images:
+            UsageDetails:
+                Description:
+                Notes:
+                Images:
+            Additional:
+                Description:
+                Notes:
+                Images:
+        acl:
+            ExampleValue: public-read
+            DefaultValue: private
+            GeneralDetails:
+                Description: >-
+                    This variable is used to pass the desired permissions of the bucket at the time of provisioning the bucket. The default value is set to private but can be changed by providing a valid permission keyword as the value for the `acl` variable. Valid values for this variable are as follows:
+
+                    * __private__ - Owner gets FULL_CONTROL. No one else has access rights (default).
+                    * __public-read__ - Owner gets FULL_CONTROL. The AllUsers group gets READ access.
+                    * __public-read-write__ - Owner gets FULL_CONTROL. The AllUsers group gets READ and WRITE access. Not generally recommended.
+                    * __aws-exec-read__ - Owner gets FULL_CONTROL. EC2 gets READ access to GET an AMI bundle from Amazon S3.
+                    * __authenticated-read__ - Owner gets FULL_CONTROL. The AuthenticatedUsers group gets READ access.
+                    * __bucket-owner-read__ - Object owner gets FULL_CONTROL. Bucket owner gets READ access.
+                    * __bucket-owner-full-control__ - Both the object owner and the bucket owner get FULL_CONTROL over the object.
+                    * __log-delivery-write__ - The LogDelivery group gets WRITE and READ_ACP permissions on the bucket.
+                Notes:
+                Images:
+            VariableDetails:
+                Description:
+                Notes:
+                Images:
+            UsageDetails:
+                Description:
+                Notes:
+                Images:
+            Additional:
+                Description:
+                Notes:
+                Images:
+        logging_bucket:
+            ExampleValue: test-logging-bucket
+            DefaultValue: null
+            GeneralDetails:
+                Description: >-
+                    The base name of the S3 bucket that will be used as the log bucket for the provisioned s3 buckets access logs. If activated, logging will be configured on the S3 bucket being provisioned, and will automatically write logs to the configured logging bucket, in a folder named after this provisioned bucket.
+                Notes:
+                Images:
+            VariableDetails:
+                Description:
+                Notes:
+                Images:
+            UsageDetails:
+                Description:
+                Notes:
+                Images:
+            Additional:
+                Description:
+                Notes:
+                Images:
+        static_hosting:
+            ExampleValue: True
+            DefaultValue: False
+            GeneralDetails:
+                Description: >-
+                    Flag that can be set to turn on static hosting within a bucket. If this flag is set to true, then the bucket will have static hosting enabled on instantiation.
+                Notes:
+                Images:
+            VariableDetails:
+                Description:
+                Notes:
+                Images:
+            UsageDetails:
+                Description:
+                Notes:
+                Images:
+            Additional:
+                Description:
+                Notes:
+                Images:
+        index_document:
+            ExampleValue: index.htm
+            DefaultValue: index.html
+            GeneralDetails:
+                Description: >-
+                    Value of the index file served by the static hosting bucket server if static hosting is enabled. This variable should hold the name of whatever entry point file the web server should be serving for its index.
+                Notes:
+                Images:
+            VariableDetails:
+                Description:
+                Notes:
+                Images:
+            UsageDetails:
+                Description:
+                Notes:
+                Images:
+            Additional:
+                Description:
+                Notes:
+                Images:
+        error_document:
+            ExampleValue: error.htm
+            DefaultValue: error.html
+            GeneralDetails:
+                Description: >-
+                    Value of the error file served by the static hosting bucket server if static hosting is enabled. This variable should hold the name of whatever entry point error file the web server should be serving in the event that an error is encountered.
+                Notes:
+                Images:
+            VariableDetails:
+                Description:
+                Notes:
+                Images:
+            UsageDetails:
+                Description:
+                Notes:
+                Images:
+            Additional:
+                Description:
+                Notes:
+                Images:
+        cors_rule:
+            ExampleValue: {'allowed_headers': ['*'], 'allowed_methods': [], 'allowed_origins': ['*'], 'expose_headers': [], 'max_age_seconds': 1000}
+            DefaultValue: {'allowed_headers': ['*'], 'allowed_methods': ['PUT', 'POST'], 'allowed_origins': ['*'], 'expose_headers': [], 'max_age_seconds': 3000}
+            GeneralDetails:
+                Description: >-
+                    Cross Origin Resource Sharing ruleset to apply to the bucket. This variable holds a map or JSON structured CORs config. The object should have the following fields:
+
+                    <br>
+
+                    ```json
+                    {
+                        "allowed_headers": ["*"],
+                        "allowed_methods": ["PUT", "POST"],
+                        "allowed_origins": ["*"],
+                        "expose_headers": [],
+                        "max_age_seconds": 3000
+                    }
+                    ```
+                Notes:
+                Images:
+            VariableDetails:
+                Description:
+                Notes:
+                Images:
+            UsageDetails:
+                Description:
+                Notes:
+                Images:
+            Additional:
+                Description:
+                Notes:
+                Images:
+        tags:
+            ExampleValue: {'Provisioned_By': 'Terraform', 'Tested': 'true'}
+            DefaultValue: {'Provisioned_By': 'Terraform', 'Module_GitHub_URL': 'https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git'}
+            GeneralDetails:
+                Description: >-
+                    This variable should contain a map of tags that will be assigned to the S3 bucket upon creation. Any tags contained within the `tags` map variable will be passed to the module and automatically merged with a few tags that are also automatically created when the module is executed. The automatically generated tags are as follows:
+
+                    * __Name__ - This tag is assigned the value from the `bucket` required variable that is passed during module execution
+                    * __Created_By__ - This tag is assigned the value of the aws user that was used to execute the Terraform module to create the S3 bucket. It uses the Terraform `aws_caller_identity {}` data source provider to obtain the User_Id value. This tag will be ignored for any future executions of the module, ensuring that its value will not be changed after it's initial creation.
+                    * __Creator_ARN__ - This tag is assigned the ARN value of the aws user that was used to execute the Terraform module to create the S3 Bucket. It uses the Terraform `aws_caller_identity {}` data source provider to obtain the User_ARN value. This tag will be ignored for any future executions of the module, ensuring that its value will not be changed after it's initial creation.
+                    * __Creation_Date__ - This tag is assigned a value that is obtained by the Terraform `timestamp()` function. This tag will be ignored for any future executions of the module, ensuring that its value will not be changed after it's initial creation.
+                    * __Updated_On__ - This tag is assigned a value that is obtained by the Terraform `timestamp()` function. This tag will be updated on each future execution of the module to ensure that it's value displays the last `terraform apply` date.
+                    * __Encrypted__ - This tag is assigned the value from the `encryption` variable. If the consumer of the module did not flag the encryption option, then by default the value of the `encryption` variable is set to `false`.
+                    * __CMK_ARN__ - This tag is assigned the value from the `kms_master_key_id` variable if provisioning an encrypted bucket. If the bucket is not encrypted this tag will be excluded. If encryption was enabled and a kms cmk was not passed, then the tag will indicate that encryption is configured using the default aws/s3 managed key.
+                Notes:
+                Images:
+            VariableDetails:
+                Description:
+                Notes:
+                Images:
+            UsageDetails:
+                Description:
+                Notes:
+                Images:
+            Additional:
+                Description:
+                Notes:
+                Images: /images/tf_s3_tags.png
+        read_access:
+            ExampleValue: ["arn:aws:iam::123456789101:role/AWS-S3RO-Role"]
+            DefaultValue: []
+            GeneralDetails:
+                Description: >-
+                    This variable is used to define a list of users/roles that will be added to the S3 bucket policy on the provisioned bucket for cross account access. If the variable is not defined, then no additional bucket policy statement will be applied to the bucket. If a list of roles/users is defined, then the provided list will instead be used to construct a bucket policy statement allowing those principals `READ ONLY` access to the provisioned S3 bucket. Typically this variable will only be used if the bucket requires access from users/roles in another account that require access to the bucket. The provisioned bucket policy statement enabled by this variable will be appended to the forced encryption in transit policy created by enabling encryption on the bucket. If encryption was not enabled on the bucket, then the policy will only contain this policy statement alone.
+
+                    <br>
+
+                    The following permissions will be applied to the read_access bucket policy statement for the specified users/roles provided:
+                    
+                    * s3:HeadBucket
+                    * s3:ListBucket*
+                    * s3:ListAllMyBuckets
+                    * s3:ListBucketVersions
+                    * s3:ListBucketMultipartUploads
+                    * s3:ListMultipartUploadParts
+                    * s3:GetBucketLocation
+                    * s3:GetBucketVersioning
+                    * s3:GetEncryptionConfiguration
+                    * s3:GetObjectTagging
+                    * s3:GetObjectVersion
+                    * s3:GetObject
+                Notes: |-
+                    Activating this variable will automatically create a bucket policy that will be attached to the bucket allowing cross account access to the users/roles specified by their ARNs within the list variable.
+                Images:
+            VariableDetails:
+                Description:
+                Notes:
+                Images:
+            UsageDetails:
+                Description:
+                Notes:
+                Images:
+            Additional:
+                Description:
+                Notes:
+                Images:
+        write_access:
+            ExampleValue: ["arn:aws:iam::123456789101:role/AWS-S3W-Role"]
+            DefaultValue: []
+            GeneralDetails:
+                Description: >-
+                    This variable is used to define a list of users/roles that will be added to the S3 bucket policy on the provisioned bucket for cross account access. If the variable is not defined, then no additional bucket policy statement will be applied to the bucket. If a list of roles/users is defined, then the provided list will instead be used to construct a bucket policy statement allowing those principals `WRITE` access to the provisioned S3 bucket. Typically this variable will only be used if the bucket requires access from users/roles in another account that require access to the bucket. The provisioned bucket policy statement enabled by this variable will be appended to the forced encryption in transit policy created by enabling encryption on the bucket. If encryption was not enabled on the bucket, then the policy will only contain this policy statement alone.
+
+                    <br>
+
+                    The following permissions will be applied to the write_access bucket policy statement for the specified users/roles provided:
+                    
+                    * s3:AbortMultipartUpload
+                    * s3:PutObject
+                    * s3:PutObjectRetention
+                    * s3:DeleteObject
+                    * s3:DeleteObjectVersion
+                    * s3:RestoreObject
+                Notes: |-
+                    Activating this variable will automatically create a bucket policy that will be attached to the bucket allowing cross account access to the users/roles specified by their ARNs within the list variable.
+                Images:
+            VariableDetails:
+                Description:
+                Notes:
+                Images:
+            UsageDetails:
+                Description:
+                Notes:
+                Images:
+            Additional:
+                Description:
+                Notes:
+                Images:
+        policy:
+            ExampleValue: Terraform-Data-Resource
+            DefaultValue: null
+            GeneralDetails:
+                Description: >-
+                    Flag to use the custom provided policy (data iam_policy_document) only, without appending to the default policy. Policy passed is policy applied. A policy (data iam_policy_document) to merge with the bucket policy. Use %BUCKET% for bucket name. The policy should be constructed as a terraform data source, and referenced accordingly. Using the example below, the resulting bucket policy will be a collection of the encryption in transit policy statement, any read_access policy statement constructed depending on if values were supplied to the variable or not, any write_access policy statement again constructed depending on if values were supplied to the variable or not and the custom policy referenced in the data object:
+
+                    <br>
+
+                    ```terraform
+                    data "aws_iam_policy_document" "dev_qa_bucket_policy" {
+                      statement {
+                        actions = [
+                            "s3:GetObject",
+                            "s3:GetObjectVersion",
+                            "s3:GetBucketObjectLockConfiguration",
+                            "s3:PutObject",
+                            "s3:DeleteObject",
+                            "s3:DeleteObjectVersion",
+                            "s3:AbortMultipartUpload"
+                        ]
+
+                        principals {
+                            type = "AWS"
+                            identifiers = ["*"]
+                        }
+
+                        resources = [
+                            "%BUCKET%",
+                            "%BUCKET%/*",
+                        ]
+
+                        condition {
+                            test     = "StringLike"
+                            variable = "aws:userId"
+                            values   = [
+                                "ZABYCD1EFG2H34ISNPDOG:user1@mydomain.tld",
+                                "ZABYCD1EFG2H34ISNPDOG:user2@mydomain.tld",
+                                "ZABYCD1EFG2H34ISNPDOG:user3@mydomain.tld",
+                                "ZABYCD1EFG2H34ISNPDOG:user4@mydomain.tld",
+                                "ZABYCD1EFG2H34ISNPDOG:user5@mydomain.tld"
+                            ]
+                        }
+                      }
+                    }
+                    ```
+
+                    <br>
+
+                    ```terraform
+                    module "bucket" {
+                        source  = "../"
+                        
+                        bucket = var.bucket
+                        region = local.region
+                        policy = data.aws_iam_policy_document.dev_qa_bucket_policy.json
+                    }
+                    ```
+                Notes:
+                Images:
+            VariableDetails:
+                Description:
+                Notes:
+                Images:
+            UsageDetails:
+                Description:
+                Notes:
+                Images:
+            Additional:
+                Description:
+                Notes:
+                Images:
+        policy_override:
+            ExampleValue: Example Value
+            DefaultValue: null
+            GeneralDetails:
+                Description: >-
+                    A policy (data iam_policy_document) to merge with the bucket policy. Use %BUCKET% for bucket name. The policy should be constructed as a terraform data source, and referenced accordingly. Using the example below, the resulting bucket policy will be a collection of the encryption in transit policy statement, any read_access policy statement constructed depending on if values were supplied to the variable or not, any write_access policy statement again constructed depending on if values were supplied to the variable or not and the custom policy referenced in the data object:
+
+                    <br>
+
+                    ```terraform
+                    data "aws_iam_policy_document" "dev_qa_bucket_policy" {
+                      statement {
+                        actions = [
+                            "s3:DeleteObject",
+                            "s3:DeleteObjectVersion",
+                            "s3:AbortMultipartUpload"
+                        ]
+
+                        principals {
+                            type = "AWS"
+                            identifiers = ["arn:aws:iam::123456789101:role/AWS-S3W-Role"]
+                        }
+
+                        resources = [
+                            "%BUCKET%",
+                            "%BUCKET%/*",
+                        ]
+                      }
+                    }
+                    ```
+
+                    <br>
+
+                    ```terraform
+                    module "bucket" {
+                        source  = "../"
+                        
+                        bucket          = var.bucket
+                        region          = local.region
+                        policy          = data.aws_iam_policy_document.dev_qa_bucket_policy.json
+                        policy_override = true
+                    }
+                    ```
+                Notes:
+                Images:
+            VariableDetails:
+                Description:
+                Notes:
+                Images:
+            UsageDetails:
+                Description:
+                Notes:
+                Images:
+            Additional:
+                Description:
+                Notes:
+                Images:
+        module_enabled:
+            ExampleValue: True
+            DefaultValue: True
+            GeneralDetails:
+                Description: >-
+                    Module variable that can be used to disable the module from deploying any resources if called from a multi-account/environment root project. Defaults to true, value of false will effectively turn the module off.
+                Notes:
+                Images:
+            VariableDetails:
+                Description:
+                Notes:
+                Images:
+            UsageDetails:
+                Description:
+                Notes:
+                Images:
+            Additional:
+                Description:
+                Notes:
+                Images:
