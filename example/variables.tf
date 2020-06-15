@@ -115,19 +115,19 @@ variable "error_document" {
 variable "cors_rule" {
   type        = map
   description = "Cross Origin Resource Sharing ruleset to apply to the bucket"
-  default     = {
+  default = {
     allowed_headers = ["*"]
     allowed_methods = ["PUT", "POST"]
     allowed_origins = ["*"]
     expose_headers  = []
-    max_age_seconds = 3000
+    max_age_seconds = [3000]
   }
 }
 
 variable "tags" {
   type        = map
   description = "Specify any tags that should be added to the S3 bucket being provisioned."
-  default     = {
+  default = {
     Provisioned_By    = "Terraform"
     Module_GitHub_URL = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
   }

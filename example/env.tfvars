@@ -41,10 +41,10 @@ cors_rule = {
   allowed_methods = ["PUT", "POST"]
   allowed_origins = ["*"]
   expose_headers  = []
-  max_age_seconds = 3000
+  max_age_seconds = [3000]
 }
 
 tags = {
-  Provisioned_By = "Terraform"
+  Provisioned_By    = "Terraform"
   Module_GitHub_URL = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
 }

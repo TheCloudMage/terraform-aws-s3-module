@@ -9,24 +9,24 @@ data "aws_region" "current" {}
 ######################
 locals {
   // Set local region variable by either taking a passed value or by quering the data source.
-  region = "${var.region != null ? var.region : data.aws_region.current.name}"
+  current_region = var.region != null ? var.region : data.aws_region.current.name
 
   // If a Prefix list was supplied then join it together, and append the passed bucket name.
   prefixed_bucket_name = <<EOS
-%{~ if length(var.bucket_prefix) > 0 ~}
-${replace(replace(format("%s-%s", join("-", var.bucket_prefix), var.bucket), "region_prefix", local.region), "account_prefix", data.aws_caller_identity.current.account_id)}
-%{~ else ~}
+%{~if length(var.bucket_prefix) > 0~}
+${replace(replace(format("%s-%s", join("-", var.bucket_prefix), var.bucket), "region_prefix", local.current_region), "account_prefix", data.aws_caller_identity.current.account_id)}
+%{~else~}
 ${var.bucket}
-%{~ endif ~}
+%{~endif~}
 EOS
 
-// If a Suffix list was supplied then join it together, and prepend the already prefixed bucket name.
+  // If a Suffix list was supplied then join it together, and prepend the already prefixed bucket name.
   suffixed_bucket_name = <<EOS
-%{~ if length(var.bucket_suffix) > 0 ~}
-${replace(replace(format("%s-%s", local.prefixed_bucket_name, join("-", var.bucket_suffix)), "region_suffix", local.region), "account_suffix", data.aws_caller_identity.current.account_id)}
-%{~ else ~}
+%{~if length(var.bucket_suffix) > 0~}
+${replace(replace(format("%s-%s", local.prefixed_bucket_name, join("-", var.bucket_suffix)), "region_suffix", local.current_region), "account_suffix", data.aws_caller_identity.current.account_id)}
+%{~else~}
 ${local.prefixed_bucket_name}
-%{~ endif ~}
+%{~endif~}
 EOS
 
   // Set the bucket name
@@ -46,22 +46,21 @@ EOS
 
 // Encrypted
 resource "aws_s3_bucket" "this" {
-  count        = var.module_enabled ? 1 : 0
+  count = var.module_enabled ? 1 : 0
 
-  region       = local.region
-  bucket       = local.bucket_name
-  acl          = var.acl
-  policy       = data.aws_iam_policy_document.this.json
+  region = local.current_region
+  bucket = local.bucket_name
+  acl    = var.acl
 
   // Bucket Versioning
-  versioning { 
+  versioning {
     enabled    = var.versioning
     mfa_delete = var.mfa_delete
   }
 
   // Bucket Logging
   dynamic "logging" {
-    for_each = var.log_bucket_name =! null ? toset(["${var.log_bucket_name}"]) : toset([])
+    for_each = local.log_bucket_name != null ? toset(["${local.log_bucket_name}"]) : toset([])
     content {
       target_bucket = logging.value
       target_prefix = "${local.bucket_name}/"
@@ -97,8 +96,8 @@ resource "aws_s3_bucket" "this" {
       allowed_headers = coalesce(cors_rule.value.allowed_headers, [])
       allowed_methods = coalesce(cors_rule.value.allowed_methods, [])
       allowed_origins = coalesce(cors_rule.value.allowed_origins, [])
-      expose_headers = coalesce(cors_rule.value.expose_headers, [])
-      max_age_seconds = coalesce(cors_rule.value.max_age_seconds, 3000)
+      expose_headers  = coalesce(cors_rule.value.expose_headers, [])
+      max_age_seconds = coalesce(cors_rule.value.max_age_seconds[0], 3000)
     }
   }
 
@@ -107,13 +106,13 @@ resource "aws_s3_bucket" "this" {
   tags = merge(
     var.tags,
     {
-      Name            = local.bucket_name,
-      Created_By      = data.aws_caller_identity.current.user_id
-      Creator_ARN     = data.aws_caller_identity.current.arn
-      Creation_Date   = timestamp()
-      Updated_On      = timestamp()
-      Encrypted       = format("%s", var.encryption)
-      CMK_ARN         = local.sse_algorithm != "AES256" ? local.sse_algorithm : "AWS KMS-AES256 aws/s3 Default Managed Key"
+      Name          = local.bucket_name,
+      Created_By    = data.aws_caller_identity.current.user_id
+      Creator_ARN   = data.aws_caller_identity.current.arn
+      Creation_Date = timestamp()
+      Updated_On    = timestamp()
+      Encrypted     = format("%s", var.encryption)
+      CMK_ARN       = local.sse_algorithm != "AES256" ? local.sse_algorithm : "AWS KMS-AES256 aws/s3 Default Managed Key"
     }
   )
 
@@ -122,8 +121,8 @@ resource "aws_s3_bucket" "this" {
   }
 
   // TODO:
-    # LifeCycle Policies
-    # Replication Configuration
+  # LifeCycle Policies
+  # Replication Configuration
 }
 
 #######################
@@ -132,9 +131,9 @@ resource "aws_s3_bucket" "this" {
 // Construct the S3 Bucket Policy to deny the unencrypted transport of objects
 data "aws_iam_policy_document" "encryption_in_transit" {
   statement {
-    sid     = "DenyNonSecureTransport"
+    sid = "DenyNonSecureTransport"
 
-    effect  = "Deny"
+    effect = "Deny"
 
     actions = [
       "s3:*"
@@ -151,10 +150,10 @@ data "aws_iam_policy_document" "encryption_in_transit" {
     }
 
     condition {
-      test       = "Bool"
-      variable   = "aws:SecureTransport"
+      test     = "Bool"
+      variable = "aws:SecureTransport"
 
-      values     = [
+      values = [
         "false"
       ]
     }
@@ -164,8 +163,8 @@ data "aws_iam_policy_document" "encryption_in_transit" {
 // S3 Read Only Access Policy
 data "aws_iam_policy_document" "read_access" {
   statement {
-    sid     = "ReadAccess"
-    effect  = "Allow"
+    sid    = "ReadAccess"
+    effect = "Allow"
     actions = [
       "s3:HeadBucket",
       "s3:ListBucket*",
@@ -188,7 +187,7 @@ data "aws_iam_policy_document" "read_access" {
 
     principals {
       type        = "AWS"
-      identifiers = length(var.var.read_access) > 0 ? var.var.read_access : ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+      identifiers = length(var.read_access) > 0 ? var.read_access : ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
     }
   }
 }
@@ -196,8 +195,8 @@ data "aws_iam_policy_document" "read_access" {
 // S3 Write Access Policy
 data "aws_iam_policy_document" "write_access" {
   statement {
-    sid     = "WriteAccess"
-    effect  = "Allow"
+    sid    = "WriteAccess"
+    effect = "Allow"
     actions = [
       "s3:AbortMultipartUpload",
       "s3:PutObject",
@@ -214,7 +213,7 @@ data "aws_iam_policy_document" "write_access" {
 
     principals {
       type        = "AWS"
-      identifiers = length(var.var.write_access) > 0 ? var.var.write_access : ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+      identifiers = length(var.write_access) > 0 ? var.write_access : ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
     }
   }
 }

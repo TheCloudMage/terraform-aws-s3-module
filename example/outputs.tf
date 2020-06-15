@@ -10,7 +10,7 @@ output "arn" {
 }
 
 output "bucket_domain_name" {
-  value = module.defaults.domain_name
+  value = module.defaults.bucket_domain_name
 }
 
 output "bucket_regional_domain_name" {
