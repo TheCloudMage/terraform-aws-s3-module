@@ -143,9 +143,9 @@ variable "policy" {
 }
 
 variable "policy_override" {
-  type        = string
+  type        = bool
   description = "Flag to use the custom provided policy (data iam_policy_document) only, without appending to the default policy. Policy passed is policy applied."
-  default     = null
+  default     = false
 }
 
 // Disable Module
