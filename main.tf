@@ -91,7 +91,7 @@ resource "aws_s3_bucket" "this" {
 
   // CORS Configuration
   dynamic "cors_rule" {
-    for_each = keys(var.cors_rule) ? toset([1]) : toset([])
+    for_each = length(keys(var.cors_rule)) == 0 ? toset([]) : toset([var.cors_rule])
     content {
       allowed_headers = coalesce(cors_rule.value.allowed_headers, [])
       allowed_methods = coalesce(cors_rule.value.allowed_methods, [])
