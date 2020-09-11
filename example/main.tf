@@ -10,7 +10,7 @@ provider "aws" {
 
 # Test Bucket Policy
 data "aws_iam_policy_document" "test_policy" {
-  sid     = "CustomPolicy"
+  sid    = "CustomPolicy"
   effect = "Allow"
 
   statement {
