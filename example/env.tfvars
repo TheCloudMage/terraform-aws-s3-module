@@ -18,20 +18,20 @@ bucket = "test-bucket-20200825"
 # They will not need to be included in a project root module variables.tf #
 # file unless a non-default value needs be assigned to the variable.      #
 ###########################################################################
-region                 = "us-east-1"
-bucket_prefix          = []
-bucket_suffix          = []
-versioning             = false
-mfa_delete             = false
-encryption             = false
-kms_master_key_id      = "AES256"
-acl                    = "private"
-logging_bucket         = null
-static_hosting         = false
-index_document         = "index.html"
-error_document         = "error.html"
-read_access            = []
-write_access           = []
+region            = "us-east-1"
+bucket_prefix     = []
+bucket_suffix     = []
+versioning        = false
+mfa_delete        = false
+encryption        = false
+kms_master_key_id = "AES256"
+acl               = "private"
+logging_bucket    = null
+static_hosting    = false
+index_document    = "index.html"
+error_document    = "error.html"
+read_access       = []
+write_access      = []
 # custom_policy          = "null"
 # disable_policy_autogen = false
 
