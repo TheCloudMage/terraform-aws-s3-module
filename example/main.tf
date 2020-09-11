@@ -10,6 +10,9 @@ provider "aws" {
 
 # Test Bucket Policy
 data "aws_iam_policy_document" "test_policy" {
+  sid     = "CustomPolicy"
+  effect = "Allow"
+
   statement {
     actions = [
       "s3:DeleteObject",
@@ -24,7 +27,7 @@ data "aws_iam_policy_document" "test_policy" {
 
     resources = [
       "%BUCKET%",
-      "%BUCKET%/*",
+      "%BUCKET%/*"
     ]
   }
 }
