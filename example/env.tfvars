@@ -32,8 +32,8 @@ index_document         = "index.html"
 error_document         = "error.html"
 read_access            = []
 write_access           = []
-custom_policy          = null
-disable_policy_autogen = null
+# custom_policy          = "null"
+# disable_policy_autogen = false
 
 cors_rule = {
   allowed_headers = ["*"]

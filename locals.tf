@@ -28,4 +28,7 @@ EOS
 
   // Set Encryption Setting
   sse_algorithm = var.kms_master_key_id == "AES256" ? "AES256" : "aws:kms"
+
+  // Interpolate the bucket name for "%BUCKET%"" in the custom policy
+  custom_policy = var.custom_policy != null ? replace(var.custom_policy, "%BUCKET%", "arn:aws:s3:::${local.bucket_name}") : null
 }

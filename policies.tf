@@ -105,11 +105,12 @@ data "aws_iam_policy_document" "write_policy" {
 }
 
 data "aws_iam_policy_document" "this" {
-  source_json   = data.aws_iam_policy_document.write_policy.json
-  override_json = var.custom_policy != null ? replace(var.custom_policy, "%BUCKET%", aws_s3_bucket.this.arn) : null
+  # source_json   = var.custom_policy != "null" ? replace(var.custom_policy, "%BUCKET%", aws_s3_bucket.this.arn) : data.aws_iam_policy_document.write_policy.json
+  source_json = data.aws_iam_policy_document.write_policy.json
+  override_json = local.custom_policy != null ? local.custom_policy : null
 }
 
 resource "aws_s3_bucket_policy" "this" {
   bucket = aws_s3_bucket.this.id
-  policy = var.disable_policy_autogen ? replace(var.custom_policy, "%BUCKET%", aws_s3_bucket.this.arn) : data.aws_iam_policy_document.this.json
+  policy = var.disable_policy_autogen && local.custom_policy != null ? local.custom_policy : data.aws_iam_policy_document.this.json
 }
