@@ -104,16 +104,12 @@ data "aws_iam_policy_document" "write_policy" {
   override_json = length(var.write_access) > 0 ? data.aws_iam_policy_document.write_access.json : null
 }
 
-data "aws_iam_policy_document" "custom_policy" {
+data "aws_iam_policy_document" "this" {
   source_json   = data.aws_iam_policy_document.write_policy.json
   override_json = var.custom_policy != null ? replace(var.custom_policy, "%BUCKET%", aws_s3_bucket.this.arn) : null
 }
 
-data "aws_iam_policy_document" "this" {
-  source_json   = var.disable_policy_autogen ? replace(var.custom_policy, "%BUCKET%", aws_s3_bucket.this.arn) : data.aws_iam_policy_document.custom_policy.json
-}
-
 resource "aws_s3_bucket_policy" "this" {
   bucket = aws_s3_bucket.this.id
-  policy = data.aws_iam_policy_document.this.json
+  policy = var.disable_policy_autogen ? replace(var.custom_policy, "%BUCKET%", aws_s3_bucket.this.arn) : data.aws_iam_policy_document.this.json
 }
