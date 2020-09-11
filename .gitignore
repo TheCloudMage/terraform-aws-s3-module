@@ -1,32 +1,154 @@
 ###
-### Core ignore list, tuned for Winders/VS/.NET stuff
+### Core Git Ignore List
 ###
 
+# vs code things
+.vscode/
 
-# ignore folders
+# Hasicorp Packer
 .kitchen/logs
 packer/manifests/*
 packer/builds/*
 packer/outputs/*
 
-# include some files
+# Include readme files
 !builds/README.md
 !outputs/README.md
 !packer/manifests/README.md
 
-# chef stuff
-# Look for chef-specific .gitignore in each cookbook folder
-
-# vs code things
-.vscode/
-
-# terraform stuff
+# Hashicorp Terraform
 **/.terraform/*
 *.tfstate
 *.tfstate.*
 crash.log
 
-# chef stuff
+# Python compiled files
+__pycache__/
+__pypackages__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# NuGet Packages
+*.nupkg
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+**/packages/*
+
+# Exception for build/, used as MSBuild target.
+!**/packages/build/
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Pip Logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask:
+instance/
+.webassets-cache
+
+# Scrapy:
+.scrapy
+
+# Sphinx Documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# PyEnv
+.python-version
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath
+*.sage.py
+
+# Spyder Project Settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# MKdocs Documentation
+/site
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre
+.pyre/
+
+# Chef
 **/.chef/*
 
 # User-specific files
@@ -34,23 +156,12 @@ crash.log
 *.user
 *.sln.docstates
 
-# Build results
+# Build Results
 [Dd]ebug/
 [Rr]elease/
 x64/
 [Bb]in/
 [Oo]bj/
-# build folder is nowadays used for build scripts and should not be ignored
-#build/
-
-# NuGet Packages
-*.nupkg
-# The packages folder can be ignored because of Package Restore
-**/packages/*
-# except build/, which is used as an MSBuild target.
-!**/packages/build/
-# Uncomment if necessary however generally it will be regenerated when needed
-#!**/packages/repositories.config
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
@@ -80,41 +191,37 @@ x64/
 *.log
 *.scc
 
-# OS generated files #
+# OS Files
 .DS_Store*
 Icon?
 
-# =========================
-# Windows detritus
-# =========================
-
-# Windows image file caches
+# Windows Image Caches
 Thumbs.db
 ehthumbs.db
 
-# Folder config file
+# Folder Config File
 Desktop.ini
 
-# Recycle Bin used on file shares
+# Recycle Bin
 $RECYCLE.BIN/
 
-# Mac desktop service store files
+# Mac Desktop Store Files
 .DS_Store
 
-# SASS Compiler cache
+# SASS Compiler Cache
 .sass-cache
 
-# Visual Studio temp something
+# Visual Studio
 .vs/
 
-# dotnet stuff
+# Dotnet
 project.lock.json
 
-# Output folder used by Webpack or other FE stuff
+# Webpack Output Folder
 **/node_modules/*
 **/wwwroot/*
 
-# SpecFlow specific
+# SpecFlow
 *.feature.cs
 *.feature.xlsx.*
 *.Specs_*.html
