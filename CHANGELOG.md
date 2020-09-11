@@ -9,6 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <br>
 
+## 1.4.0 - [2020-08-25]
+
+### Added
+
+### Changed
+
+- renamed policy variable to `custom_policy`
+- renamed policy override to `disable_rw_policy`
+- separeated module logic into multiple files for easier future enhancements.
+- removed count from each resource
+- removed index from resource outputs as count is no longer being used.
+
+### Removed
+
+- Enable variable removed, as of TF v.13, modules now support count, for each, etc, the enable variable to disable the module is redundant with this addition.
+
+<br><br>
+
 ## v1.3.0 - [2020-06-15]
 
 ### Added

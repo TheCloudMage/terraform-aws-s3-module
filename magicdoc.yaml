@@ -478,12 +478,12 @@ Variables:
                 Description:
                 Notes:
                 Images:
-        policy:
+        custom_policy:
             ExampleValue: Terraform-Data-Resource
             DefaultValue: null
             GeneralDetails:
                 Description: >-
-                    Flag to use the custom provided policy (data iam_policy_document) only, without appending to the default policy. Policy passed is policy applied. A policy (data iam_policy_document) to merge with the bucket policy. Use %BUCKET% for bucket name. The policy should be constructed as a terraform data source, and referenced accordingly. Using the example below, the resulting bucket policy will be a collection of the encryption in transit policy statement, any read_access policy statement constructed depending on if values were supplied to the variable or not, any write_access policy statement again constructed depending on if values were supplied to the variable or not and the custom policy referenced in the data object:
+                    Flag to only use the custom provided policy in the form of a terraform data iam_policy_document resource, without appending to the default policy. Use %BUCKET% for bucket name. The policy should be constructed as a terraform data source, and referenced accordingly. Using the example below, the resulting bucket policy will be a collection of the encryption in transit policy statement, any read_access policy statement constructed depending on if values were supplied to the variable or not, any write_access policy statement again constructed depending on if values were supplied to the variable or not and the custom policy referenced in the data object:
 
                     <br>
 
@@ -550,12 +550,12 @@ Variables:
                 Description:
                 Notes:
                 Images:
-        policy_override:
+        disable_rw_policy:
             ExampleValue: Example Value
             DefaultValue: null
             GeneralDetails:
                 Description: >-
-                    A policy (data iam_policy_document) to merge with the bucket policy. Use %BUCKET% for bucket name. The policy should be constructed as a terraform data source, and referenced accordingly. Using the example below, the resulting bucket policy will be a collection of the encryption in transit policy statement, any read_access policy statement constructed depending on if values were supplied to the variable or not, any write_access policy statement again constructed depending on if values were supplied to the variable or not and the custom policy referenced in the data object:
+                    Setting this optional flag to true will disable any automatically generated policies and will ONLY use the custom_policy. The read_access and write_access vars will be ignored. Use %BUCKET% for bucket name. The policy should be constructed as a terraform data source, and referenced accordingly. Using the example below, the resulting bucket policy will be a collection of the encryption in transit policy statement, any read_access policy statement constructed depending on if values were supplied to the variable or not, any write_access policy statement again constructed depending on if values were supplied to the variable or not and the custom policy referenced in the data object:
 
                     <br>
 
@@ -607,23 +607,4 @@ Variables:
                 Description:
                 Notes:
                 Images:
-        module_enabled:
-            ExampleValue: True
-            DefaultValue: True
-            GeneralDetails:
-                Description: >-
-                    Module variable that can be used to disable the module from deploying any resources if called from a multi-account/environment root project. Defaults to true, value of false will effectively turn the module off.
-                Notes:
-                Images:
-            VariableDetails:
-                Description:
-                Notes:
-                Images:
-            UsageDetails:
-                Description:
-                Notes:
-                Images:
-            Additional:
-                Description:
-                Notes:
-                Images:
+

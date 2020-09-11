@@ -101,23 +101,12 @@ variable "error_document" {
   default     = "error.html"
 }
 
-# routing_rules = <<EOF
-# [{
-#     "Condition": {
-#         "KeyPrefixEquals": "docs/"
-#     },
-#     "Redirect": {
-#         "ReplaceKeyPrefixWith": "documents/"
-#     }
-# }]
-# EOF
-
 variable "cors_rule" {
   type        = map
   description = "Cross Origin Resource Sharing ruleset to apply to the bucket"
   default = {
     allowed_headers = ["*"]
-    allowed_methods = ["PUT", "POST"]
+    allowed_methods = ["GET", "PUT", "POST"]
     allowed_origins = ["*"]
     expose_headers  = []
     max_age_seconds = [3000]
@@ -129,7 +118,7 @@ variable "tags" {
   description = "Specify any tags that should be added to the S3 bucket being provisioned."
   default = {
     Provisioned_By    = "Terraform"
-    Module_GitHub_URL = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+    Module_GitHub_URL = "https://github.com/TheCloudMage/TF-AWS-S3-Module.git"
   }
 }
 
@@ -146,21 +135,14 @@ variable "write_access" {
   default     = []
 }
 
-variable "policy" {
+variable "custom_policy" {
   type        = string
-  description = "A policy (data iam_policy_document) to merge with the bucket policy. Use %BUCKET% for bucket name."
+  description = "A bucket policy in the form of a data iam_policy_document. Use %BUCKET% for bucket name. This policy will be added to the read_access/write_access policy."
   default     = null
 }
 
-variable "policy_override" {
+variable "disable_rw_policy" {
   type        = bool
-  description = "Flag to use the custom provided policy (data iam_policy_document) only, without appending to the default policy. Policy passed is policy applied."
+  description = "Setting this optional flag to true will disable any automatically generated policies and will ONLY use the custom_policy. The read_access and write_access vars will be ignored."
   default     = false
-}
-
-// Disable Module
-variable "module_enabled" {
-  type        = bool
-  description = "Module variable that can be used to disable the module from deploying any resources if called from a multi-account/environment root project. Defaults to true, value of false will effectively turn the module off."
-  default     = true
 }

@@ -5,7 +5,7 @@
 ###########################################################################
 variable "bucket" {
   type        = string
-  description = "The base name of the S3 bucket that is being requested. This base name can be made unique by specifing values for either the bucket_prefix, the bucket_suffix, or both module variables."
+  description = "The base name that will be given to the S3 bucket. This base name can be made unique by specifing values for bucket_prefix, bucket_suffix, or both."
 }
 
 ###########################################################################
@@ -21,6 +21,7 @@ variable "region" {
   default     = "us-east-1"
 }
 
+// Naming Options
 variable "bucket_prefix" {
   type        = list
   description = "A prefix list that will be added to the start of the bucket name. For example if bucket_prefix=['test'], then the bucket will be named 'test-$${bucket}'. This module will also look for the keywords 'region_prefix' and 'account_prefix' and will substitute the current region, or account_id within the module as in the example: bucket_prefix=['test', 'region_prefix', 'account_prefix'], resulting in the bucket 'test-us-east-1-1234567890101-$${bucket}'. If left blank no prefix will be added."
@@ -33,7 +34,7 @@ variable "bucket_suffix" {
   default     = []
 }
 
-// Enable Versioning Options
+// Versioning Options
 variable "versioning" {
   type        = bool
   description = "Flag to enable bucket object versioning."
@@ -46,7 +47,7 @@ variable "mfa_delete" {
   default     = false
 }
 
-// Enable Encryption Options
+// Encryption Options
 variable "encryption" {
   type        = bool
   description = "Flag to enable bucket object encryption."
@@ -65,14 +66,14 @@ variable "acl" {
   default     = "private"
 }
 
-// Enable Bucket Logging
+// Logging Options
 variable "logging_bucket" {
   type        = string
-  description = "The base name of the S3 bucket that will be used as the log bucket for the provisioned s3 buckets access logs"
+  description = "The base name of an S3 bucket designated as the log bucket for the provisioned s3 buckets access logs"
   default     = null
 }
 
-// Enable Static Hosting Options
+// Static Hosting Options
 variable "static_hosting" {
   type        = bool
   description = "Flag that can be set to turn on static hosting within a bucket."
@@ -91,39 +92,19 @@ variable "error_document" {
   default     = "error.html"
 }
 
-# routing_rules = <<EOF
-# [{
-#     "Condition": {
-#         "KeyPrefixEquals": "docs/"
-#     },
-#     "Redirect": {
-#         "ReplaceKeyPrefixWith": "documents/"
-#     }
-# }]
-# EOF
-
 variable "cors_rule" {
   type        = map
   description = "Cross Origin Resource Sharing ruleset to apply to the bucket"
   default = {
     allowed_headers = ["*"]
-    allowed_methods = ["PUT", "POST"]
+    allowed_methods = ["GET", "PUT", "POST"]
     allowed_origins = ["*"]
     expose_headers  = []
     max_age_seconds = [3000]
   }
 }
 
-variable "tags" {
-  type        = map
-  description = "Specify any tags that should be added to the S3 bucket being provisioned."
-  default = {
-    Provisioned_By    = "Terraform"
-    Module_GitHub_URL = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
-  }
-}
-
-// Customize Bucket Policy
+// Custom Bucket Policy Options
 variable "read_access" {
   type        = list(string)
   description = "List of users/roles that will be granted permissions to LIST, DESCRIBE, and GET objects from the provisioned S3 bucket."
@@ -136,21 +117,24 @@ variable "write_access" {
   default     = []
 }
 
-variable "policy" {
+variable "custom_policy" {
   type        = string
-  description = "A policy (data iam_policy_document) to merge with the bucket policy. Use %BUCKET% for bucket name."
+  description = "A bucket policy in the form of a data iam_policy_document. Use %BUCKET% for bucket name. This policy will be added to the read_access/write_access policy."
   default     = null
 }
 
-variable "policy_override" {
+variable "disable_rw_policy" {
   type        = bool
-  description = "Flag to use the custom provided policy (data iam_policy_document) only, without appending to the default policy. Policy passed is policy applied."
+  description = "Setting this optional flag to true will disable any automatically generated policies and will ONLY use the custom_policy. The read_access and write_access vars will be ignored."
   default     = false
 }
 
-// Disable Module
-variable "module_enabled" {
-  type        = bool
-  description = "Module variable that can be used to disable the module from deploying any resources if called from a multi-account/environment root project. Defaults to true, value of false will effectively turn the module off."
-  default     = true
+// Tags
+variable "tags" {
+  type        = map
+  description = "Specify any tags that should be added to the S3 bucket being provisioned."
+  default = {
+    Provisioned_By    = "Terraform"
+    Module_GitHub_URL = "https://github.com/TheCloudMage/TF-AWS-S3-Module.git"
+  }
 }

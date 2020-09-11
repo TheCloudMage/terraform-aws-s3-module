@@ -40,9 +40,8 @@
   * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*tags*]('')
   * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*read_access*]('')
   * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*write_access*]('')
-  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*policy*]('')
-  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*policy_override*]('')
-  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*module_enabled*]('')
+  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*custom_policy*]('')
+  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*disable_rw_policy*]('')
 * [Module Example Usage](#module-example-usage)
 * [Variables and TFVar Reference File Templates](#variables-and-tfvar-reference-file-templates)
 * [Module Outputs Reference File Templates](#module-outputs-reference-file-templates)
@@ -114,9 +113,8 @@ module "example" {
     # error_document    = "error.html"
     # read_access       = []
     # write_access      = []
-    # policy            = null
-    # policy_override   = null
-    # module_enabled    = true
+    # custom_policy     = null
+    # disable_rw_policy = null
 
     # cors_rule = {
     #     allowed_headers = ["*"]
@@ -467,7 +465,7 @@ variable "encryption" {
 
 ### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [encryption](encryption) module variable within a projects root main.tf file
 
-Setting the `encryption` option to true will automatically add the following bucket policy to the bucket at the time of provisioning unless policy_override is set:
+Setting the `encryption` option to true will automatically add the following bucket policy to the bucket at the time of provisioning unless disable_rw_policy is set:
 
 <br><br>
 
@@ -959,11 +957,11 @@ module "example" {
 
 <br><br><br>
 
-## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [policy](tfvar.name)
+## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [custom_policy](tfvar.name)
 
 <br>
 
-Flag to use the custom provided policy (data iam_policy_document) only, without appending to the default policy. Policy passed is policy applied. A policy (data iam_policy_document) to merge with the bucket policy. Use %BUCKET% for bucket name. The policy should be constructed as a terraform data source, and referenced accordingly. Using the example below, the resulting bucket policy will be a collection of the encryption in transit policy statement, any read_access policy statement constructed depending on if values were supplied to the variable or not, any write_access policy statement again constructed depending on if values were supplied to the variable or not and the custom policy referenced in the data object:
+Flag to only use the custom provided policy in the form of a terraform data iam_policy_document resource, without appending to the default policy. Use %BUCKET% for bucket name. The policy should be constructed as a terraform data source, and referenced accordingly. Using the example below, the resulting bucket policy will be a collection of the encryption in transit policy statement, any read_access policy statement constructed depending on if values were supplied to the variable or not, any write_access policy statement again constructed depending on if values were supplied to the variable or not and the custom policy referenced in the data object:
 
 <br>
 
@@ -1011,9 +1009,9 @@ data "aws_iam_policy_document" "dev_qa_bucket_policy" {
 module "bucket" {
     source  = "../"
 
-    bucket = var.bucket
-    region = local.region
-    policy = data.aws_iam_policy_document.dev_qa_bucket_policy.json
+    bucket        = var.bucket
+    region        = local.region
+    custom_policy = data.aws_iam_policy_document.dev_qa_bucket_policy.json
 }
 ```
 
@@ -1022,16 +1020,16 @@ module "bucket" {
 ### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [policy](policy) within the modules variables.tf file
 
 ```terraform
-variable "policy" {
+variable "custom_policy" {
     type        = string
-    description = "A policy (data iam_policy_document) to merge with the bucket policy. Use %BUCKET% for bucket name."
+    description = "A bucket policy in the form of a data iam_policy_document. Use %BUCKET% for bucket name. This policy will be added to the read_access/write_access policy."
     default     = null
 }
 ```
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [policy](policy) module variable within a projects root main.tf file
+### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [custom_policy](custom_policy) module variable within a projects root main.tf file
 
 ```terraform
 module "example" {
@@ -1041,17 +1039,17 @@ module "example" {
     bucket = "test-backup-bucket"
 
     // Optional Variables with module defined default values assigned
-    policy = data.aws_iam_policy_document.dev_qa_bucket_policy.json
+    custom_policy = data.aws_iam_policy_document.dev_qa_bucket_policy.json
 }
 ```
 
 <br><br><br>
 
-## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [policy_override](tfvar.name)
+## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [disable_rw_policy](tfvar.name)
 
 <br>
 
-A policy (data iam_policy_document) to merge with the bucket policy. Use %BUCKET% for bucket name. The policy should be constructed as a terraform data source, and referenced accordingly. Using the example below, the resulting bucket policy will be a collection of the encryption in transit policy statement, any read_access policy statement constructed depending on if values were supplied to the variable or not, any write_access policy statement again constructed depending on if values were supplied to the variable or not and the custom policy referenced in the data object:
+Setting this optional flag to true will disable any automatically generated policies and will ONLY use the custom_policy. The read_access and write_access vars will be ignored. Use %BUCKET% for bucket name. The policy should be constructed as a terraform data source, and referenced accordingly. Using the example below, the resulting bucket policy will be a collection of the encryption in transit policy statement, any read_access policy statement constructed depending on if values were supplied to the variable or not, any write_access policy statement again constructed depending on if values were supplied to the variable or not and the custom policy referenced in the data object:
 
 <br>
 
@@ -1083,28 +1081,28 @@ data "aws_iam_policy_document" "dev_qa_bucket_policy" {
 module "bucket" {
     source  = "../"
 
-    bucket          = var.bucket
-    region          = local.region
-    policy          = data.aws_iam_policy_document.dev_qa_bucket_policy.json
-    policy_override = true
+    bucket            = var.bucket
+    region            = local.region
+    custom_policy     = data.aws_iam_policy_document.dev_qa_bucket_policy.json
+    disable_rw_policy = true
 }
 ```
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [policy_override](policy_override) within the modules variables.tf file
+### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [disable_rw_policy](disable_rw_policy) within the modules variables.tf file
 
 ```terraform
-variable "policy_override" {
+variable "disable_rw_policy" {
     type        = string
-    description = "Flag to use the custom provided policy (data iam_policy_document) only, without appending to the default policy. Policy passed is policy applied."
+    description = "Setting this optional flag to true will disable any automatically generated policies and will ONLY use the custom_policy. The read_access and write_access vars will be ignored."
     default     = null
 }
 ```
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [policy_override](policy_override) module variable within a projects root main.tf file
+### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [disable_rw_policy](disable_rw_policy) module variable within a projects root main.tf file
 
 ```terraform
 module "example" {
@@ -1114,44 +1112,8 @@ module "example" {
     bucket = "test-backup-bucket"
 
     // Optional Variables with module defined default values assigned
-    policy          = data.aws_iam_policy_document.dev_qa_bucket_policy.json
-    policy_override = true
-}
-```
-
-<br><br><br>
-
-## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [module_enabled](tfvar.name)
-
-<br>
-
-Module variable that can be used to disable the module from deploying any resources if called from a multi-account/environment root project. Defaults to true, value of false will effectively turn the module off.
-
-<br><br>
-
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [module_enabled](module_enabled) within the modules variables.tf file
-
-```terraform
-variable "module_enabled" {
-    type        = bool
-    description = "Module variable that can be used to disable the module from deploying any resources if called from a multi-account/environment root project. Defaults to true, value of false will effectively turn the module off."
-    default     = true
-}
-```
-
-<br><br>
-
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [module_enabled](module_enabled) module variable within a projects root main.tf file
-
-```terraform
-module "example" {
-    source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.3.0"
-
-    // Required Variables
-    bucket = "test-backup-bucket"
-
-    // Optional Variables with module defined default values assigned
-    module_enabled  = false
+    custom_policy     = data.aws_iam_policy_document.dev_qa_bucket_policy.json
+    disable_rw_policy = true
 }
 ```
 
@@ -1260,20 +1222,15 @@ variable "write_access" {
     description = "List of users/roles that will be granted permissions to PUT, and DELETE objects to/from the provisioned S3 bucket."
     default     = []
 }
-variable "policy" {
+variable "custom_policy" {
     type        = string
-    description = "A policy (data iam_policy_document) to merge with the bucket policy. Use %BUCKET% for bucket name."
+    description = "A bucket policy in the form of a data iam_policy_document. Use %BUCKET% for bucket name. This policy will be added to the read_access/write_access policy."
     default     = null
 }
-variable "policy_override" {
+variable "disable_rw_policy" {
     type        = string
-    description = "Flag to use the custom provided policy (data iam_policy_document) only, without appending to the default policy. Policy passed is policy applied."
+    description = "Setting this optional flag to true will disable any automatically generated policies and will ONLY use the custom_policy. The read_access and write_access vars will be ignored."
     default     = null
-}
-variable "module_enabled" {
-    type        = bool
-    description = "Module variable that can be used to disable the module from deploying any resources if called from a multi-account/environment root project. Defaults to true, value of false will effectively turn the module off."
-    default     = true
 }
 
 variable "cors_rule" {
@@ -1292,7 +1249,7 @@ variable "tags" {
     description = "Specify any tags that should be added to the S3 bucket being provisioned."
     default     = {
         Provisioned_By = "Terraform"
-        Module_GitHub_URL = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+        Module_GitHub_URL = "https://github.com/TheCloudMage/TF-AWS-S3-Module.git"
     }
 }
 ```
@@ -1331,9 +1288,8 @@ bucket = "Value Required"
 # error_document    = "error.html"
 # read_access       = []
 # write_access      = []
-# policy            = null
-# policy_override   = null
-# module_enabled    = true
+# custom_policy     = null
+# disable_rw_policy = false
 
 # cors_rule = {
 #    allowed_headers = ["*"]

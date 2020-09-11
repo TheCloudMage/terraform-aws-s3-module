@@ -8,7 +8,7 @@
 #-------------------------------------------------------------------------#
 # The following variables require consumer defined values to be provided. #
 ###########################################################################
-bucket = "testing-bucket-demo-422020"
+bucket = "test-bucket-20200825"
 
 
 ###########################################################################
@@ -32,9 +32,8 @@ index_document    = "index.html"
 error_document    = "error.html"
 read_access       = []
 write_access      = []
-policy            = null
-policy_override   = null
-module_enabled    = true
+custom_policy     = null
+disable_rw_policy = null
 
 cors_rule = {
   allowed_headers = ["*"]
@@ -46,5 +45,5 @@ cors_rule = {
 
 tags = {
   Provisioned_By    = "Terraform"
-  Module_GitHub_URL = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+  Module_GitHub_URL = "https://github.com/TheCloudMage/TF-AWS-S3-Module.git"
 }
