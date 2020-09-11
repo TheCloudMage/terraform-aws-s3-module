@@ -41,7 +41,7 @@
   * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*read_access*]('')
   * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*write_access*]('')
   * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*custom_policy*]('')
-  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*disable_rw_policy*]('')
+  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*disable_policy_autogen*]('')
 * [Module Example Usage](#module-example-usage)
 * [Variables and TFVar Reference File Templates](#variables-and-tfvar-reference-file-templates)
 * [Module Outputs Reference File Templates](#module-outputs-reference-file-templates)
@@ -114,7 +114,7 @@ module "example" {
     # read_access       = []
     # write_access      = []
     # custom_policy     = null
-    # disable_rw_policy = null
+    # disable_policy_autogen = null
 
     # cors_rule = {
     #     allowed_headers = ["*"]
@@ -465,7 +465,7 @@ variable "encryption" {
 
 ### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [encryption](encryption) module variable within a projects root main.tf file
 
-Setting the `encryption` option to true will automatically add the following bucket policy to the bucket at the time of provisioning unless disable_rw_policy is set:
+Setting the `encryption` option to true will automatically add the following bucket policy to the bucket at the time of provisioning unless disable_policy_autogen is set:
 
 <br><br>
 
@@ -1045,7 +1045,7 @@ module "example" {
 
 <br><br><br>
 
-## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [disable_rw_policy](tfvar.name)
+## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [disable_policy_autogen](tfvar.name)
 
 <br>
 
@@ -1084,16 +1084,16 @@ module "bucket" {
     bucket            = var.bucket
     region            = local.region
     custom_policy     = data.aws_iam_policy_document.dev_qa_bucket_policy.json
-    disable_rw_policy = true
+    disable_policy_autogen = true
 }
 ```
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [disable_rw_policy](disable_rw_policy) within the modules variables.tf file
+### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [disable_policy_autogen](disable_policy_autogen) within the modules variables.tf file
 
 ```terraform
-variable "disable_rw_policy" {
+variable "disable_policy_autogen" {
     type        = string
     description = "Setting this optional flag to true will disable any automatically generated policies and will ONLY use the custom_policy. The read_access and write_access vars will be ignored."
     default     = null
@@ -1102,7 +1102,7 @@ variable "disable_rw_policy" {
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [disable_rw_policy](disable_rw_policy) module variable within a projects root main.tf file
+### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [disable_policy_autogen](disable_policy_autogen) module variable within a projects root main.tf file
 
 ```terraform
 module "example" {
@@ -1113,7 +1113,7 @@ module "example" {
 
     // Optional Variables with module defined default values assigned
     custom_policy     = data.aws_iam_policy_document.dev_qa_bucket_policy.json
-    disable_rw_policy = true
+    disable_policy_autogen = true
 }
 ```
 
@@ -1227,7 +1227,7 @@ variable "custom_policy" {
     description = "A bucket policy in the form of a data iam_policy_document. Use %BUCKET% for bucket name. This policy will be added to the read_access/write_access policy."
     default     = null
 }
-variable "disable_rw_policy" {
+variable "disable_policy_autogen" {
     type        = string
     description = "Setting this optional flag to true will disable any automatically generated policies and will ONLY use the custom_policy. The read_access and write_access vars will be ignored."
     default     = null
@@ -1289,7 +1289,7 @@ bucket = "Value Required"
 # read_access       = []
 # write_access      = []
 # custom_policy     = null
-# disable_rw_policy = false
+# disable_policy_autogen = false
 
 # cors_rule = {
 #    allowed_headers = ["*"]

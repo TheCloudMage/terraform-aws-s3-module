@@ -3,6 +3,7 @@ module "hosting" {
   source = "../"
 
   bucket         = var.bucket
+  acl            = "public-read"
   static_hosting = true
   index_document = "index.py"
   error_document = "error.py"

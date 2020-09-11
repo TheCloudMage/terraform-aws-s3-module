@@ -123,7 +123,7 @@ variable "custom_policy" {
   default     = null
 }
 
-variable "disable_rw_policy" {
+variable "disable_policy_autogen" {
   type        = bool
   description = "Setting this optional flag to true will disable any automatically generated policies and will ONLY use the custom_policy. The read_access and write_access vars will be ignored."
   default     = false

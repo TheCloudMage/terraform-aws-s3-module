@@ -1,5 +1,5 @@
 // Bucket Policy Tests
-# Read Only
+# Read Only => Expect to apply transport and read only policy statements
 module "read_policy" {
   source = "../"
 
@@ -8,7 +8,7 @@ module "read_policy" {
   read_access   = ["arn:aws:iam::123456789101:role/AWS-S3-ReadOnly-Role"]
 }
 
-# Write Only
+# Write Only => Expect to apply transport and write policy statements
 module "write_policy" {
   source = "../"
 
@@ -18,7 +18,7 @@ module "write_policy" {
   write_access  = ["arn:aws:iam::123456789101:role/AWS-S3-Write-Role"]
 }
 
-# Custom Policy
+# Custom Policy => Expect to apply transport and custom policy statements
 module "custom_policy" {
   source = "../"
 
@@ -28,7 +28,7 @@ module "custom_policy" {
   custom_policy = data.aws_iam_policy_document.test_policy.json
 }
 
-# Write/Custom
+# Write/Custom => Expect to apply transport, write and custom policy statements
 module "write_custom_policy" {
   source = "../"
 
@@ -40,7 +40,7 @@ module "write_custom_policy" {
   custom_policy = data.aws_iam_policy_document.test_policy.json
 }
 
-# Combined
+# Combined => Expect to apply transport, read onl, write, and custom policy statements
 module "combined_policy" {
   source = "../"
 
@@ -53,14 +53,14 @@ module "combined_policy" {
   custom_policy = data.aws_iam_policy_document.test_policy.json
 }
 
-# Custom Only
+# Custom Only => Expect to apply only custom policy statement
 module "standalone_custom_policy" {
   source = "../"
 
-  bucket            = var.bucket
-  region            = "us-west-2"
-  bucket_prefix     = ["account_prefix", "custom"]
-  write_access      = ["arn:aws:iam::123456789101:role/AWS-S3-Write-Role"]
-  custom_policy     = data.aws_iam_policy_document.test_policy.json
-  disable_rw_policy = true
+  bucket                 = var.bucket
+  region                 = "us-west-2"
+  bucket_prefix          = ["account_prefix", "custom"]
+  write_access           = ["arn:aws:iam::123456789101:role/AWS-S3-Write-Role"]
+  custom_policy          = data.aws_iam_policy_document.test_policy.json
+  disable_policy_autogen = true
 }

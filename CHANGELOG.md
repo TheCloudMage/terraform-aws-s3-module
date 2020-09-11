@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - renamed policy variable to `custom_policy`
-- renamed policy override to `disable_rw_policy`
+- renamed policy override to `disable_policy_autogen`
 - separeated module logic into multiple files for easier future enhancements.
 - removed count from each resource
 - removed index from resource outputs as count is no longer being used.

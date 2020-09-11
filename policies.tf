@@ -110,7 +110,7 @@ data "aws_iam_policy_document" "custom_policy" {
 }
 
 data "aws_iam_policy_document" "this" {
-  source_json   = var.disable_rw_policy ? replace(var.custom_policy, "%BUCKET%", aws_s3_bucket.this.arn) : data.aws_iam_policy_document.custom_policy.json
+  source_json   = var.disable_policy_autogen ? replace(var.custom_policy, "%BUCKET%", aws_s3_bucket.this.arn) : data.aws_iam_policy_document.custom_policy.json
 }
 
 resource "aws_s3_bucket_policy" "this" {

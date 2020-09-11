@@ -550,7 +550,7 @@ Variables:
                 Description:
                 Notes:
                 Images:
-        disable_rw_policy:
+        disable_policy_autogen:
             ExampleValue: Example Value
             DefaultValue: null
             GeneralDetails:

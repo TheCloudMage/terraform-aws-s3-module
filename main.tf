@@ -81,4 +81,5 @@ resource "aws_s3_bucket" "this" {
   // TODO:
   # LifeCycle Policies
   # Replication Configuration
+  # Custom Logging Bucket Folder/Prefix, currently sends logs to folder of bucket name
 }
