@@ -10,10 +10,10 @@ provider "aws" {
 
 # Test Bucket Policy
 data "aws_iam_policy_document" "test_policy" {
-  sid    = "CustomPolicy"
-  effect = "Allow"
-
   statement {
+    sid    = "CustomPolicy"
+    effect = "Allow"
+
     actions = [
       "s3:DeleteObject",
       "s3:DeleteObjectVersion",
