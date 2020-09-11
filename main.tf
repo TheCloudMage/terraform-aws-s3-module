@@ -33,7 +33,7 @@ resource "aws_s3_bucket" "this" {
       rule {
         apply_server_side_encryption_by_default {
           sse_algorithm     = server_side_encryption_configuration.value
-          kms_master_key_id = local.sse_algorithm != "AES256" ? local.sse_algorithm : null
+          kms_master_key_id = local.sse_algorithm != "AES256" ? var.kms_master_key_id : null
         }
       }
     }
