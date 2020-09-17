@@ -9,7 +9,7 @@
 
 <br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![Version-Badge](https://img.shields.io/badge/MODULE%20VERSION-v1.4.1-Green?style=for-the-badge&logo=terraform&logoColor=BLUE&logoWidth=25) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![Terraform FMT](https://github.com/TheCloudMage/TF-AWS-S3-Module/workflows/Terraform%20FMT/badge.svg) &nbsp;&nbsp;&nbsp; ![Terraform Validate](https://github.com/TheCloudMage/TF-AWS-S3-Module/workflows/Terraform%20Validate/badge.svg) &nbsp;&nbsp;&nbsp; ![Terraform Plan](https://github.com/TheCloudMage/TF-AWS-S3-Module/workflows/Terraform%20Plan/badge.svg)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![Version-Badge](https://img.shields.io/badge/MODULE%20VERSION-v1.4.1-Green?style=for-the-badge&logo=terraform&logoColor=BLUE&logoWidth=25) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![Terraform FMT](https://github.com/TheCloudMage/terraform-aws-s3-module/workflows/Terraform%20FMT/badge.svg) &nbsp;&nbsp;&nbsp; ![Terraform Validate](https://github.com/TheCloudMage/terraform-aws-s3-module/workflows/Terraform%20Validate/badge.svg) &nbsp;&nbsp;&nbsp; ![Terraform Plan](https://github.com/TheCloudMage/terraform-aws-s3-module/workflows/Terraform%20Plan/badge.svg)
 
 <br><br>
 
@@ -23,27 +23,27 @@
   * [Inline Variable Declaration](#inline-variable-declaration)
   * [TFVar Variable Declaration](#tfvar-variable-declaration)
 * [Required Module Variables](#required-variables)
-  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/required-codeblock-drop.png) &nbsp; [*bucket*]('')
+  * ![required_variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/16/required-codeblock-drop.png) &nbsp; [*bucket*]('')
 * [Optional Module Variables](#optional-module-variables)
-  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*region*]('')
-  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*bucket_prefix*]('')
-  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*bucket_suffix*]('')
-  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*versioning*]('')
-  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*mfa_delete*]('')
-  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*encryption*]('')
-  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*kms_master_key_id*]('')
-  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*acl*]('')
-  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*logging_bucket*]('')
-  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*static_hosting*]('')
-  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*index_document*]('')
-  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*error_document*]('')
-  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*cors_rule*]('')
-  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*tags*]('')
-  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*read_access*]('')
-  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*write_access*]('')
-  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*public_access*]('')
-  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*custom_policy*]('')
-  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*disable_policy_autogen*]('')
+  * ![required_variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*region*]('')
+  * ![required_variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*bucket_prefix*]('')
+  * ![required_variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*bucket_suffix*]('')
+  * ![required_variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*versioning*]('')
+  * ![required_variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*mfa_delete*]('')
+  * ![required_variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*encryption*]('')
+  * ![required_variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*kms_master_key_id*]('')
+  * ![required_variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*acl*]('')
+  * ![required_variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*logging_bucket*]('')
+  * ![required_variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*static_hosting*]('')
+  * ![required_variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*index_document*]('')
+  * ![required_variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*error_document*]('')
+  * ![required_variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*cors_rule*]('')
+  * ![required_variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*tags*]('')
+  * ![required_variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*read_access*]('')
+  * ![required_variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*write_access*]('')
+  * ![required_variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*public_access*]('')
+  * ![required_variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*custom_policy*]('')
+  * ![required_variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*disable_policy_autogen*]('')
 * [Module Example Usage](#module-example-usage)
 * [Variables and TFVar Reference File Templates](#variables-and-tfvar-reference-file-templates)
 * [Module Outputs Reference File Templates](#module-outputs-reference-file-templates)
@@ -148,7 +148,7 @@ Module variables that need to either be defined or re-defined with a non-default
 
 <br><br>
 
-> ![Tip](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/24/info.png) &nbsp;[__Tip:__](Tip) <br> There is also a third way to provide variable values using Terraform data sources. A data source is a unique type of code block used within a project that either instantiates or collects data that can be referenced throughout the project. A data source, for example,  can be declared to read the terraform state file and gather all of the available information from a previously deployed project stack. Any of the data contained within the data source can then be referenced to set the value of a project or module variable.
+> ![Tip](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/24/info.png) &nbsp;[__Tip:__](Tip) <br> There is also a third way to provide variable values using Terraform data sources. A data source is a unique type of code block used within a project that either instantiates or collects data that can be referenced throughout the project. A data source, for example,  can be declared to read the terraform state file and gather all of the available information from a previously deployed project stack. Any of the data contained within the data source can then be referenced to set the value of a project or module variable.
 
 <br><br>
 
@@ -169,7 +169,7 @@ module "example" {
 
 <br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; [variables.tf](variables.tf)
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; [variables.tf](variables.tf)
 
 ```terraform
 variable "bucket" {
@@ -180,7 +180,7 @@ variable "bucket" {
 
 <br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; [terraform.tfvars](terraform.tfvars)
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; [terraform.tfvars](terraform.tfvars)
 
 ```terraform
 bucket = "test-backup-bucket"
@@ -188,7 +188,7 @@ bucket = "test-backup-bucket"
 
 <br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; [main.tf](main.tf)
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; [main.tf](main.tf)
 
 ```terraform
 module "example" {
@@ -207,7 +207,7 @@ The following required module variables do not contain default values and must b
 
 <br>
 
-## ![Required_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/required-shieldblock.png) &nbsp; [bucket](tfvar.name)
+## ![Required_Variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/48/required-shieldblock.png) &nbsp; [bucket](tfvar.name)
 
 <br>
 
@@ -215,7 +215,7 @@ The base name of the S3 bucket that is being requested. This base name can be ma
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [bucket](bucket) within the modules variables.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [bucket](bucket) within the modules variables.tf file
 
 ```terraform
 variable "bucket" {
@@ -226,7 +226,7 @@ variable "bucket" {
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [bucket](bucket) module variable within a projects root main.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [bucket](bucket) module variable within a projects root main.tf file
 
 ```terraform
 module "example" {
@@ -247,7 +247,7 @@ The following optional module variables are not required because they already ha
 
 <br>
 
-## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [region](tfvar.name)
+## ![Optional_Variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [region](tfvar.name)
 
 <br>
 
@@ -255,7 +255,7 @@ This variable can contain a specific AWS region where the requested S3 bucket sh
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [region](region) within the modules variables.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [region](region) within the modules variables.tf file
 
 ```terraform
 variable "region" {
@@ -267,7 +267,7 @@ variable "region" {
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [region](region) module variable within a projects root main.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [region](region) module variable within a projects root main.tf file
 
 ```terraform
 module "example" {
@@ -284,7 +284,7 @@ module "example" {
 
 <br><br><br>
 
-## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [bucket_prefix](tfvar.name)
+## ![Optional_Variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [bucket_prefix](tfvar.name)
 
 <br>
 
@@ -300,7 +300,7 @@ __Note: Special bucket_prefix Keywords:__
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [bucket_prefix](bucket_prefix) within the modules variables.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [bucket_prefix](bucket_prefix) within the modules variables.tf file
 
 ```terraform
 variable "bucket_prefix" {
@@ -312,7 +312,7 @@ variable "bucket_prefix" {
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [bucket_prefix](bucket_prefix) module variable within a projects root main.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [bucket_prefix](bucket_prefix) module variable within a projects root main.tf file
 
 ```terraform
 module "example" {
@@ -328,7 +328,7 @@ module "example" {
 
 <br><br><br>
 
-## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [bucket_suffix](tfvar.name)
+## ![Optional_Variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [bucket_suffix](tfvar.name)
 
 <br>
 
@@ -344,11 +344,11 @@ __Note: Special bucket_suffix Keywords:__
 
 <br><br>
 
-> ![Note](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/note.png) &nbsp; [__Note:__](Note) <br> You can use any combination of prefix and suffix values together to create a unique account-specific bucket path.
+> ![Note](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/note.png) &nbsp; [__Note:__](Note) <br> You can use any combination of prefix and suffix values together to create a unique account-specific bucket path.
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [bucket_suffix](bucket_suffix) within the modules variables.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [bucket_suffix](bucket_suffix) within the modules variables.tf file
 
 ```terraform
 variable "bucket_suffix" {
@@ -360,7 +360,7 @@ variable "bucket_suffix" {
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [bucket_suffix](bucket_suffix) module variable within a projects root main.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [bucket_suffix](bucket_suffix) module variable within a projects root main.tf file
 
 ```terraform
 module "example" {
@@ -376,7 +376,7 @@ module "example" {
 
 <br><br><br>
 
-## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [versioning](tfvar.name)
+## ![Optional_Variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [versioning](tfvar.name)
 
 <br>
 
@@ -384,7 +384,7 @@ This variable will turn flag versioning on or off on the bucket. It is important
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [versioning](versioning) within the modules variables.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [versioning](versioning) within the modules variables.tf file
 
 ```terraform
 variable "versioning" {
@@ -396,7 +396,7 @@ variable "versioning" {
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [versioning](versioning) module variable within a projects root main.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [versioning](versioning) module variable within a projects root main.tf file
 
 ```terraform
 module "example" {
@@ -412,7 +412,7 @@ module "example" {
 
 <br><br><br>
 
-## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [mfa_delete](tfvar.name)
+## ![Optional_Variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [mfa_delete](tfvar.name)
 
 <br>
 
@@ -420,7 +420,7 @@ This variable will flag the requirement for MFA authentication before removing a
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [mfa_delete](mfa_delete) within the modules variables.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [mfa_delete](mfa_delete) within the modules variables.tf file
 
 ```terraform
 variable "mfa_delete" {
@@ -432,7 +432,7 @@ variable "mfa_delete" {
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [mfa_delete](mfa_delete) module variable within a projects root main.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [mfa_delete](mfa_delete) module variable within a projects root main.tf file
 
 ```terraform
 module "example" {
@@ -448,7 +448,7 @@ module "example" {
 
 <br><br><br>
 
-## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [encryption](tfvar.name)
+## ![Optional_Variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [encryption](tfvar.name)
 
 <br>
 
@@ -456,11 +456,11 @@ This variable is a flag if encryption should be configured on the requested buck
 
 <br><br>
 
-> ![Note](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/note.png) &nbsp; [__Note:__](Note) <br> Activating this variable will automatically create a bucket policy that will be attached to the bucket forcing encryption in transit for all upload and PUT requests to the bucket.
+> ![Note](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/note.png) &nbsp; [__Note:__](Note) <br> Activating this variable will automatically create a bucket policy that will be attached to the bucket forcing encryption in transit for all upload and PUT requests to the bucket.
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [encryption](encryption) within the modules variables.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [encryption](encryption) within the modules variables.tf file
 
 ```terraform
 variable "encryption" {
@@ -472,7 +472,7 @@ variable "encryption" {
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [encryption](encryption) module variable within a projects root main.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [encryption](encryption) module variable within a projects root main.tf file
 
 Setting the `encryption` option to true will automatically add the following bucket policy to the bucket at the time of provisioning unless disable_policy_autogen is set:
 
@@ -515,7 +515,7 @@ module "example" {
 
 <br><br><br>
 
-## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [kms_master_key_id](tfvar.name)
+## ![Optional_Variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [kms_master_key_id](tfvar.name)
 
 <br>
 
@@ -523,11 +523,11 @@ This variable is used to define an existing KMS CMK that is preferred to encrypt
 
 <br><br>
 
-> ![Note](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/note.png) &nbsp; [__Note:__](Note) <br> When supplying a KMS CMK Key ARN, the bucket encryption type will automatically switch from **AES256** to **aws:kms**. Encryption will work the same way, only using the provided key instead of the Amazon managed default S3 key. The bucket policy shown above will also still be applied.
+> ![Note](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/note.png) &nbsp; [__Note:__](Note) <br> When supplying a KMS CMK Key ARN, the bucket encryption type will automatically switch from **AES256** to **aws:kms**. Encryption will work the same way, only using the provided key instead of the Amazon managed default S3 key. The bucket policy shown above will also still be applied.
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [kms_master_key_id](kms_master_key_id) within the modules variables.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [kms_master_key_id](kms_master_key_id) within the modules variables.tf file
 
 ```terraform
 variable "kms_master_key_id" {
@@ -539,7 +539,7 @@ variable "kms_master_key_id" {
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [kms_master_key_id](kms_master_key_id) module variable within a projects root main.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [kms_master_key_id](kms_master_key_id) module variable within a projects root main.tf file
 
 ```terraform
 module "example" {
@@ -555,7 +555,7 @@ module "example" {
 
 <br><br><br>
 
-## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [acl](tfvar.name)
+## ![Optional_Variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [acl](tfvar.name)
 
 <br>
 
@@ -572,7 +572,7 @@ This variable is used to pass the desired permissions of the bucket at the time 
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [acl](acl) within the modules variables.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [acl](acl) within the modules variables.tf file
 
 ```terraform
 variable "acl" {
@@ -584,7 +584,7 @@ variable "acl" {
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [acl](acl) module variable within a projects root main.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [acl](acl) module variable within a projects root main.tf file
 
 ```terraform
 module "example" {
@@ -600,7 +600,7 @@ module "example" {
 
 <br><br><br>
 
-## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [logging_bucket](tfvar.name)
+## ![Optional_Variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [logging_bucket](tfvar.name)
 
 <br>
 
@@ -608,7 +608,7 @@ The base name of the S3 bucket that will be used as the log bucket for the provi
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [logging_bucket](logging_bucket) within the modules variables.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [logging_bucket](logging_bucket) within the modules variables.tf file
 
 ```terraform
 variable "logging_bucket" {
@@ -620,7 +620,7 @@ variable "logging_bucket" {
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [logging_bucket](logging_bucket) module variable within a projects root main.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [logging_bucket](logging_bucket) module variable within a projects root main.tf file
 
 ```terraform
 module "example" {
@@ -636,7 +636,7 @@ module "example" {
 
 <br><br><br>
 
-## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [static_hosting](tfvar.name)
+## ![Optional_Variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [static_hosting](tfvar.name)
 
 <br>
 
@@ -644,7 +644,7 @@ Flag that can be set to turn on static hosting within a bucket. If this flag is 
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [static_hosting](static_hosting) within the modules variables.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [static_hosting](static_hosting) within the modules variables.tf file
 
 ```terraform
 variable "static_hosting" {
@@ -656,7 +656,7 @@ variable "static_hosting" {
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [static_hosting](static_hosting) module variable within a projects root main.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [static_hosting](static_hosting) module variable within a projects root main.tf file
 
 ```terraform
 module "example" {
@@ -672,7 +672,7 @@ module "example" {
 
 <br><br><br>
 
-## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [index_document](tfvar.name)
+## ![Optional_Variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [index_document](tfvar.name)
 
 <br>
 
@@ -680,7 +680,7 @@ Value of the index file served by the static hosting bucket server if static hos
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [index_document](index_document) within the modules variables.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [index_document](index_document) within the modules variables.tf file
 
 ```terraform
 variable "index_document" {
@@ -692,7 +692,7 @@ variable "index_document" {
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [index_document](index_document) module variable within a projects root main.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [index_document](index_document) module variable within a projects root main.tf file
 
 ```terraform
 module "example" {
@@ -708,7 +708,7 @@ module "example" {
 
 <br><br><br>
 
-## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [error_document](tfvar.name)
+## ![Optional_Variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [error_document](tfvar.name)
 
 <br>
 
@@ -716,7 +716,7 @@ Value of the error file served by the static hosting bucket server if static hos
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [error_document](error_document) within the modules variables.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [error_document](error_document) within the modules variables.tf file
 
 ```terraform
 variable "error_document" {
@@ -728,7 +728,7 @@ variable "error_document" {
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [error_document](error_document) module variable within a projects root main.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [error_document](error_document) module variable within a projects root main.tf file
 
 ```terraform
 module "example" {
@@ -744,7 +744,7 @@ module "example" {
 
 <br><br><br>
 
-## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [cors_rule](tfvar.name)
+## ![Optional_Variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [cors_rule](tfvar.name)
 
 <br>
 
@@ -764,7 +764,7 @@ Cross Origin Resource Sharing ruleset to apply to the bucket. This variable hold
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [cors_rule](cors_rule) within the modules variables.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [cors_rule](cors_rule) within the modules variables.tf file
 
 ```terraform
 variable "cors_rule" {
@@ -782,7 +782,7 @@ variable "cors_rule" {
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [cors_rule](cors_rule) module variable within a projects root main.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [cors_rule](cors_rule) module variable within a projects root main.tf file
 
 ```terraform
 module "example" {
@@ -804,7 +804,7 @@ module "example" {
 
 <br><br><br>
 
-## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [tags](tfvar.name)
+## ![Optional_Variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [tags](tfvar.name)
 
 <br>
 
@@ -820,7 +820,7 @@ This variable should contain a map of tags that will be assigned to the S3 bucke
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [tags](tags) within the modules variables.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [tags](tags) within the modules variables.tf file
 
 ```terraform
 variable "tags" {
@@ -835,7 +835,7 @@ variable "tags" {
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [tags](tags) module variable within a projects root main.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [tags](tags) module variable within a projects root main.tf file
 
 ```terraform
 module "example" {
@@ -854,11 +854,11 @@ module "example" {
 
 <br><br>
 
-![Tags](/images/tf_s3_tags.png)
+![Tags](https://raw.githubusercontent.com/TheCloudMage/terraform-aws-s3-module/master/images/tf_s3_tags.png)
 
 <br><br><br>
 
-## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [read_access](tfvar.name)
+## ![Optional_Variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [read_access](tfvar.name)
 
 <br>
 
@@ -883,11 +883,11 @@ The following permissions will be applied to the read_access bucket policy state
 
 <br><br>
 
-> ![Note](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/note.png) &nbsp; [__Note:__](Note) <br> Activating this variable will automatically create a bucket policy that will be attached to the bucket allowing cross account access to the users/roles specified by their ARNs within the list variable.
+> ![Note](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/note.png) &nbsp; [__Note:__](Note) <br> Activating this variable will automatically create a bucket policy that will be attached to the bucket allowing cross account access to the users/roles specified by their ARNs within the list variable.
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [read_access](read_access) within the modules variables.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [read_access](read_access) within the modules variables.tf file
 
 ```terraform
 variable "read_access" {
@@ -899,7 +899,7 @@ variable "read_access" {
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [read_access](read_access) module variable within a projects root main.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [read_access](read_access) module variable within a projects root main.tf file
 
 ```terraform
 module "example" {
@@ -915,7 +915,7 @@ module "example" {
 
 <br><br><br>
 
-## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [write_access](tfvar.name)
+## ![Optional_Variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [write_access](tfvar.name)
 
 <br>
 
@@ -934,11 +934,11 @@ The following permissions will be applied to the write_access bucket policy stat
 
 <br><br>
 
-> ![Note](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/note.png) &nbsp; [__Note:__](Note) <br> Activating this variable will automatically create a bucket policy that will be attached to the bucket allowing cross account access to the users/roles specified by their ARNs within the list variable.
+> ![Note](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/note.png) &nbsp; [__Note:__](Note) <br> Activating this variable will automatically create a bucket policy that will be attached to the bucket allowing cross account access to the users/roles specified by their ARNs within the list variable.
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [write_access](write_access) within the modules variables.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [write_access](write_access) within the modules variables.tf file
 
 ```terraform
 variable "write_access" {
@@ -950,7 +950,7 @@ variable "write_access" {
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [write_access](write_access) module variable within a projects root main.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [write_access](write_access) module variable within a projects root main.tf file
 
 ```terraform
 module "example" {
@@ -966,7 +966,7 @@ module "example" {
 
 <br><br><br>
 
-## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [public_access](tfvar.name)
+## ![Optional_Variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [public_access](tfvar.name)
 
 <br>
 
@@ -1014,11 +1014,11 @@ Additionally if `public_read = true` and `static_hosting = true` then the secure
 
 <br><br>
 
-> ![Note](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/note.png) &nbsp; [__Note:__](Note) <br> Activating this variable will automatically create a bucket policy that will be attached to the bucket allowing public read access to objects in the source s3 bucket.
+> ![Note](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/note.png) &nbsp; [__Note:__](Note) <br> Activating this variable will automatically create a bucket policy that will be attached to the bucket allowing public read access to objects in the source s3 bucket.
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [public_access](public_access) within the modules variables.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [public_access](public_access) within the modules variables.tf file
 
 ```terraform
 variable "public_access" {
@@ -1030,7 +1030,7 @@ variable "public_access" {
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [public_access](public_access) module variable within a projects root main.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [public_access](public_access) module variable within a projects root main.tf file
 
 ```terraform
 module "example" {
@@ -1046,7 +1046,7 @@ module "example" {
 
 <br><br><br>
 
-## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [custom_policy](tfvar.name)
+## ![Optional_Variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [custom_policy](tfvar.name)
 
 <br>
 
@@ -1106,7 +1106,7 @@ module "bucket" {
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [policy](policy) within the modules variables.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [policy](policy) within the modules variables.tf file
 
 ```terraform
 variable "custom_policy" {
@@ -1118,7 +1118,7 @@ variable "custom_policy" {
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [custom_policy](custom_policy) module variable within a projects root main.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [custom_policy](custom_policy) module variable within a projects root main.tf file
 
 ```terraform
 module "example" {
@@ -1134,7 +1134,7 @@ module "example" {
 
 <br><br><br>
 
-## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [disable_policy_autogen](tfvar.name)
+## ![Optional_Variable](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [disable_policy_autogen](tfvar.name)
 
 <br>
 
@@ -1179,7 +1179,7 @@ module "bucket" {
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [disable_policy_autogen](disable_policy_autogen) within the modules variables.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [disable_policy_autogen](disable_policy_autogen) within the modules variables.tf file
 
 ```terraform
 variable "disable_policy_autogen" {
@@ -1191,7 +1191,7 @@ variable "disable_policy_autogen" {
 
 <br><br>
 
-### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [disable_policy_autogen](disable_policy_autogen) module variable within a projects root main.tf file
+### ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [disable_policy_autogen](disable_policy_autogen) module variable within a projects root main.tf file
 
 ```terraform
 module "example" {
@@ -1220,7 +1220,7 @@ The following code blocks can be used or appended to an existing `variables.tf` 
 
 <br><br>
 
-## ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Module [variables.tf](variables.tf) Reference File
+## ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Module [variables.tf](variables.tf) Reference File
 
 ```terraform
 ###########################################################################
@@ -1351,7 +1351,7 @@ variable "tags" {
 
 <br><br>
 
-## ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Module [TFVars](TFVars) Reference File
+## ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Module [TFVars](TFVars) Reference File
 
 ```terraform
 ###########################################################################
@@ -1408,7 +1408,7 @@ The template will finally create the following outputs that can be pulled and us
 
 <br><br>
 
-## ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Module [outputs.tf](outputs.tf) Reference File
+## ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Module [outputs.tf](outputs.tf) Reference File
 
 ```terraform
 ##############################################
@@ -1442,7 +1442,7 @@ output "hosted_zone_id" {
 
 <br><br>
 
-## ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Module Output Usage Reference File
+## ![Folder](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/opened_folder.png) &nbsp; Module Output Usage Reference File
 
 ```terraform
 ##############################################
@@ -1476,7 +1476,7 @@ output "hosted_zone_id" {
 
 <br><br>
 
-> ![Note](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/note.png) &nbsp; [__Note:__](Note) <br> When referencing the module outputs be sure that the output value contains the identifier given to the module call. As an example, if the module was defined as `module "example" {}` then the output reference would be constructed as `module.example.id`.
+> ![Note](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/note.png) &nbsp; [__Note:__](Note) <br> When referencing the module outputs be sure that the output value contains the identifier given to the module call. As an example, if the module was defined as `module "example" {}` then the output reference would be constructed as `module.example.id`.
 
 <br><br>
 
@@ -1510,4 +1510,4 @@ To contribute, please:
 
 <br><br>
 
-![CloudMage](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/logo.png) This document was created with ![CloudMage](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/heart.png) by the open source [MagicDoc](https://pypi.org/project/magicdoc/) project!
+![CloudMage](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/32/logo.png) This document was created with ![CloudMage](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/icons/cloudmage/16/heart.png) by the open source [MagicDoc](https://pypi.org/project/magicdoc/) project!
