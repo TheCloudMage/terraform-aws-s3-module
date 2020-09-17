@@ -105,6 +105,12 @@ variable "cors_rule" {
 }
 
 // Custom Bucket Policy Options
+variable "public_access" {
+  type        = bool
+  description = "Specify if the bucket will be publicly readable (Recommended for static web hosting for public sites)."
+  default     = false
+}
+
 variable "read_access" {
   type        = list(string)
   description = "List of users/roles that will be granted permissions to LIST, DESCRIBE, and GET objects from the provisioned S3 bucket."

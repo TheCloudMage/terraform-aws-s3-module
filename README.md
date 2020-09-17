@@ -4,11 +4,12 @@
 
 <br>
 
-![Hero](images/tf_s3.png)
+<!-- ![Hero](images/tf_s3.png) -->
+![Hero](https://raw.githubusercontent.com/TheCloudMage/terraform-aws-s3-module/master/images/tf_s3.png)
 
 <br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![Version-Badge](https://img.shields.io/badge/MODULE%20VERSION-v1.4.0-Green?style=for-the-badge&logo=terraform&logoColor=BLUE&logoWidth=25) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![Terraform FMT](https://github.com/TheCloudMage/TF-AWS-S3-Module/workflows/Terraform%20FMT/badge.svg) &nbsp;&nbsp;&nbsp; ![Terraform Validate](https://github.com/TheCloudMage/TF-AWS-S3-Module/workflows/Terraform%20Validate/badge.svg) &nbsp;&nbsp;&nbsp; ![Terraform Plan](https://github.com/TheCloudMage/TF-AWS-S3-Module/workflows/Terraform%20Plan/badge.svg)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![Version-Badge](https://img.shields.io/badge/MODULE%20VERSION-v1.4.1-Green?style=for-the-badge&logo=terraform&logoColor=BLUE&logoWidth=25) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ![Terraform FMT](https://github.com/TheCloudMage/TF-AWS-S3-Module/workflows/Terraform%20FMT/badge.svg) &nbsp;&nbsp;&nbsp; ![Terraform Validate](https://github.com/TheCloudMage/TF-AWS-S3-Module/workflows/Terraform%20Validate/badge.svg) &nbsp;&nbsp;&nbsp; ![Terraform Plan](https://github.com/TheCloudMage/TF-AWS-S3-Module/workflows/Terraform%20Plan/badge.svg)
 
 <br><br>
 
@@ -40,6 +41,7 @@
   * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*tags*]('')
   * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*read_access*]('')
   * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*write_access*]('')
+  * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*public_access*]('')
   * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*custom_policy*]('')
   * ![required_variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/16/optional-codeblock-drop.png) &nbsp; [*disable_policy_autogen*]('')
 * [Module Example Usage](#module-example-usage)
@@ -67,23 +69,29 @@ None Defined for an un-encrypted bucket. If the requested bucket requires encryp
 
 ```bash
 .
-├── outputs.tf
 ├── main.tf
+├── variables.tf
+├── outputs.tf
 ├── CHANGELOG.md
 ├── images
 │   ├── tf_s3.png
 │   └── tf_s3_tags.png
 ├── example
-│   ├── env.tfvars
-│   ├── outputs.tf
-│   ├── main.tf
 │   ├── README.md
-│   └── variables.tf
+│   ├── main.tf
+│   ├── variables.tf
+│   ├── test_defaults.tf
+│   ├── test_encryption.tf
+│   ├── test_hosting.tf
+│   ├── test_logging.tf
+│   ├── test_naming.tf
+│   ├── test_policies.tf
+│   ├── test_versioning.tf
+│   └── s3.auto.tfvars
 ├── README.md
-├── notes
-│   └── replication_lifecycle_policy_wip
 ├── .gitignore
-├── variables.tf
+├── locals.tf
+├── policies.tf
 └── magicdoc.yaml
 ```
 
@@ -93,7 +101,7 @@ None Defined for an un-encrypted bucket. If the requested bucket requires encryp
 
 ```terraform
 module "example" {
-    source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.3.0"
+    source = "git@github.com:TheCloudMage/terraform-aws-s3-module?ref=v1.4.1"
 
     // Required Variables
     bucket = "test-backup-bucket"
@@ -113,6 +121,7 @@ module "example" {
     # error_document    = "error.html"
     # read_access       = []
     # write_access      = []
+    # public_access     = false
     # custom_policy     = null
     # disable_policy_autogen = null
 
@@ -126,7 +135,7 @@ module "example" {
 
     # tags = {
     #   Provisioned_By = "Terraform"
-    #   Module_GitHub_URL = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+    #   Module_GitHub_URL = "https://github.com/TheCloudMage/AWS-S3Bucket-Module.git"
     # }
 }
 ```
@@ -147,7 +156,7 @@ Module variables that need to either be defined or re-defined with a non-default
 
 ```terraform
 module "example" {
-    source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.3.0"
+    source = "git@github.com:TheCloudMage/terraform-aws-s3-module?ref=v1.4.1"
 
     // Required Variables
     bucket = "test-backup-bucket"
@@ -183,7 +192,7 @@ bucket = "test-backup-bucket"
 
 ```terraform
 module "example" {
-    source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.3.0"
+    source = "git@github.com:TheCloudMage/terraform-aws-s3-module?ref=v1.4.1"
 
     // Required Variables
     bucket = var.bucket
@@ -221,7 +230,7 @@ variable "bucket" {
 
 ```terraform
 module "example" {
-    source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.3.0"
+    source = "git@github.com:TheCloudMage/terraform-aws-s3-module?ref=v1.4.1"
 
     // Declaring the "bucket" variable
     bucket = "test-backup-bucket"
@@ -262,7 +271,7 @@ variable "region" {
 
 ```terraform
 module "example" {
-    source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.3.0"
+    source = "git@github.com:TheCloudMage/terraform-aws-s3-module?ref=v1.4.1"
 
     // Required Variables
     bucket = "test-backup-bucket"
@@ -307,7 +316,7 @@ variable "bucket_prefix" {
 
 ```terraform
 module "example" {
-    source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.3.0"
+    source = "git@github.com:TheCloudMage/terraform-aws-s3-module?ref=v1.4.1"
 
     // Required Variables
     bucket = "test-backup-bucket"
@@ -355,7 +364,7 @@ variable "bucket_suffix" {
 
 ```terraform
 module "example" {
-    source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.3.0"
+    source = "git@github.com:TheCloudMage/terraform-aws-s3-module?ref=v1.4.1"
 
     // Required Variables
     bucket = "test-backup-bucket"
@@ -391,7 +400,7 @@ variable "versioning" {
 
 ```terraform
 module "example" {
-    source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.3.0"
+    source = "git@github.com:TheCloudMage/terraform-aws-s3-module?ref=v1.4.1"
 
     // Required Variables
     bucket = "test-backup-bucket"
@@ -427,7 +436,7 @@ variable "mfa_delete" {
 
 ```terraform
 module "example" {
-    source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.3.0"
+    source = "git@github.com:TheCloudMage/terraform-aws-s3-module?ref=v1.4.1"
 
     // Required Variables
     bucket = "test-backup-bucket"
@@ -494,7 +503,7 @@ Statement:
 
 ```terraform
 module "example" {
-    source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.3.0"
+    source = "git@github.com:TheCloudMage/terraform-aws-s3-module?ref=v1.4.1"
 
     // Required Variables
     bucket = "test-backup-bucket"
@@ -534,7 +543,7 @@ variable "kms_master_key_id" {
 
 ```terraform
 module "example" {
-    source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.3.0"
+    source = "git@github.com:TheCloudMage/terraform-aws-s3-module?ref=v1.4.1"
 
     // Required Variables
     bucket = "test-backup-bucket"
@@ -579,7 +588,7 @@ variable "acl" {
 
 ```terraform
 module "example" {
-    source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.3.0"
+    source = "git@github.com:TheCloudMage/terraform-aws-s3-module?ref=v1.4.1"
 
     // Required Variables
     bucket = "test-backup-bucket"
@@ -615,7 +624,7 @@ variable "logging_bucket" {
 
 ```terraform
 module "example" {
-    source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.3.0"
+    source = "git@github.com:TheCloudMage/terraform-aws-s3-module?ref=v1.4.1"
 
     // Required Variables
     bucket = "test-backup-bucket"
@@ -651,7 +660,7 @@ variable "static_hosting" {
 
 ```terraform
 module "example" {
-    source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.3.0"
+    source = "git@github.com:TheCloudMage/terraform-aws-s3-module?ref=v1.4.1"
 
     // Required Variables
     bucket = "test-backup-bucket"
@@ -687,7 +696,7 @@ variable "index_document" {
 
 ```terraform
 module "example" {
-    source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.3.0"
+    source = "git@github.com:TheCloudMage/terraform-aws-s3-module?ref=v1.4.1"
 
     // Required Variables
     bucket = "test-backup-bucket"
@@ -723,7 +732,7 @@ variable "error_document" {
 
 ```terraform
 module "example" {
-    source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.3.0"
+    source = "git@github.com:TheCloudMage/terraform-aws-s3-module?ref=v1.4.1"
 
     // Required Variables
     bucket = "test-backup-bucket"
@@ -777,7 +786,7 @@ variable "cors_rule" {
 
 ```terraform
 module "example" {
-    source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.3.0"
+    source = "git@github.com:TheCloudMage/terraform-aws-s3-module?ref=v1.4.1"
 
     // Required Variables
     bucket = "test-backup-bucket"
@@ -819,7 +828,7 @@ variable "tags" {
     description = "Specify any tags that should be added to the S3 bucket being provisioned."
     default     = {
         Provisioned_By = "Terraform"
-        Module_GitHub_URL = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+        Module_GitHub_URL = "https://github.com/TheCloudMage/AWS-S3Bucket-Module.git"
     }
 }
 ```
@@ -830,7 +839,7 @@ variable "tags" {
 
 ```terraform
 module "example" {
-    source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.3.0"
+    source = "git@github.com:TheCloudMage/terraform-aws-s3-module?ref=v1.4.1"
 
     // Required Variables
     bucket = "test-backup-bucket"
@@ -838,7 +847,7 @@ module "example" {
     // Optional Variables with module defined default values assigned
     tags = {
         Provisioned_By = "Terraform"
-        Module_GitHub_URL = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+        Module_GitHub_URL = "https://github.com/TheCloudMage/AWS-S3Bucket-Module.git"
     }
 }
 ```
@@ -894,7 +903,7 @@ variable "read_access" {
 
 ```terraform
 module "example" {
-    source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.3.0"
+    source = "git@github.com:TheCloudMage/terraform-aws-s3-module?ref=v1.4.1"
 
     // Required Variables
     bucket = "test-backup-bucket"
@@ -945,13 +954,93 @@ variable "write_access" {
 
 ```terraform
 module "example" {
-    source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.3.0"
+    source = "git@github.com:TheCloudMage/terraform-aws-s3-module?ref=v1.4.1"
 
     // Required Variables
     bucket = "test-backup-bucket"
 
     // Optional Variables with module defined default values assigned
     write_access = ["arn:aws:iam::123456789101:role/AWS-S3W-Role"]
+}
+```
+
+<br><br><br>
+
+## ![Optional_Variable](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/48/optional-shieldblock.png) &nbsp; [public_access](tfvar.name)
+
+<br>
+
+This variable is used to specify if the bucket will allow public read access. If this variable is set to `true`, then two things will occur. The first will be the addition of a bucket policy statement will allow s3:GetObject for any principal (*). The second change will be to the default secure transport policy with one added condition. If `public_read = true` and `static_hosting = true` then instead of the policy denying all traffic over non secure transports, the bucket will allow s3:GetObject to occur for non secure transport. This will allow the bucket to serve objects over http if CloudFront or another mechanism isn't being used to enforce https delivery of your web content. This policy change will only occur with the condition that the bucket is being has static hosting enabled, and public read is set to true. Only one of these conditions will not allow the enforcement of the policy change. Setting this variable to `true` is only recommended if the bucket will be used to host a publicly available web site hosted by S3.
+
+<br>
+
+The following policy statement will be applied to the public_access bucket policy:
+
+```json
+{
+    "Sid": "PublicAccess",
+    "Effect": "Allow",
+    "Principal": "*",
+    "Action": [
+      "s3:GetObject"
+    ],
+    "Resource": [
+      "arn:aws:s3:::${bucket}/*"
+    ]
+}
+```
+
+<br><br>
+
+Additionally if `public_read = true` and `static_hosting = true` then the secure transport policy will be changed to:
+
+```json
+{
+    "Sid": "DenyNonSecureTransportExceptGetObject",
+    "Effect": "Deny",
+    "Principal":  "*",
+    "NotAction": "s3:GetObject",
+    "Resource": [
+        "arn:aws:s3:::cloudmage.io/*",
+        "arn:aws:s3:::cloudmage.io"
+    ],
+    "Condition": {
+        "Bool": {
+            "aws:SecureTransport": "false"
+        }
+    }
+}
+```
+
+<br><br>
+
+> ![Note](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/note.png) &nbsp; [__Note:__](Note) <br> Activating this variable will automatically create a bucket policy that will be attached to the bucket allowing public read access to objects in the source s3 bucket.
+
+<br><br>
+
+### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Declaration of [public_access](public_access) within the modules variables.tf file
+
+```terraform
+variable "public_access" {
+    type        = bool
+    description = "Specify if the bucket will be publicly readable (Recommended for static web hosting for public sites)."
+    default     = false
+}
+```
+
+<br><br>
+
+### ![Folder](https://cloudmage-images-public.s3.us-east-2.amazonaws.com/icons/cloudmage/32/opened_folder.png) &nbsp; Setting the [public_access](public_access) module variable within a projects root main.tf file
+
+```terraform
+module "example" {
+    source = "git@github.com:TheCloudMage/terraform-aws-s3-module?ref=v1.4.1"
+
+    // Required Variables
+    bucket = "test-backup-bucket"
+
+    // Optional Variables with module defined default values assigned
+    public_access = true
 }
 ```
 
@@ -1033,7 +1122,7 @@ variable "custom_policy" {
 
 ```terraform
 module "example" {
-    source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.3.0"
+    source = "git@github.com:TheCloudMage/terraform-aws-s3-module?ref=v1.4.1"
 
     // Required Variables
     bucket = "test-backup-bucket"
@@ -1106,7 +1195,7 @@ variable "disable_policy_autogen" {
 
 ```terraform
 module "example" {
-    source = "git@github.com:CloudMage-TF/AWS-S3Bucket-Module?ref=v1.3.0"
+    source = "git@github.com:TheCloudMage/terraform-aws-s3-module?ref=v1.4.1"
 
     // Required Variables
     bucket = "test-backup-bucket"
@@ -1222,6 +1311,11 @@ variable "write_access" {
     description = "List of users/roles that will be granted permissions to PUT, and DELETE objects to/from the provisioned S3 bucket."
     default     = []
 }
+variable "public_access" {
+    type        = bool
+    description = "Specify if the bucket will be publicly readable (Recommended for static web hosting for public sites)."
+    default     = false
+}
 variable "custom_policy" {
     type        = string
     description = "A bucket policy in the form of a data iam_policy_document. Use %BUCKET% for bucket name. This policy will be added to the read_access/write_access policy."
@@ -1244,6 +1338,7 @@ variable "cors_rule" {
         max_age_seconds = 3000
     }
 }
+
 variable "tags" {
     type        = map
     description = "Specify any tags that should be added to the S3 bucket being provisioned."
@@ -1288,6 +1383,7 @@ bucket = "Value Required"
 # error_document    = "error.html"
 # read_access       = []
 # write_access      = []
+# public_access     = false
 # custom_policy     = null
 # disable_policy_autogen = false
 
@@ -1300,7 +1396,7 @@ bucket = "Value Required"
 # }
 # tags = {
 #   Provisioned_By = "Terraform"
-#   Module_GitHub_URL = "https://github.com/CloudMage-TF/AWS-S3Bucket-Module.git"
+#   Module_GitHub_URL = "https://github.com/TheCloudMage/AWS-S3Bucket-Module.git"
 # }
 ```
 
@@ -1401,7 +1497,7 @@ output "hosted_zone_id" {
 
 # Contacts and Contributions
 
-This project is owned and maintained by [CloudMage-TF](https://github.com/CloudMage-TF)
+This project is owned and maintained by [TheCloudMage](https://github.com/TheCloudMage)
 
 <br>
 

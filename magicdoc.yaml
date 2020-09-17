@@ -4,8 +4,8 @@ Config:
 # Repository Configuration: #
 #############################
 Git:
-    Repository: git@github.com:CloudMage-TF/AWS-S3Bucket-Module.git
-    Version:
+    Repository: git@github.com:TheCloudMage/terraform-aws-s3-module.git
+    Version: 1.4.1
 
 ############################
 # README.md Configuration: #
@@ -465,6 +465,67 @@ Variables:
                     * s3:RestoreObject
                 Notes: |-
                     Activating this variable will automatically create a bucket policy that will be attached to the bucket allowing cross account access to the users/roles specified by their ARNs within the list variable.
+                Images:
+            VariableDetails:
+                Description:
+                Notes:
+                Images:
+            UsageDetails:
+                Description:
+                Notes:
+                Images:
+            Additional:
+                Description:
+                Notes:
+                Images:
+        public_access:
+            ExampleValue: true
+            DefaultValue: false
+            GeneralDetails:
+                Description: >-
+                    This variable is used to specify if the bucket will allow public read access. If this variable is set to `true`, then two things will occur. The first will be the addition of a bucket policy statement will allow s3:GetObject for any principal (*). The second change will be to the default secure transport policy with one added condition. If `public_read = true` and `static_hosting = true` then instead of the policy denying all traffic over non secure transports, the bucket will allow s3:GetObject to occur for non secure transport. This will allow the bucket to serve objects over http if CloudFront or another mechanism isn't being used to enforce https delivery of your web content. This policy change will only occur with the condition that the bucket is being has static hosting enabled, and public read is set to true. Only one of these conditions will not allow the enforcement of the policy change. Setting this variable to `true` is only recommended if the bucket will be used to host a publicly available web site hosted by S3.
+
+                    <br>
+
+                    The following policy statement will be applied to the public_access bucket policy:
+                    
+                    ```json
+                    {
+                        "Sid": "PublicAccess",
+                        "Effect": "Allow",
+                        "Principal": "*",
+                        "Action": [
+                        "s3:GetObject"
+                        ],
+                        "Resource": [
+                        "arn:aws:s3:::${bucket}/*"
+                        ]
+                    }
+                    ```
+
+                    <br><br>
+
+                    Additionally if `public_read = true` and `static_hosting = true` then the secure transport policy will be changed to:
+
+                    ```json
+                    {
+                        "Sid": "DenyNonSecureTransportExceptGetObject",
+                        "Effect": "Deny",
+                        "Principal":  "*",
+                        "NotAction": "s3:GetObject",
+                        "Resource": [
+                            "arn:aws:s3:::cloudmage.io/*",
+                            "arn:aws:s3:::cloudmage.io"
+                        ],
+                        "Condition": {
+                            "Bool": {
+                                "aws:SecureTransport": "false"
+                            }
+                        }
+                    }
+                    ```
+                Notes: |-
+                    Activating this variable will automatically create a bucket policy that will be attached to the bucket allowing public read access to objects in the source s3 bucket.
                 Images:
             VariableDetails:
                 Description:
