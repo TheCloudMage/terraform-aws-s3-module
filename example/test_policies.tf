@@ -40,6 +40,18 @@ module "write_custom_policy" {
   custom_policy = data.aws_iam_policy_document.test_policy.json
 }
 
+# Public/Custom => Expect to apply transport, public-read, and custom policy statements
+module "public_custom_policy" {
+  source = "../"
+
+  bucket        = var.bucket
+  region        = "us-west-2"
+  bucket_prefix = ["account_prefix", "custom"]
+  bucket_suffix = ["region_suffix", "write"]
+  public_access = true
+  custom_policy = data.aws_iam_policy_document.test_policy.json
+}
+
 # Combined => Expect to apply transport, read onl, write, and custom policy statements
 module "combined_policy" {
   source = "../"
@@ -50,6 +62,7 @@ module "combined_policy" {
   bucket_suffix = ["region_suffix", "combined"]
   read_access   = ["arn:aws:iam::123456789101:role/AWS-S3-ReadOnly-Role"]
   write_access  = ["arn:aws:iam::123456789101:role/AWS-S3-Write-Role"]
+  public_access = true
   custom_policy = data.aws_iam_policy_document.test_policy.json
 }
 

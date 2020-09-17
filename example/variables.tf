@@ -135,6 +135,12 @@ variable "write_access" {
   default     = []
 }
 
+variable "public_access" {
+  type        = bool
+  description = "Specify if the bucket will be publicly readable (Recommended for static web hosting for public sites)."
+  default     = false
+}
+
 variable "custom_policy" {
   type        = string
   description = "A bucket policy in the form of a data iam_policy_document. Use %BUCKET% for bucket name. This policy will be added to the read_access/write_access policy."

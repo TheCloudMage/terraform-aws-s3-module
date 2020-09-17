@@ -9,6 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <br>
 
+## 1.4.1 - [2020-09-16]
+
+### Added
+
+- New variable public_access created
+- Test added to the test_hosting module to test public_read
+
+### Changed
+
+- Policy construction logic will now evaluate static_hosting and public_access and assign a secure transport policy that will allow s3:GetObject non-securely
+- Policy construction logic will evaluate if public_access is true, and if so will add a bucket policy statement to allow public object reading
+- env.tfvars renamed to s3.auto.tfvars to fit with Terraform best practices
+- README updated
+
+### Removed
+
+<br><br>
+
 ## 1.4.0 - [2020-08-25]
 
 ### Added

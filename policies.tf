@@ -4,7 +4,7 @@
 // Construct the S3 Bucket Policy to deny the unencrypted transport of objects
 data "aws_iam_policy_document" "encryption_in_transit" {
   statement {
-    sid = "DenyNonSecureTransport"
+    sid    = "DenyNonSecureTransport"
     effect = "Deny"
 
     actions = [
@@ -28,6 +28,56 @@ data "aws_iam_policy_document" "encryption_in_transit" {
       values = [
         "false"
       ]
+    }
+  }
+}
+
+// Construct the S3 Bucket Policy to deny the unencrypted transport of objects
+data "aws_iam_policy_document" "no_http_encryption_in_transit" {
+  statement {
+    sid    = "DenyNonSecureTransportExceptGetObject"
+    effect = "Deny"
+
+    not_actions = [
+      "s3:GetObject"
+    ]
+
+    resources = [
+      "arn:aws:s3:::${trimspace(local.bucket_name)}/*"
+    ]
+
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "Bool"
+      variable = "aws:SecureTransport"
+
+      values = [
+        "false"
+      ]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "public_read" {
+  statement {
+    sid    = "PublicReadAccess"
+    effect = "Allow"
+
+    actions = [
+      "s3:GetObject"
+    ]
+
+    resources = [
+      "arn:aws:s3:::${trimspace(local.bucket_name)}/*"
+    ]
+
+    principals {
+      type        = "*"
+      identifiers = ["*"]
     }
   }
 }
@@ -95,18 +145,23 @@ data "aws_iam_policy_document" "write_access" {
 // Use policy overrides to evalute a new policy to pass to the next layer.
 // This is essentially a dynamic conditional merge of the encryption_in_transit, read, write, and custom policies.
 data "aws_iam_policy_document" "read_policy" {
-  source_json   = data.aws_iam_policy_document.encryption_in_transit.json
+  source_json   = (var.public_access && var.static_hosting) ? data.aws_iam_policy_document.no_http_encryption_in_transit.json : data.aws_iam_policy_document.encryption_in_transit.json
   override_json = length(var.read_access) > 0 ? data.aws_iam_policy_document.read_access.json : null
 }
 
-data "aws_iam_policy_document" "write_policy" {
+data "aws_iam_policy_document" "public_policy" {
   source_json   = data.aws_iam_policy_document.read_policy.json
+  override_json = var.public_access ? data.aws_iam_policy_document.public_read.json : null
+}
+
+data "aws_iam_policy_document" "write_policy" {
+  source_json   = data.aws_iam_policy_document.public_policy.json
   override_json = length(var.write_access) > 0 ? data.aws_iam_policy_document.write_access.json : null
 }
 
 data "aws_iam_policy_document" "this" {
   # source_json   = var.custom_policy != "null" ? replace(var.custom_policy, "%BUCKET%", aws_s3_bucket.this.arn) : data.aws_iam_policy_document.write_policy.json
-  source_json = data.aws_iam_policy_document.write_policy.json
+  source_json   = data.aws_iam_policy_document.write_policy.json
   override_json = local.custom_policy != null ? local.custom_policy : null
 }
 
