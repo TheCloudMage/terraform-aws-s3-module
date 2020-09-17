@@ -1,5 +1,9 @@
 <!-- VSCode Markdown Exclusions-->
 <!-- markdownlint-disable MD025 Single Title Headers-->
+![CloudMage](https://s3-us-west-2.amazonaws.com/img.cloudmage.io/banners/cloudmage-banner-shortend.png)
+
+<br>
+
 # CloudMage AWS S3 Terraform Module Documentation
 
 <br>
