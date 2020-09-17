@@ -64,7 +64,7 @@ data "aws_iam_policy_document" "no_http_encryption_in_transit" {
 
 data "aws_iam_policy_document" "public_read" {
   statement {
-    sid    = "PublicRead"
+    sid    = "PublicReadAccess"
     effect = "Allow"
 
     actions = [
